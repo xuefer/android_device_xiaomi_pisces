@@ -39,6 +39,7 @@
         <item>"mobile_ims,11,0,2,300000,true"</item>
         <item>"mobile_cbs,12,0,2,300000,true"</item>
         <item>"bluetooth,7,7,2,-1,true"</item>
+        <item>"ethernet,9,9,4,-1,true"</item>
     </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
@@ -50,6 +51,7 @@
         <item>"1,1"</item>
         <item>"0,1"</item>
         <item>"7,1"</item>
+        <item>"9,1"</item>
     </string-array>
 
     <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
@@ -67,17 +69,15 @@
 
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-        <item>10</item>
-        <item>50</item>
+        <item>20</item>
         <item>100</item>
         <item>200</item>
-        <item>400</item>
         <item>500</item>
         <item>800</item>
         <item>1000</item>
-        <item>1600</item>
-        <item>3000</item>
-        <item>10000</item>
+        <item>1200</item>
+        <item>1800</item>
+        <item>2500</item>
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
@@ -85,37 +85,45 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-        <item>14</item>   <!-- 0-10 -->
-        <item>28</item>   <!-- 10-50 -->
-        <item>37</item>   <!-- 50-100 -->
-        <item>51</item>   <!-- 100-200 -->
-        <item>71</item>   <!-- 200-400 -->
-        <item>80</item>   <!-- 400-500 -->
-        <item>96</item>   <!-- 500-800 -->
-        <item>108</item>  <!-- 800-1000 -->
-        <item>144</item>  <!-- 1000-1600 -->
-        <item>181</item>  <!-- 1600-3000 -->
-        <item>254</item>  <!-- 3000-10000 -->
-        <item>255</item>  <!-- 10000+ -->
+        <item>6</item>
+        <item>20</item>
+        <item>50</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>140</item>
+        <item>180</item>
+        <item>220</item>
+        <item>255</item>
     </integer-array>
 
-    <!-- Array of output values for button backlight corresponding to the LUX values
-         in the config_autoBrightnessLevels array.  This array should have size one greater
-         than the size of the config_autoBrightnessLevels array.
-         This must be overridden in platform specific overlays -->
+    <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
+         The N entries of this array define N + 1 control points as follows:
+         (1-based arrays)
+
+         Point 1:            (0, value[1]):             lux <= 0
+         Point 2:     (level[1], value[2]):  0        < lux <= level[1]
+         Point 3:     (level[2], value[3]):  level[2] < lux <= level[3]
+         ...
+         Point N+1: (level[N], value[N+1]):  level[N] < lux
+
+         The control points must be strictly increasing.  Each control point
+         corresponds to an entry in the brightness backlight values arrays.
+         For example, if LUX == level[1] (first element of the levels array)
+         then the brightness will be determined by value[2] (second element
+         of the brightness values array).
+
+         Spline interpolation is used to determine the auto-brightness
+         backlight values for LUX levels between these control points.
+
+         Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
-        <item>14</item>   <!-- 0-10 -->
-        <item>28</item>   <!-- 10-50 -->
-        <item>37</item>   <!-- 50-100 -->
-        <item>51</item>   <!-- 100-200 -->
-        <item>71</item>   <!-- 200-400 -->
-        <item>80</item>   <!-- 400-500 -->
-        <item>96</item>   <!-- 500-800 -->
-        <item>108</item>  <!-- 800-1000 -->
-        <item>144</item>  <!-- 1000-1600 -->
-        <item>181</item>  <!-- 1600-3000 -->
-        <item>254</item>  <!-- 3000-10000 -->
-        <item>255</item>  <!-- 10000+ -->
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
     <!-- Minimum screen brightness setting allowed by the power manager.
@@ -134,6 +142,20 @@
          timeout expires.  May be less than the minimum allowed brightness setting
          that can be set by the user. -->
     <integer name="config_screenBrightnessDim">20</integer>
+
+    <!-- Array of output values for keyboard backlight corresponding to the LUX values
+         in the config_autoBrightnessLevels array.  This array should have size one greater
+         than the size of the config_autoBrightnessLevels array.
+         The brightness values must be between 0 and 255 and be non-decreasing.
+         This must be overridden in platform specific overlays -->
+    <integer-array name="config_autoBrightnessKeyboardBacklightValues">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
 
     <!-- Indicate whether closing the lid causes the device to go to sleep and opening
          it causes the device to wake up.
@@ -157,6 +179,10 @@
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">false</bool>
 
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
+
     <!-- The duration (in milliseconds) that the radio will scan for a signal
          when there's no network connection. If the scan doesn't timeout, use zero -->
     <integer name="config_radioScanningTimeout">0</integer>
@@ -175,6 +201,12 @@
 
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
+
+    <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
+    <bool name="config_intrusiveBatteryLed">true</bool>
+
+    <!-- Does the battery LED support multiple colors? Used to decide if the user can change the colors -->
+    <bool name="config_multiColorBatteryLed">true</bool>
 
     <!-- Boolean indicddating if restoring network selection should be skipped -->
     <!-- The restoring is handled by modem if it is true -->
@@ -217,11 +249,24 @@
     <!-- bool value to for enabling motion accelerometer -->
     <bool name="use_motion_accel">true</bool>
 
-    <!-- Enable overlay for all location components. -->
-    <bool name="config_enableNetworkLocationOverlay" translatable="false">false</bool>
-    <string name="config_networkLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
-    <bool name="config_enableFusedLocationOverlay" translatable="false">false</bool>
-    <string name="config_fusedLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
+    <!-- Package name(s) containing location provider support.
+         These packages can contain services implementing location providers,
+         such as the Geocode Provider, Network Location Provider, and
+         Fused Location Provider. They will each be searched for
+         service components implementing these providers.
+         It is strongly recommended that the packages explicitly named
+         below are on the system image, so that they will not map to
+         a 3rd party application.
+         The location framework also has support for installation
+         of new location providers at run-time. The new package does not
+         have to be explicitly listed here, however it must have a signature
+         that matches the signature of at least one package on this list.
+         -->
+    <string-array name="config_locationProviderPackageNames">
+        <item>com.android.location.fused</item>
+        <item>com.google.android.gms</item>
+        <item>com.amap.android.location</item>
+    </string-array>
 
     <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
          on the headphone/microphone jack. When false use the older uevent framework. -->
@@ -264,6 +309,7 @@
         <item>1</item>
         <item>5</item>
         <item>7</item>
+        <item>9</item>
     </integer-array>
     <!-- Specifies the amount of time to disable virtual keys after the screen is touched
          in order to filter out accidental virtual key presses due to swiping gestures
