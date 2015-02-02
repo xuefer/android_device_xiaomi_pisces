@@ -31,6 +31,8 @@ lib/modules/tcrypt.ko
 lib/modules/mbt8797.ko
 lib/modules/sd8797.ko
 lib/modules/wl12xx.ko
+etc/android_model_facea.dat
+etc/android_model_faceg.dat
 etc/libnfc-brcm-43341b00.conf
 etc/libnfc-brcm.conf
 etc/mcrash_trigger.config
