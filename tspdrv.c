@@ -19,7 +19,12 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/ioctl.h>
- 
+#include "qemu.h"
+
+#include "stdio.h"
+#include "string.h"
+#include "stdlib.h"
+
 #define LOG_NDEBUG 0
 #define LOG_TAG "tspdrv"
 #include <utils/Log.h>
@@ -108,6 +113,7 @@ int sendit(int timeout_ms)
     tspd = open(TSPDRV_DEVICE, O_RDWR);
     if(tspd < 0) {
         ALOGE("failed on opening /dev/tspdrv\n");
+        return -1;
     } else {
         ALOGV("opened device /dev/tspdrv\n");
     }
@@ -137,7 +143,7 @@ int sendit(int timeout_ms)
             }
         }
     }
-    
+
     deviceParam.nDeviceIndex = actuators;
     deviceParam.nDeviceParamID = VIBE_KP_CFG_UPDATE_RATE_MS;
     deviceParam.nDeviceParamValue = 3;
