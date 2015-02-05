@@ -96,10 +96,10 @@ TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/fstab.pisces
 # GPS
 BOARD_HAVE_GPS_BCM := true
 
-#Vibrator
-BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/xiaomi/pisces/tspdrv.c
+# Vibrator
+BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/xiaomi/pisces/vibrator.c
 
-#recovery
+# recovery
 TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/fstab.pisces
 RECOVERY_FSTAB_VERSION           := 2
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
