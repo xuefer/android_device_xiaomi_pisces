@@ -31,6 +31,10 @@ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_NAME := full_pisces
 PRODUCT_DEVICE := pisces
 
+#safe mount_ext4
+PRODUCT_COPY_FILES += \
+    device/xiaomi/pisces/bin/mount_ext4.sh:system/bin/mount_ext4.sh
+
 #ramdisk
 PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/ramdisk/ueventd.pisces.rc:root/ueventd.pisces.rc \

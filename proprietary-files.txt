@@ -141,7 +141,6 @@ bin/inv_self_test
 bin/load_audience_fw.sh
 bin/atmel_fw_update.sh
 bin/mount_debugfs.sh
-bin/mount_ext4.sh
 bin/nvcap_test
 bin/nvcgcserver
 bin/nv_hciattach
