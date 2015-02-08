@@ -104,10 +104,17 @@ IMMVIBEAPI(VibeStatus, ImmVibeInitialize)
 	IN VibeInt32 nVersion
 );
 
+IMMVIBEAPI(VibeStatus, ImmVibeTerminate)(void);
+
 IMMVIBEAPI(VibeStatus, ImmVibeOpenDevice)
 (
 	IN VibeInt32 nDeviceIndex,
 	OUT VibeInt32 *phDeviceHandle
+);
+
+IMMVIBEAPI(VibeStatus, ImmVibeCloseDevice)
+(
+	IN VibeInt32 hDeviceHandle
 );
 
 IMMVIBEAPI(VibeStatus, ImmVibePlayMagSweepEffect)
@@ -128,12 +135,17 @@ IMMVIBEAPI(VibeStatus, ImmVibeStopAllPlayingEffects)
 	IN VibeInt32 hDeviceHandle
 );
 
-#define symbol(name) static name##_t name;
-symbol(ImmVibeInitialize);
-symbol(ImmVibeOpenDevice);
-symbol(ImmVibePlayMagSweepEffect);
-symbol(ImmVibeStopAllPlayingEffects);
-#undef symbol
+#define DoWithImmSymbols(action) \
+	action(ImmVibeInitialize); \
+	action(ImmVibeTerminate); \
+	action(ImmVibeOpenDevice); \
+	action(ImmVibeCloseDevice); \
+	action(ImmVibePlayMagSweepEffect); \
+	action(ImmVibeStopAllPlayingEffects);
+
+#define define_symbol(name) static name##_t name
+DoWithImmSymbols(define_symbol)
+#undef define_symbol
 
 static void *libImmVibeJ_so_handle;
 static void libImmVibeJ_init()
@@ -150,33 +162,30 @@ static void libImmVibeJ_init()
 	} \
 } while (0)
 
-	load_symbol(ImmVibeInitialize);
-	load_symbol(ImmVibeOpenDevice);
-	load_symbol(ImmVibePlayMagSweepEffect);
-	load_symbol(ImmVibeStopAllPlayingEffects);
+	DoWithImmSymbols(load_symbol)
 #undef load_symbol
 	return;
 
 err:
-	ImmVibeInitialize = NULL;
-	ImmVibeOpenDevice = NULL;
-	ImmVibePlayMagSweepEffect = NULL;
-	ImmVibeStopAllPlayingEffects = NULL;
+#define clear_symbol(name) name = NULL
+	DoWithImmSymbols(clear_symbol)
+#undef clear_symbol
 }
 
 static VibeInt32 devHandle = VIBE_INVALID_DEVICE_HANDLE_VALUE;
 static int immVibeInitialized = 0;
 
+static void vibrate_terminate();
 static VibeStatus vibrate_init()
 {
 	if (!ImmVibeInitialize) {
 		libImmVibeJ_init();
 		if (!ImmVibeInitialize) {
-			return -1;
+			return VIBE_E_NOT_INITIALIZED;
 		}
 	}
 
-	VibeStatus vs;
+	VibeStatus vs = VIBE_S_SUCCESS;
 	if (!immVibeInitialized) {
 		vs = ImmVibeInitialize(VIBE_GALAXYS_VERSION_NUMBER);
 		if (VIBE_FAILED(vs)) {
@@ -191,12 +200,29 @@ static VibeStatus vibrate_init()
 		ALOGI("Initialized ok");
 	}
 
-	vs = ImmVibeOpenDevice(0, &devHandle);
+	if (!VIBE_IS_VALID_DEVICE_HANDLE(devHandle)) {
+		vs = ImmVibeOpenDevice(0, &devHandle);
 
-	if (VIBE_FAILED(vs)) {
-		ALOGE("Open device Failed");
+		if (VIBE_FAILED(vs)) {
+			ALOGE("Open device Failed, status=%d", (int) vs);
+			vibrate_terminate();
+			return vs;
+		}
 	}
 	return vs;
+}
+
+static void vibrate_terminate()
+{
+	if (VIBE_IS_VALID_DEVICE_HANDLE(devHandle)) {
+		ImmVibeCloseDevice(devHandle);
+		devHandle = VIBE_INVALID_DEVICE_HANDLE_VALUE;
+	}
+
+	if (immVibeInitialized) {
+		ImmVibeTerminate();
+		immVibeInitialized = 0;
+	}
 }
 
 static VibeStatus vibrate_on(int duration)
@@ -206,6 +232,7 @@ static VibeStatus vibrate_on(int duration)
 	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, VIBE_MAX_MAGNITUDE, VIBE_STYLE_SHARP, 0, 0, 0, 0, &effectHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibePlayMagSweepEffect failed, status=%d", (int) vs);
+		vibrate_terminate();
 	}
 	return vs;
 }
@@ -216,6 +243,7 @@ static VibeStatus vibrate_off()
 	VibeStatus vs = ImmVibeStopAllPlayingEffects(devHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibeStopAllPlayingEffects failed, status=%d", (int) vs);
+		vibrate_terminate();
 	}
 	return vs;
 }
