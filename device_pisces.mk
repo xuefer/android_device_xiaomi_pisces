@@ -93,7 +93,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
     frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
-    frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
@@ -101,8 +100,6 @@ PRODUCT_COPY_FILES += \
 
 
 PRODUCT_COPY_FILES += \
-    device/xiaomi/pisces/permissions/com.android.location.provider.xml:system/etc/permissions/com.android.location.provider.xml \
-    device/xiaomi/pisces/permissions/com.android.media.remotedisplay.xml:system/etc/permissions/com.android.media.remotedisplay.xml \
     device/xiaomi/pisces/permissions/com.broadcom.bt.xml:system/etc/permissions/com.broadcom.bt.xml \
     device/xiaomi/pisces/permissions/com.broadcom.nfc.xml:system/etc/permissions/com.broadcom.nfc.xml \
     device/xiaomi/pisces/permissions/com.nvidia.graphics.xml:system/etc/permissions/com.nvidia.graphics.xml \
