@@ -1,3 +1,4 @@
+vendor/lib/hw/power.pisces.so
 vendor/lib/libbt-vendor.so
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0057_Generic_I2C_NCD_Signed_configdata.ncd
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0057_Generic_PreI2C_NCD_Signed_configdata.ncd
@@ -13,6 +14,7 @@ lib/egl/libGLESv2_tegra.so
 lib/egl/libGLESv1_CM_tegra_impl.so
 lib/egl/libEGL_tegra_impl.so
 lib/egl/libGLESv2_tegra_impl.so
+lib/hw/camera.tegra.so
 lib/hw/lights.pisces.so
 lib/hw/gps.tegra.so
 lib/hw/nfc_nci_nfca.default.so
@@ -22,6 +24,20 @@ lib/hw/gralloc.tegra.so
 lib/hw/hwcomposer.tegra.so
 lib/hw/sensors.pisces.so
 lib/libImmVibeJ.so
+lib/libnvupdater_jni.so
+lib/libjni_nvremote.so
+lib/libnvaviparserhal.so
+lib/libjni_nvremoteprotopkg.so
+lib/libnvddk_2d_v2.so
+lib/libnvfusebypass.so
+lib/libnvasfparserhal.so
+lib/libnvddk_2d.so
+lib/libnvapputil.so
+lib/libsensors.mpl.so
+lib/libsensors.isl29018.so
+lib/libsensors.isl29028.so
+lib/libsensors.base.so
+lib/libsensors.bmp180.so
 lib/modules/baseband_usb_chr.ko
 lib/modules/raw_ip_net.ko
 lib/modules/sd8797mlan.ko
