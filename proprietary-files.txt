@@ -14,6 +14,7 @@ lib/egl/libGLESv2_tegra.so
 lib/egl/libGLESv1_CM_tegra_impl.so
 lib/egl/libEGL_tegra_impl.so
 lib/egl/libGLESv2_tegra_impl.so
+lib/hw/audio_policy.tegra.so
 lib/hw/camera.tegra.so
 lib/hw/lights.pisces.so
 lib/hw/gps.tegra.so
