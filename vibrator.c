@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2011 CyanogenMod Project
- * Copyright (C) 2011 Daniel Hillenbrand
+ * Copyright (C) 2014 Xuefer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
