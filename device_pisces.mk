@@ -132,6 +132,9 @@ PRODUCT_PACKAGES += \
         audio.r_submix.default \
         libaudioutils
 
+# Enable Torch
+PRODUCT_PACKAGES += Torch
+
 # Misc
 PRODUCT_PACKAGES += \
     librs_jni \
