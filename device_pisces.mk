@@ -125,6 +125,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.tegra.nvmmlite = 1 \
     drm.service.enabled=true 
 
+# Misc hardwares
+PRODUCT_PACKAGES += \
+	lights.pisces
+
 # Audio
 PRODUCT_PACKAGES += \
         audio.a2dp.default \

@@ -16,7 +16,6 @@ lib/egl/libEGL_tegra_impl.so
 lib/egl/libGLESv2_tegra_impl.so
 lib/hw/audio_policy.tegra.so
 lib/hw/camera.tegra.so
-lib/hw/lights.pisces.so
 lib/hw/gps.tegra.so
 lib/hw/nfc_nci_nfca.default.so
 lib/hw/nfc.tegra.so
