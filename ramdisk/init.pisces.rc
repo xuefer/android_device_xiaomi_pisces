@@ -117,7 +117,7 @@ on boot
     write /proc/sys/vm/min_free_kbytes 16384
 
     chown system system /sys/class/leds/flashlight/brightness
-    chmod 0664 /sys/class/leds/flashlight/brightness
+    chmod 0666 /sys/class/leds/flashlight/brightness
 
     chown system system /sys/class/timed_output/vibrator/pattern
 
