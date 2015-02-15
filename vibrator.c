@@ -26,7 +26,7 @@
 #include "stdlib.h"
 
 #define LOG_NDEBUG 0
-#define LOG_TAG "tspdrv"
+#define LOG_TAG "Vibrator"
 #include <utils/Log.h>
  
 // copy from api
@@ -227,9 +227,29 @@ static void vibrate_terminate()
 
 static VibeStatus vibrate_on(int duration)
 {
-	ALOGI("Vibrating");
 	VibeInt32 effectHandle;
-	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, VIBE_MAX_MAGNITUDE, VIBE_STYLE_SHARP, 0, 0, 0, 0, &effectHandle);
+
+	VibeInt32 magnitude;
+	if (duration < 200) {
+		magnitude = 200;
+	}
+	else if (duration * 10 > VIBE_MAX_MAGNITUDE) {
+		magnitude = VIBE_MAX_MAGNITUDE;
+	}
+	else {
+		magnitude = duration * 10;
+	}
+
+	VibeInt32 style;
+	if (duration >= 5000) {
+		style = VIBE_STYLE_STRONG;
+	}
+	else {
+		style = VIBE_STYLE_SMOOTH;
+	}
+
+	ALOGI("Vibrating duration=%d magnitude=%d style=%d", (int) duration, (int) magnitude, (int) style);
+	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, magnitude, style, 0, 0, 0, 0, &effectHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibePlayMagSweepEffect failed, status=%d", (int) vs);
 		vibrate_terminate();
@@ -239,7 +259,7 @@ static VibeStatus vibrate_on(int duration)
 
 static VibeStatus vibrate_off()
 {
-	ALOGI("Stopping");
+	ALOGV("Stopping");
 	VibeStatus vs = ImmVibeStopAllPlayingEffects(devHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibeStopAllPlayingEffects failed, status=%d", (int) vs);
@@ -259,7 +279,7 @@ int sendit(int timeout_ms)
 		return -1;
 	}
 
-	ALOGI("vibrate sendit(%d)", timeout_ms);
+	ALOGV("vibrate sendit(%d)", timeout_ms);
 
     VibeStatus vs = timeout_ms ? vibrate_on(timeout_ms) : vibrate_off();
 	return VIBE_FAILED(vs) ? 0 : -1;
