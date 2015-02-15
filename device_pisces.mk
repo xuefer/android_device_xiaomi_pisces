@@ -108,6 +108,7 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/permissions/platform.xml:system/etc/permissions/platform.xml
 
 PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/root,root) \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/system,system)
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
