@@ -86,6 +86,18 @@ static int rgb_to_brightness_2(struct light_state_t const *state)
 			+ (2*150*((color>>8) & 0x00ff)) + (2*29*(color & 0x00ff))) >> 8;
 }
 
+static void dump_light_state(char const* name, struct light_state_t const* state)
+{
+	ALOGV("%s: color=%06X, mode=%d onMs=%d offMs=%d brightnessMode=%d"
+		  , name
+		  , state->color
+		  , state->flashMode
+		  , state->flashOnMS
+		  , state->flashOffMS
+		  , state->brightnessMode
+		  );
+}
+
 static int set_light_backlight(struct light_device_t* dev, struct light_state_t const* state)
 {
 	int err = 0;
@@ -124,34 +136,33 @@ static int set_light_buttons(struct light_device_t* dev, struct light_state_t co
 static int set_speaker_light_locked(struct light_device_t* dev, struct light_state_t const* state)
 {
 	int err = 0;
-	ALOGV("set_speaker_light_locked: color=%06X, mode=%d onMs=%d offMs=%d brightnessMode=%d"
-		  , state->color
-		  , state->flashMode
-		  , state->flashOnMS
-		  , state->flashOffMS
-		  , state->brightnessMode
-		  );
+	dump_light_state("attention",    &g_attention);
+	dump_light_state("notification", &g_notification);
+	dump_light_state("battery",      &g_battery);
 
-	if ((err = write_int(LED_RED_FILE, (state->color >> 16) & 0xFF)) != 0) {
-		return err;
+	if (is_lit(state)) {
+		// turn off before on to reset timer
+		write_int(LED_RED_FILE, 0);
+		write_int(LED_GREEN_FILE, 0);
+		write_int(LED_BLUE_FILE, 0);
+		write_int(LED_UPDATE_FILE, 1);
+		usleep(100000);
 	}
-	if ((err = write_int(LED_GREEN_FILE, (state->color >> 8) & 0xFF)) != 0) {
-		return err;
-	}
-	if ((err = write_int(LED_BLUE_FILE, state->color & 0xFF)) != 0) {
-		return err;
-	}
+
+	write_int(LED_RED_FILE, (state->color >> 16) & 0xFF);
+	write_int(LED_GREEN_FILE, (state->color >> 8) & 0xFF);
+	write_int(LED_BLUE_FILE, state->color & 0xFF);
 	return write_int(LED_UPDATE_FILE, 1);
 }
 
-static void update_speaker_light_locked(struct light_device_t* dev)
+static int update_speaker_light_locked(struct light_device_t* dev)
 {
 	if (is_lit(&g_attention)) {
-		set_speaker_light_locked(dev, &g_attention);
+		return set_speaker_light_locked(dev, &g_attention);
 	} else if (is_lit(&g_notification)) {
-		set_speaker_light_locked(dev, &g_notification);
+		return set_speaker_light_locked(dev, &g_notification);
 	} else {
-		set_speaker_light_locked(dev, &g_battery);
+		return set_speaker_light_locked(dev, &g_battery);
 	}
 }
 
@@ -160,9 +171,9 @@ static int set_light_attention(struct light_device_t* dev, struct light_state_t 
 	ALOGV(__func__);
 	pthread_mutex_lock(&g_lock);
 	g_attention = *state;
-	update_speaker_light_locked(dev);
+	int ret = update_speaker_light_locked(dev);
 	pthread_mutex_unlock(&g_lock);
-	return 0;
+	return ret;
 }
 
 static int set_light_notifications(struct light_device_t* dev, struct light_state_t const* state)
@@ -170,9 +181,9 @@ static int set_light_notifications(struct light_device_t* dev, struct light_stat
 	ALOGV(__func__);
 	pthread_mutex_lock(&g_lock);
 	g_notification = *state;
-	update_speaker_light_locked(dev);
+	int ret = update_speaker_light_locked(dev);
 	pthread_mutex_unlock(&g_lock);
-	return 0;
+	return ret;
 }
 
 static int set_light_battery(struct light_device_t* dev, struct light_state_t const* state)
@@ -180,9 +191,9 @@ static int set_light_battery(struct light_device_t* dev, struct light_state_t co
 	ALOGV(__func__);
 	pthread_mutex_lock(&g_lock);
 	g_battery = *state;
-	update_speaker_light_locked(dev);
+	int ret = update_speaker_light_locked(dev);
 	pthread_mutex_unlock(&g_lock);
-	return 0;
+	return ret;
 }
 
 static int close_lights(struct light_device_t *dev)
