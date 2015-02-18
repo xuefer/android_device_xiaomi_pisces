@@ -351,8 +351,21 @@
     -->
     <integer name="config_doubleTapOnHomeBehavior">0</integer>
 
-    <!-- Performance profiles -->
-    <string name="config_perf_profile_prop">sys.perf.profile</string>
-    <string name="config_perf_profile_default_entry">1</string>
+    <!-- Defines the system property to set for performance profile xe: sys.cpu.modes. Leave it
+         blank if the device do not support performance profiles -->
+    <string name="config_perf_profile_prop" translatable="false">persist.sys.aries.power_profile</string>
+
+    <!-- When config_perf_profile_prop is defined, this value MUST be the index of
+         one of the listes values in frameworks/base/core/res/res/values/cm_arrays.xml
+         for "perf_profile_values" array. Leave it blank if the device do not support
+         performance profiles  -->
+    <string name="config_perf_profile_default_entry" translatable="false">middle</string>
+
+    <string-array name="perf_profile_values" translatable="false">
+        <item>low</item>
+        <item>middle</item>
+        <item>high</item>
+    </string-array>
+
 
 </resources>

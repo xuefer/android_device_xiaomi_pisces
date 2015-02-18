@@ -146,7 +146,8 @@ PRODUCT_PACKAGES += \
     libnetcmdiface  \
     tinycap \
     tinymix \
-    tinyplay
+    tinyplay \
+    NvCPLSvc
 
 # NFC packages
 PRODUCT_PACKAGES += \
