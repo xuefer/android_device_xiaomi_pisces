@@ -104,4 +104,4 @@
 /sys/devices/platform/tegra11-i2c.0/i2c-0/0-0068/iio:device*  self_test                         0660  system system
 /sys/devices/platform/tegra11-i2c.0/i2c-0/0-0068/iio:device*  tap_on                            0660  system system
 /sys/devices/platform/tegra11-i2c.0/i2c-0/0-0068/iio:device*  temperature                       0660  system system
-/sys/devices/platform/tegra11-i2c.0/i2c-0/0-0068/iio:device*  trigger/current_trigger   
+/sys/devices/platform/tegra11-i2c.0/i2c-0/0-0068/iio:device*  trigger/current_trigger           0660  system system

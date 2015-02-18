@@ -1,3 +1,5 @@
+#Copyright (c) 2011-2013 NVIDIA Corporation.  All Rights Reserved.
+#Copyright (c) 2011-2013 XIAOMI Corporation.  All Rights Reserved.
 #
 #NVIDIA Corporation and its licensors retain all intellectual property and
 #proprietary rights in and to this software and related documentation.  Any
@@ -39,21 +41,16 @@ on init
     # Immersion
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 system system
-
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
     setprop ro.crypto.fuse_sdcard true
     mount_all /fstab.pisces
-    #mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system wait ro barrier=1
 
-    #wait /dev/block/platform/sdhci-tegra.3/by-name/userdata
-    #exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/userdata /data
+    wait /dev/block/platform/sdhci-tegra.3/by-name/CAC
+    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/CAC /cache
 
-    #wait /dev/block/platform/sdhci-tegra.3/by-name/cache
-    #exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/cache /cache
-
-    wait /dev/block/platform/sdhci-tegra.3/by-name/persist
+    wait /dev/block/platform/sdhci-tegra.3/by-name/PST
     exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/PST /persist
     chown system system /persist
     chmod 0771 /persist
@@ -68,7 +65,6 @@ on fs
 
     chown system system /persist/serialno
     chmod 0400 /persist/serialno
-    #mount_all /fstab.pisces
 
 on post-fs-data
     mkdir /data/misc/wifi 0770 wifi wifi
@@ -117,6 +113,7 @@ on boot
     write /proc/sys/vm/min_free_kbytes 16384
 
     chown system system /sys/class/leds/flashlight/brightness
+    # 0666 required by Torch.apk
     chmod 0666 /sys/class/leds/flashlight/brightness
 
     chown system system /sys/class/timed_output/vibrator/pattern
@@ -145,7 +142,6 @@ on boot
     # bluetooth MAC address programming
     chown bluetooth net_bt_stack ro.bt.bdaddr_path
     chown bluetooth net_bt_stack /system/etc/bluetooth
-
     chown bluetooth net_bt_stack /data/misc/bluetooth
     setprop ro.bt.bdaddr_path "/data/misc/bluetooth/bdaddr"
 
@@ -566,14 +562,25 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
     disabled
     oneshot
 
+on charger
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system wait ro barrier=1
+    setprop sys.usb.config adb
+    write /sys/kernel/cluster/immediate 1
+    write /sys/kernel/cluster/force 1
+    write /sys/kernel/cluster/active lp
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor userspace
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 51000
+    write /sys/class/input/input1/enabled 0
+
 service charger /sbin/chargeonlymode
     class charger
 
-
+# add from init.rc
 service akmd /system/bin/akmd8963
     class core
     user system
     group system misc input
+# end of add
 
 service sysmatsir /system/bin/smonsir
     user root
