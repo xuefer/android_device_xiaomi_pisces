@@ -32,6 +32,7 @@ static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 static struct light_state_t g_attention;
 static struct light_state_t g_notification;
 static struct light_state_t g_battery;
+static struct light_state_t g_speaker_light;
 
 char const *const LCD_0_FILE  = "/sys/class/backlight/lm3533-backlight0/brightness";
 char const *const LCD_1_FILE  = "/sys/class/backlight/lm3533-backlight1/brightness";
@@ -135,10 +136,15 @@ static int set_light_buttons(struct light_device_t* dev, struct light_state_t co
 
 static int set_speaker_light_locked(struct light_device_t* dev, struct light_state_t const* state)
 {
-	int err = 0;
 	dump_light_state("attention",    &g_attention);
 	dump_light_state("notification", &g_notification);
 	dump_light_state("battery",      &g_battery);
+
+	if (g_speaker_light.color == state->color) {
+		ALOGV("speaker light color not changed");
+		return 0;
+	}
+	g_speaker_light = *state;
 
 	if (is_lit(state)) {
 		// turn off before on to reset timer
