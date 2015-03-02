@@ -1,9 +1,6 @@
 # override CM resource
 PRODUCT_PACKAGE_OVERLAYS += device/xiaomi/pisces/productoverlay
 
-## Specify phone tech before including full_phone
-$(call inherit-product, vendor/cm/config/gsm.mk)
-
 # Release name
 PRODUCT_RELEASE_NAME := pisces
 

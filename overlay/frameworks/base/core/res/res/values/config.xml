@@ -167,14 +167,14 @@
          will not debounce light sensor readings -->
     <integer name="config_lightSensorWarmupTime">500</integer>
 
-    <!-- Display low battery warning when battery level dips to this value -->
-    <integer name="config_lowBatteryWarningLevel">10</integer>
+    <!-- Display low battery warning when battery level dips to this value >
+    <integer name="config_lowBatteryWarningLevel">10</integer> -->
 
     <!-- Shutdown if the battery temperature exceeds (this value * 0.1) Celsius. -->
     <integer name="config_shutdownBatteryTemperature">600</integer>
 
-    <!-- Close low battery warning when battery level reaches this value -->
-    <integer name="config_lowBatteryCloseWarningLevel">15</integer>
+    <!-- Close low battery warning when battery level reaches this value
+    <integer name="config_lowBatteryCloseWarningLevel">15</integer>-->
 
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">false</bool>
@@ -223,8 +223,8 @@
     <!-- Flag indicating if the speed up audio on mt call code should be executed -->
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
 
-    <!-- Enable flashlight -->
-    <bool name="config_enableTorch">true</bool>
+    <!-- Enable flashlight >
+    <bool name="config_enableTorch">true</bool> -->
 
     <!-- Set to true to add links to Cell Broadcast app from Settings and MMS app. -->
     <bool name="config_cellBroadcastAppLinks">true</bool>
@@ -350,6 +350,12 @@
          policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
     -->
     <integer name="config_doubleTapOnHomeBehavior">0</integer>
+
+
+    <!--  Maximum number of supported users -->
+    <integer name="config_multiuserMaximumUsers">5</integer>
+    <!--  Whether Multiuser UI should be shown -->
+    <bool name="config_enableMultiUserUI">true</bool>
 
     <!-- Defines the system property to set for performance profile xe: sys.cpu.modes. Leave it
          blank if the device do not support performance profiles -->

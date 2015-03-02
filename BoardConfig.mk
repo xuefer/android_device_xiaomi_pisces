@@ -5,6 +5,13 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/xiaomi/pisces/bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 
+#memory dealer
+COMMON_GLOBAL_CFLAGS += \
+    -DADD_LEGACY_MEMORY_DEALER_CONSTRUCTOR_SYMBOL 
+
+#LOGD
+TARGET_USES_LOGD := false
+
 TARGET_NO_BOOTLOADER := true
 TARGET_BOARD_PLATFORM := tegra
 TARGET_TEGRA_VERSION := t114
@@ -20,13 +27,11 @@ TARGET_CPU_VARIANT := cortex-a15
 TARGET_ARCH_VARIANT_CPU := cortex-a15
 TARGET_CPU_SMP := true
 
-
 TARGET_USE_TEGRA_BIONIC_OPTIMIZATION := true
 TARGET_USE_TEGRA11_MEMCPY_OPTIMIZATION := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
-
-BOARD_KERNEL_CMDLINE := 
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive 
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
@@ -78,7 +83,7 @@ BOARD_USE_SKIA_LCDTEXT := true
 #BOARD_RIL_NO_CELLINFOLIST := true
 
 ##audio
-#BOARD_USES_ALSA_AUDIO := true
+BOARD_USES_ALSA_AUDIO := true
 #$BOARD_SUPPORT_NVAUDIOFX := true
 #BOARD_SUPPORT_NVOICE := true
 #BOARD_USES_TFA := true
@@ -86,6 +91,7 @@ BOARD_USE_SKIA_LCDTEXT := true
 # by BoardConfigVendor.mk
 USE_CAMERA_STUB := false
 BOARD_USES_GENERIC_AUDIO := false
+USE_LEGACY_AUDIO_POLICY := 1
 
 #USE_E2FSPROGS := true
 #BOARD_HAS_NVDPS := true
@@ -112,7 +118,7 @@ BOARD_SEPOLICY_DIRS += \
    $(COMMON_PATH)/sepolicy
 
 # The list below is order dependent
-BOARD_SEPOLICY_UNION := \
+#BOARD_SEPOLICY_UNION := \
     file_contexts \
     genfs_contexts \
     app.te \
@@ -122,8 +128,7 @@ BOARD_SEPOLICY_UNION := \
     init_shell.te \
     file.te \
     sensors_config.te \
-    system.te \
     zygote.te \
     healthd.te \
-    domain.te \
     ueventd.te
+

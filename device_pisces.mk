@@ -150,10 +150,25 @@ PRODUCT_PACKAGES += \
     NvCPLSvc
 
 # NFC packages
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     libnfc-nci \
     libnfc_nci_jni \
     NfcNci \
     Tag \
     com.android.nfc_extras
 
+# NFC
+PRODUCT_PACKAGES += \
+    nfc_nci.bcm2079x.default \
+    NfcNci \
+    Tag
+
+PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+
+ PRODUCT_PACKAGES += \
+    libnetcmdiface

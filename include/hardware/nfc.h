@@ -53,12 +53,20 @@ __BEGIN_DECLS
  * 9) Core NCI stack calls close()
  */
 #define NFC_NCI_HARDWARE_MODULE_ID "nfc_nci_nfca"
+#define NFC_NCI_BCM2079X_HARDWARE_MODULE_ID "nfc_nci.bcm2079x"
+#define NFC_NCI_NXP_PN54X_HARDWARE_MODULE_ID "nfc_nci.pn54x"
 #define NFC_NCI_CONTROLLER "nci"
 
 /*
  *  nfc_nci_module_t should contain module-specific parameters
  */
 typedef struct nfc_nci_module_t {
+    /**
+     * Common methods of the NFC NCI module.  This *must* be the first member of
+     * nfc_nci_module_t as users of this structure will cast a hw_module_t to
+     * nfc_nci_module_t pointer in contexts where it's known the hw_module_t references a
+     * nfc_nci_module_t.
+     */
     struct hw_module_t common;
 } nfc_nci_module_t;
 
@@ -108,6 +116,12 @@ typedef void (nfc_stack_data_callback_t) (uint16_t data_len, uint8_t* p_data);
  * All methods in the NCI HAL are asynchronous.
  */
 typedef struct nfc_nci_device {
+    /**
+     * Common methods of the NFC NCI device.  This *must* be the first member of
+     * nfc_nci_device_t as users of this structure will cast a hw_device_t to
+     * nfc_nci_device_t pointer in contexts where it's known the hw_device_t references a
+     * nfc_nci_device_t.
+     */
     struct hw_device_t common;
     /*
      * (*open)() Opens the NFC controller device and performs initialization.
@@ -210,6 +224,12 @@ static inline int nfc_nci_close(nfc_nci_device_t* dev) {
 #define NFC_PN544_CONTROLLER "pn544"
 
 typedef struct nfc_module_t {
+    /**
+     * Common methods of the NFC NXP PN544 module.  This *must* be the first member of
+     * nfc_module_t as users of this structure will cast a hw_module_t to
+     * nfc_module_t pointer in contexts where it's known the hw_module_t references a
+     * nfc_module_t.
+     */
     struct hw_module_t common;
 } nfc_module_t;
 
@@ -227,6 +247,12 @@ typedef enum {
 } nfc_pn544_linktype;
 
 typedef struct {
+    /**
+     * Common methods of the NFC NXP PN544 device.  This *must* be the first member of
+     * nfc_pn544_device_t as users of this structure will cast a hw_device_t to
+     * nfc_pn544_device_t pointer in contexts where it's known the hw_device_t references a
+     * nfc_pn544_device_t.
+     */
     struct hw_device_t common;
 
     /* The number of EEPROM registers to write */
