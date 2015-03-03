@@ -7,7 +7,7 @@ index a23d031..6bae536 100644
      return (int)mAudioCommandThread->voiceVolumeCommand(volume, delayMs);
  }
  
-+#ifdef HAVE_MIUI_FM_BLOB
++#ifdef HAVE_MIUI_AUDIO_BLOB
 +int AudioPolicyService::setMode(audio_mode_t mode, int unknown)
 +{
 +    ALOGD("unsupported AudioPolicyService::setMode(%d, %d)", (int) mode, unknown);
@@ -28,7 +28,7 @@ index a23d031..6bae536 100644
      return audioPolicyService->setVoiceVolume(volume, delay_ms);
  }
  
-+#ifdef HAVE_MIUI_FM_BLOB
++#ifdef HAVE_MIUI_AUDIO_BLOB
 +static int aps_set_mode(void *service, audio_mode_t mode, int unknown)
 +{
 +    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
