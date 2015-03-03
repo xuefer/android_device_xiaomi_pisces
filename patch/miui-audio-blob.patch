@@ -1,0 +1,153 @@
+project frameworks/av/
+diff --git a/services/audioflinger/AudioPolicyService.cpp b/services/audioflinger/AudioPolicyService.cpp
+index a23d031..6bae536 100644
+--- a/frameworks/av/services/audioflinger/AudioPolicyService.cpp
++++ b/frameworks/av/services/audioflinger/AudioPolicyService.cpp
+@@ -1174,6 +1174,20 @@ int AudioPolicyService::setVoiceVolume(float volume, int delayMs)
+     return (int)mAudioCommandThread->voiceVolumeCommand(volume, delayMs);
+ }
+ 
++#ifdef HAVE_MIUI_FM_BLOB
++int AudioPolicyService::setMode(audio_mode_t mode, int unknown)
++{
++    ALOGD("unsupported AudioPolicyService::setMode(%d, %d)", (int) mode, unknown);
++    return PERMISSION_DENIED;
++}
++
++int AudioPolicyService::setFmVolume(float volume, int delayMs)
++{
++    ALOGD("unsupported AudioPolicyService::setFmVolume(%f, %d)", (double) volume, delayMs);
++    return PERMISSION_DENIED;
++}
++#endif
++
+ bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
+ {
+ #ifdef HAVE_PRE_KITKAT_AUDIO_BLOB
+@@ -1689,6 +1703,22 @@ static int aps_set_voice_volume(void *service, float volume, int delay_ms)
+     return audioPolicyService->setVoiceVolume(volume, delay_ms);
+ }
+ 
++#ifdef HAVE_MIUI_FM_BLOB
++static int aps_set_mode(void *service, audio_mode_t mode, int unknown)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setMode(mode, unknown);
++}
++
++static int aps_set_fm_volume(void *service, float volume, int delay_ms)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setFmVolume(volume, delay_ms);
++}
++#endif
++
+ }; // extern "C"
+ 
+ namespace {
+@@ -1711,6 +1741,10 @@ namespace {
+         load_hw_module        : aps_load_hw_module,
+         open_output_on_module : aps_open_output_on_module,
+         open_input_on_module  : aps_open_input_on_module,
++#ifdef HAVE_MIUI_AUDIO_BLOB
++        set_mode              : aps_set_mode,
++        set_fm_volume         : aps_set_fm_volume,
++#endif
+     };
+ }; // namespace <unnamed>
+ 
+diff --git a/services/audioflinger/AudioPolicyService.h b/services/audioflinger/AudioPolicyService.h
+index f38ca65..8b3c05d 100644
+--- a/frameworks/av/services/audioflinger/AudioPolicyService.h
++++ b/frameworks/av/services/audioflinger/AudioPolicyService.h
+@@ -139,6 +139,10 @@ public:
+     virtual status_t stopTone();
+     virtual status_t setVoiceVolume(float volume, int delayMs = 0);
+     virtual bool isOffloadSupported(const audio_offload_info_t &config);
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t mode, int unknown = 0);
++    virtual status_t setFmVolume(float volume, int delayMs = 0);
++#endif
+ 
+             status_t doStopOutput(audio_io_handle_t output,
+                                   audio_stream_type_t stream,
+
+project hardware/libhardware/
+diff --git a/include/hardware/audio_policy.h b/include/hardware/audio_policy.h
+index bfaef3b..47954a5 100644
+--- a/hardware/libhardware/include/hardware/audio_policy.h
++++ b/hardware/libhardware/include/hardware/audio_policy.h
+@@ -415,6 +415,16 @@ struct audio_policy_service_ops {
+                                     audio_format_t *pFormat,
+                                     audio_channel_mask_t *pChannelMask);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    int (*set_mode)(void *service,
++                    audio_mode_t mode,
++                    int unknown);
++
++    int (*set_fm_volume)(void *service,
++                         float volume,
++                         int delay_ms);
++#endif
++
+ };
+ 
+ /**********************************************************************/
+
+project hardware/libhardware_legacy/
+diff --git a/audio/AudioPolicyCompatClient.cpp b/audio/AudioPolicyCompatClient.cpp
+index 162968c..c1bbe9a 100644
+--- a/hardware/libhardware_legacy/audio/AudioPolicyCompatClient.cpp
++++ b/hardware/libhardware_legacy/audio/AudioPolicyCompatClient.cpp
+@@ -146,4 +146,16 @@ status_t AudioPolicyCompatClient::setVoiceVolume(float volume, int delayMs)
+     return mServiceOps->set_voice_volume(mService, volume, delayMs);
+ }
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++status_t AudioPolicyCompatClient::setMode(audio_mode_t mode, int unknown)
++{
++    return mServiceOps->set_mode(mService, mode, unknown);
++}
++
++status_t AudioPolicyCompatClient::setFmVolume(float volume, int delayMs)
++{
++    return mServiceOps->set_fm_volume(mService, volume, delayMs);
++}
++#endif
++
+ }; // namespace android_audio_legacy
+diff --git a/audio/AudioPolicyCompatClient.h b/audio/AudioPolicyCompatClient.h
+index 494c8af..6e9750b 100644
+--- a/hardware/libhardware_legacy/audio/AudioPolicyCompatClient.h
++++ b/hardware/libhardware_legacy/audio/AudioPolicyCompatClient.h
+@@ -73,6 +73,11 @@ public:
+     virtual status_t stopTone();
+     virtual status_t setVoiceVolume(float volume, int delayMs = 0);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t mode, int);
++    virtual status_t setFmVolume(float volume, int delayMs = 0);
++#endif
++
+ private:
+     struct audio_policy_service_ops* mServiceOps;
+     void*                            mService;
+diff --git a/include/hardware_legacy/AudioPolicyInterface.h b/include/hardware_legacy/AudioPolicyInterface.h
+index 7847bdd..f557e5a 100644
+--- a/hardware/libhardware_legacy/include/hardware_legacy/AudioPolicyInterface.h
++++ b/hardware/libhardware_legacy/include/hardware_legacy/AudioPolicyInterface.h
+@@ -252,6 +252,10 @@ public:
+                                      audio_io_handle_t srcOutput,
+                                      audio_io_handle_t dstOutput) = 0;
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t, int) = 0;
++    virtual status_t setFmVolume(float volume, int delayMs = 0) = 0;
++#endif
+ };
+ 
+ extern "C" AudioPolicyInterface* createAudioPolicyManager(AudioPolicyClientInterface *clientInterface);
+
