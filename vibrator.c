@@ -25,7 +25,7 @@
 #include "string.h"
 #include "stdlib.h"
 
-#define LOG_NDEBUG 0
+//#define LOG_NDEBUG 0
 #define LOG_TAG "Vibrator"
 #include <utils/Log.h>
  
@@ -248,7 +248,7 @@ static VibeStatus vibrate_on(int duration)
 		style = VIBE_STYLE_SMOOTH;
 	}
 
-	ALOGI("Vibrating duration=%d magnitude=%d style=%d", (int) duration, (int) magnitude, (int) style);
+	ALOGV("Vibrating duration=%d magnitude=%d style=%d", (int) duration, (int) magnitude, (int) style);
 	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, magnitude, style, 0, 0, 0, 0, &effectHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibePlayMagSweepEffect failed, status=%d", (int) vs);

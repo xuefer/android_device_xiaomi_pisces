@@ -1,5 +1,4 @@
 vendor/lib/hw/power.pisces.so
-vendor/lib/libbt-vendor.so
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0057_Generic_I2C_NCD_Signed_configdata.ncd
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0057_Generic_PreI2C_NCD_Signed_configdata.ncd
 vendor/firmware/tlv320aic3262_fw_v1.bin
