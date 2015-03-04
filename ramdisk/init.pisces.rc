@@ -59,6 +59,9 @@ on fs
     chmod 0775 /storage_int
     chown media_rw media_rw /storage_int
 
+    mkdir /storage_int/.android_secure 0700 root root
+    mount - /storage_int/.android_secure /mnt/secure/asec bind
+
     mkdir /mnt/modem/data 0770 root radio
     mkdir /mnt/modem/data/factory 0770 root radio
     exec /system/bin/conn_init -o
