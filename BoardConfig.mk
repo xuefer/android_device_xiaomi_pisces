@@ -82,16 +82,13 @@ BOARD_USE_SKIA_LCDTEXT := true
 #TARGET_PROVIDES_LIBRIL := vendor/xiaomi/pisces/proprietary/lib/libril-xiaomi-sprd.so
 #BOARD_RIL_NO_CELLINFOLIST := true
 
-##audio
-BOARD_USES_ALSA_AUDIO := true
-#$BOARD_SUPPORT_NVAUDIOFX := true
-#BOARD_SUPPORT_NVOICE := true
-#BOARD_USES_TFA := true
+# Audio
+USE_LEGACY_AUDIO_POLICY := 1
+COMMON_GLOBAL_CFLAGS += -DHAVE_MIUI_AUDIO_BLOB
+
 # This variable is set first, so it can be overridden
 # by BoardConfigVendor.mk
 USE_CAMERA_STUB := false
-BOARD_USES_GENERIC_AUDIO := false
-USE_LEGACY_AUDIO_POLICY := 1
 
 #USE_E2FSPROGS := true
 #BOARD_HAS_NVDPS := true
@@ -112,9 +109,6 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
 
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
-
-# audio
-COMMON_GLOBAL_CFLAGS += -DHAVE_MIUI_AUDIO_BLOB
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \

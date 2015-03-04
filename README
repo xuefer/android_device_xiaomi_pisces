@@ -1,5 +1,9 @@
-Unofficial CM device tree for MI3TD(pisces
+Unofficial CM device tree for MI3TD(pisces)
 
 CM12(lollipop):
-	fixed nfc,bluetooth
-	not work:rild,audio_policy
+	fixed:
+		nfc
+		bluetooth
+		audio
+	not working:
+		rild
