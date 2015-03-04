@@ -6,5 +6,6 @@ CM12(lollipop):
 		bluetooth
 		audio
 		app to sd
+		vibrator
 	not working:
 		rild

@@ -1,0 +1,60 @@
+commit 756c8a326291a2183fa40f84e9c57d5cb7f14888
+Author: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
+Date:   Tue Feb 8 02:25:18 2011 +0000
+
+    hardware_legacy: allow alternative vibrator implementations
+    
+    The native vibrator code in libhardware_legacy assumes the vibrator
+    is always controlled by inputting timers into sysfs (at
+    /sys/class/timed_output/vibrator/enable). This isn't necessarily true,
+    there's an upcoming device which has the vibrator controlled by ioctl()
+    calls.
+    
+    This patch lets the device configuration specify an alternative
+    vibrator implementation throught the variable BOARD_HAS_VIBRATOR_IMPLEMENTATION
+    
+    That variable should point to a sourcefile that implements the vibrator
+    "int sendit(timeout_ms)" function, like this:
+    
+    BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/vendor/model/vibrator.c
+    
+    Change-Id: I78d60480f87ef00a0bab096d7f42e47501def936
+
+diff --git a/vibrator/Android.mk b/vibrator/Android.mk
+index 6681f84..6f7e262 100644
+--- a/hardware/libhardware_legacy/vibrator/Android.mk
++++ b/hardware/libhardware_legacy/vibrator/Android.mk
+@@ -2,3 +2,8 @@
+ 
+ LOCAL_SRC_FILES += vibrator/vibrator.c
+ 
++## Must point to a source file that implements the sendit() function
++ifneq ($(BOARD_HAS_VIBRATOR_IMPLEMENTATION),)
++    LOCAL_SRC_FILES += $(BOARD_HAS_VIBRATOR_IMPLEMENTATION)
++    LOCAL_CFLAGS += -DUSE_ALTERNATIVE_VIBRATOR
++endif
+diff --git a/vibrator/vibrator.c b/vibrator/vibrator.c
+index f946ce1..b1c98eb 100644
+--- a/hardware/libhardware_legacy/vibrator/vibrator.c
++++ b/hardware/libhardware_legacy/vibrator/vibrator.c
+@@ -21,6 +21,11 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ 
++
++#ifdef USE_ALTERNATIVE_VIBRATOR
++extern int sendit(int timeout_ms);
++#else
++
+ #define THE_DEVICE "/sys/class/timed_output/vibrator/enable"
+ 
+ int vibrator_exists()
+@@ -63,6 +68,8 @@ static int sendit(int timeout_ms)
+     return (ret == nwr) ? 0 : -1;
+ }
+ 
++#endif
++
+ int vibrator_on(int timeout_ms)
+ {
+     /* constant on, up to maximum allowed time */
