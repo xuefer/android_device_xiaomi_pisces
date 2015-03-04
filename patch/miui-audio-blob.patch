@@ -1,9 +1,36 @@
 project frameworks/av/
-diff --git a/services/audioflinger/AudioPolicyService.cpp b/services/audioflinger/AudioPolicyService.cpp
-index a23d031..6bae536 100644
---- a/frameworks/av/services/audioflinger/AudioPolicyService.cpp
-+++ b/frameworks/av/services/audioflinger/AudioPolicyService.cpp
-@@ -1174,6 +1174,20 @@ int AudioPolicyService::setVoiceVolume(float volume, int delayMs)
+diff --git a/services/audiopolicy/AudioPolicyClientImplLegacy.cpp b/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
+index 388ddaa..525a2a8 100644
+--- a/frameworks/av/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
++++ b/frameworks/av/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
+@@ -309,6 +309,22 @@ int aps_set_voice_volume(void *service, float volume, int delay_ms)
+     return audioPolicyService->setVoiceVolume(volume, delay_ms);
+ }
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++int aps_set_mode(void *service, audio_mode_t mode, int unknown)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setMode(mode, unknown);
++}
++
++int aps_set_fm_volume(void *service, float volume, int delay_ms)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setFmVolume(volume, delay_ms);
++}
++#endif
++
+ }; // extern "C"
+ 
+ }; // namespace android
+diff --git a/services/audiopolicy/AudioPolicyService.cpp b/services/audiopolicy/AudioPolicyService.cpp
+index 9006e49..5daf592 100644
+--- a/frameworks/av/services/audiopolicy/AudioPolicyService.cpp
++++ b/frameworks/av/services/audiopolicy/AudioPolicyService.cpp
+@@ -988,6 +988,20 @@ int AudioPolicyService::setVoiceVolume(float volume, int delayMs)
      return (int)mAudioCommandThread->voiceVolumeCommand(volume, delayMs);
  }
  
@@ -21,48 +48,36 @@ index a23d031..6bae536 100644
 +}
 +#endif
 +
- bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
- {
- #ifdef HAVE_PRE_KITKAT_AUDIO_BLOB
-@@ -1689,6 +1703,22 @@ static int aps_set_voice_volume(void *service, float volume, int delay_ms)
-     return audioPolicyService->setVoiceVolume(volume, delay_ms);
- }
- 
+ extern "C" {
+ audio_module_handle_t aps_load_hw_module(void *service __unused,
+                                              const char *name);
+@@ -1042,6 +1056,10 @@ int aps_start_tone(void *service, audio_policy_tone_t tone,
+                               audio_stream_type_t stream);
+ int aps_stop_tone(void *service);
+ int aps_set_voice_volume(void *service, float volume, int delay_ms);
 +#ifdef HAVE_MIUI_AUDIO_BLOB
-+static int aps_set_mode(void *service, audio_mode_t mode, int unknown)
-+{
-+    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
-+
-+    return audioPolicyService->setMode(mode, unknown);
-+}
-+
-+static int aps_set_fm_volume(void *service, float volume, int delay_ms)
-+{
-+    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
-+
-+    return audioPolicyService->setFmVolume(volume, delay_ms);
-+}
++int aps_set_mode(void *service, audio_mode_t mode, int unknown);
++int aps_set_fm_volume(void *service, float volume, int delay_ms);
 +#endif
-+
- }; // extern "C"
+ };
  
  namespace {
-@@ -1711,6 +1741,10 @@ namespace {
-         load_hw_module        : aps_load_hw_module,
-         open_output_on_module : aps_open_output_on_module,
-         open_input_on_module  : aps_open_input_on_module,
+@@ -1064,6 +1082,10 @@ namespace {
+         .load_hw_module        = aps_load_hw_module,
+         .open_output_on_module = aps_open_output_on_module,
+         .open_input_on_module  = aps_open_input_on_module,
 +#ifdef HAVE_MIUI_AUDIO_BLOB
-+        set_mode              : aps_set_mode,
-+        set_fm_volume         : aps_set_fm_volume,
++        .set_mode              = aps_set_mode,
++        .set_fm_volume         = aps_set_fm_volume,
 +#endif
      };
  }; // namespace <unnamed>
  
-diff --git a/services/audioflinger/AudioPolicyService.h b/services/audioflinger/AudioPolicyService.h
-index f38ca65..8b3c05d 100644
---- a/frameworks/av/services/audioflinger/AudioPolicyService.h
-+++ b/frameworks/av/services/audioflinger/AudioPolicyService.h
-@@ -139,6 +139,10 @@ public:
+diff --git a/services/audiopolicy/AudioPolicyService.h b/services/audiopolicy/AudioPolicyService.h
+index 2e32bd0..745694f 100644
+--- a/frameworks/av/services/audiopolicy/AudioPolicyService.h
++++ b/frameworks/av/services/audiopolicy/AudioPolicyService.h
+@@ -155,6 +155,10 @@ public:
      virtual status_t stopTone();
      virtual status_t setVoiceVolume(float volume, int delayMs = 0);
      virtual bool isOffloadSupported(const audio_offload_info_t &config);
@@ -71,9 +86,8 @@ index f38ca65..8b3c05d 100644
 +    virtual status_t setFmVolume(float volume, int delayMs = 0);
 +#endif
  
-             status_t doStopOutput(audio_io_handle_t output,
-                                   audio_stream_type_t stream,
-
+     virtual status_t listAudioPorts(audio_port_role_t role,
+                                     audio_port_type_t type,
 project hardware/libhardware/
 diff --git a/include/hardware/audio_policy.h b/include/hardware/audio_policy.h
 index bfaef3b..47954a5 100644
