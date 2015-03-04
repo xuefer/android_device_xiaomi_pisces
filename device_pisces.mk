@@ -30,6 +30,7 @@ PRODUCT_DEVICE := pisces
 
 #safe mount_ext4
 PRODUCT_COPY_FILES += \
+    device/xiaomi/pisces/bin/fild:system/bin/fild \
     device/xiaomi/pisces/bin/mount_ext4.sh:system/bin/mount_ext4.sh
 
 #ramdisk
