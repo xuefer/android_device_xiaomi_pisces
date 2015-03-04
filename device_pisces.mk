@@ -103,9 +103,9 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/permissions/com.nvidia.miracast.xml:system/etc/permissions/com.nvidia.miracast.xml \
     device/xiaomi/pisces/permissions/com.nvidia.nvsi.xml:system/etc/permissions/com.nvidia.nvsi.xml \
     device/xiaomi/pisces/permissions/com.nvidia.nvstereoutils.xml:system/etc/permissions/com.nvidia.nvstereoutils.xml \
+    device/xiaomi/pisces/permissions/com.nvidia.wifi.xml:system/etc/permissions/com.nvidia.wifi.xml \
     device/xiaomi/pisces/permissions/com.vzw.nfc.xml:system/etc/permissions/com.vzw.nfc.xml \
-    device/xiaomi/pisces/permissions/org.simalliance.openmobileapi.xml:system/etc/permissions/org.simalliance.openmobileapi.xml \
-    device/xiaomi/pisces/permissions/platform.xml:system/etc/permissions/platform.xml
+    device/xiaomi/pisces/permissions/org.simalliance.openmobileapi.xml:system/etc/permissions/org.simalliance.openmobileapi.xml
 
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/root,root) \
