@@ -120,10 +120,6 @@
     <!-- Display low battery warning when battery level dips to this value -->
     <integer name="config_lowBatteryWarningLevel">10</integer>
 
-    <!-- Close low battery warning when battery level reaches the lowBatteryWarningLevel
-         plus this -->
-    <integer name="config_lowBatteryCloseWarningBump">15</integer>
-
     <!-- Default value for led color when battery is fully charged -->
     <integer name="config_notificationsBatteryFullARGB">0x00000000</integer>
 
