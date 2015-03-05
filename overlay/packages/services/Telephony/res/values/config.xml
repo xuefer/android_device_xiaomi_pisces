@@ -19,6 +19,4 @@
 <resources>
     <!-- Allow emergency numbers to be logged in call log -->
     <bool name="allow_emergency_numbers_in_call_log">true</bool>
-    <!-- Flag indicating if the phone is a world phone -->
-    <bool name="world_phone">false</bool>
 </resources>
