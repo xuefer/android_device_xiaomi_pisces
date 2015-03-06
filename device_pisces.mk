@@ -149,6 +149,7 @@ PRODUCT_PACKAGES += \
 # Vendor Apps
 PRODUCT_PACKAGES += \
     Cit \
+    FM \
     NvCPLSvc
 
 # NFC packages
