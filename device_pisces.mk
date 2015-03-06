@@ -153,19 +153,12 @@ PRODUCT_PACKAGES += \
     FM \
     NvCPLSvc
 
-# NFC packages
-#PRODUCT_PACKAGES += \
-    libnfc-nci \
-    libnfc_nci_jni \
-    NfcNci \
-    Tag \
-    com.android.nfc_extras
-
 # NFC
 PRODUCT_PACKAGES += \
     nfc_nci.bcm2079x.default \
     NfcNci \
-    Tag
+    Tag \
+    com.android.nfc_extras
 
 PRODUCT_PACKAGES += \
     libwpa_client \
