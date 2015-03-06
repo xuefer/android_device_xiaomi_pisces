@@ -18,11 +18,19 @@
 -->
 
 <device name="Android">
+  <!-- Most values are the incremental current used by a feature,
+       in mA (measured at nominal voltage).
+       The default values are deliberately incorrect dummy values.
+       OEM's must measure and provide actual values before
+       shipping a device.
+       Example real-world values are given in comments, but they
+       are totally dependent on the platform and can vary
+       significantly, so should be measured on the shipping platform
+       with a power meter. -->
   <item name="none">0</item>
   <item name="screen.on">100</item>
   <item name="screen.full">200</item>
-  <!-- In call -->
-  <item name="bluetooth.active">10</item>
+  <item name="bluetooth.active">10</item> <!-- In call -->
   <item name="bluetooth.on">0.1</item>
   <!-- CPU wakelock held for 830ms on bluetooth headset at command. 43mA * 0.83 /3600 -->
   <item name="bluetooth.at">0.01</item>
@@ -34,11 +42,13 @@
   <item name="radio.active">200</item>
   <item name="radio.scanning">10</item>
   <item name="gps.on">50</item>
-  <!-- Strength 0 to BINS-1 -->
-  <array name="radio.on">
+  <!-- Current consumed by the radio at different signal strengths, when paging -->
+  <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
       <value>2</value>
       <value>1</value>
   </array>
+  <!-- Different CPU speeds as reported in
+       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state -->
   <array name="cpu.speeds">
         <value>51000</value>
         <value>102000</value>
@@ -62,9 +72,9 @@
         <value>1708500</value>
         <value>1810500</value>
   </array>
-  <!-- Power consumption in suspend -->
+  <!-- Current when CPU is idle -->
   <item name="cpu.idle">3</item>
-  <!-- Power consumption at different speeds -->
+  <!-- Current at each CPU speed, as per 'cpu.speeds' -->
   <array name="cpu.active">
         <value>66</value>
         <value>76</value>
@@ -88,5 +98,6 @@
         <value>166</value>
         <value>171</value>
   </array>
-    <item name="battery.capacity">3000</item>
+  <!-- This is the battery capacity in mAh (measured at nominal voltage) -->
+  <item name="battery.capacity">3000</item>
 </device>
