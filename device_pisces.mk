@@ -148,6 +148,7 @@ PRODUCT_PACKAGES += \
 
 # Vendor Apps
 PRODUCT_PACKAGES += \
+    AMAPNetworkLocation \
     Cit \
     FM \
     NvCPLSvc
