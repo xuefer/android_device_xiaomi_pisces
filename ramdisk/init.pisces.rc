@@ -578,12 +578,6 @@ on charger
 service charger /sbin/chargeonlymode
     class charger
 
-#service charger /sbin/healthd -c
-#    class charger
-#    critical
-#    seclabel u:r:healthd:s0
-
-
 # add from init.rc
 service akmd /system/bin/akmd8963
     class core
