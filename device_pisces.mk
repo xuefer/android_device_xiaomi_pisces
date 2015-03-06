@@ -144,7 +144,11 @@ PRODUCT_PACKAGES += \
     libnetcmdiface  \
     tinycap \
     tinymix \
-    tinyplay \
+    tinyplay
+
+# Vendor Apps
+PRODUCT_PACKAGES += \
+    Cit \
     NvCPLSvc
 
 # NFC packages
