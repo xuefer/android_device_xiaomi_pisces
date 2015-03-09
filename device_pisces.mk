@@ -41,7 +41,6 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/ramdisk/init.nv_dev_board.usb.rc:root/init.nv_dev_board.usb.rc \
     device/xiaomi/pisces/ramdisk/init.pisces.rc:root/init.pisces.rc \
     device/xiaomi/pisces/ramdisk/init.hdcp.rc:root/init.hdcp.rc \
-    device/xiaomi/pisces/ramdisk/init.nv_dev_board.usb.rc:root/init.pisces.usb.rc \
     device/xiaomi/pisces/ramdisk/fstab.pisces:root/fstab.pisces
 
 #gps
