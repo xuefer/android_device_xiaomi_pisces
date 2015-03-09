@@ -52,7 +52,7 @@ PRODUCT_COPY_FILES += \
 #audio
 PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/audio/asound.conf:system/etc/asound.conf \
-    device/xiaomi/pisces/audio/audio_effects.conf:system/etc/audio_effects.conf \
+    device/xiaomi/pisces/audio/audio_effects.conf:vendor/etc/audio_effects.conf \
     device/xiaomi/pisces/audio/audio_policy.conf:system/etc/audio_policy.conf \
     device/xiaomi/pisces/audio/nvaudio_conf.xml:system/etc/nvaudio_conf.xml
 
