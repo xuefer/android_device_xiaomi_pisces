@@ -1,0 +1,34 @@
+commit 536e448256af7bfc6d68695fd3897460857c3210
+Author: Xuefer <xuefer@gmail.com>
+Date:   Mon Mar 9 22:17:31 2015 +0800
+
+    export list functions for legacy blob when TARGET_NEED_CUTILS_LIST_SYMBOLS is defined
+    
+    Change-Id: Ia5d267041701cf29996809589bd3d15f591e4bdb
+
+diff --git a/libcutils/Android.mk b/libcutils/Android.mk
+index bee2bd7..bb321ba 100644
+--- a/system/core/libcutils/Android.mk
++++ b/system/core/libcutils/Android.mk
+@@ -118,6 +118,10 @@ LOCAL_SRC_FILES := $(commonSources) \
+         trace.c \
+         uevent.c \
+ 
++ifneq ($(TARGET_NEED_CUTILS_LIST_SYMBOLS),)
++    LOCAL_SRC_FILES += list.c
++endif
++
+ LOCAL_SRC_FILES_arm += \
+         arch-arm/memset32.S \
+ 
+diff --git a/libcutils/list.c b/libcutils/list.c
+new file mode 100644
+index 0000000..829340d
+--- /dev/null
++++ b/system/core/libcutils/list.c
+@@ -0,0 +1,5 @@
++/* include every header as in list.h first to avoid pollutnig those headers */
++#include <stddef.h>
++/* export list functions */
++#define static
++#include <cutils/list.h>

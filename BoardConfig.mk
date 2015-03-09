@@ -85,6 +85,7 @@ BOARD_USE_SKIA_LCDTEXT := true
 # Audio
 USE_LEGACY_AUDIO_POLICY := 1
 COMMON_GLOBAL_CFLAGS += -DHAVE_MIUI_AUDIO_BLOB
+TARGET_NEED_CUTILS_LIST_SYMBOLS := 1
 
 # This variable is set first, so it can be overridden
 # by BoardConfigVendor.mk

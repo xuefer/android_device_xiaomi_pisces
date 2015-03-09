@@ -159,6 +159,7 @@ lib/modules/sd8797mlan.ko
 lib/modules/tcrypt.ko
 lib/modules/wl12xx.ko
 lib/modules/wl12xx_sdio.ko
+lib/soundfx/libdirac.so
 usr/share/alsa/alsa.conf
 usr/share/alsa/cards/aliases.conf
 usr/share/alsa/pcm/center_lfe.conf
