@@ -105,7 +105,6 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/permissions/org.simalliance.openmobileapi.xml:system/etc/permissions/org.simalliance.openmobileapi.xml
 
 PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/root,root) \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/system,system)
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -135,6 +134,10 @@ PRODUCT_PACKAGES += \
 
 # Enable Torch
 PRODUCT_PACKAGES += Torch
+
+# Charger
+PRODUCT_PACKAGES += \
+    charger_res_images
 
 # Misc
 PRODUCT_PACKAGES += \

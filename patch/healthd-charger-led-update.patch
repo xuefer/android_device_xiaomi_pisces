@@ -1,0 +1,41 @@
+diff --git a/healthd/Android.mk b/healthd/Android.mk
+index 17e51d8..63ed990 100644
+--- a/system/core/healthd/Android.mk
++++ b/system/core/healthd/Android.mk
+@@ -30,6 +30,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
+ HEALTHD_CHARGER_DEFINES := RED_LED_PATH \
+     GREEN_LED_PATH \
+     BLUE_LED_PATH \
++    UPDATE_LED_PATH \
+     BACKLIGHT_PATH \
+     CHARGING_ENABLED_PATH
+ 
+diff --git a/healthd/healthd_mode_charger.cpp b/healthd/healthd_mode_charger.cpp
+index 2b71ce2..bd49073 100644
+--- a/system/core/healthd/healthd_mode_charger.cpp
++++ b/system/core/healthd/healthd_mode_charger.cpp
+@@ -82,6 +82,9 @@ char *locale;
+ #ifndef BLUE_LED_PATH
+ #define BLUE_LED_PATH           "/sys/class/leds/blue/brightness"
+ #endif
++#ifndef UPDATE_LED_PATH
++#define UPDATE_LED_PATH         "/sys/class/leds/red/update"
++#endif
+ #ifndef BACKLIGHT_PATH
+ #define BACKLIGHT_PATH          "/sys/class/leds/lcd-backlight/brightness"
+ #endif
+@@ -242,6 +245,14 @@ static int set_tricolor_led(int on, int color)
+         }
+     }
+ 
++    if ((fd = open(UPDATE_LED_PATH, O_RDWR)) >= 0) {
++        snprintf(buffer, sizeof(buffer), "%d\n", 1);
++
++        if (write(fd, buffer, strlen(buffer)) < 0)
++            LOGE("Could not write to led node\n");
++        close(fd);
++    }
++
+     return 0;
+ }
+ 

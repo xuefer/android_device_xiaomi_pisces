@@ -566,7 +566,9 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
     oneshot
 
 on charger
-    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system wait ro barrier=1
+    write /sys/class/backlight/lm3533-backlight0/brightness 100
+    write /sys/class/backlight/lm3533-backlight1/brightness 100
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/APP /system wait ro barrier=1
     setprop sys.usb.config adb
     write /sys/kernel/cluster/immediate 1
     write /sys/kernel/cluster/force 1
@@ -575,8 +577,10 @@ on charger
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 51000
     write /sys/class/input/input1/enabled 0
 
-service charger /sbin/chargeonlymode
+service charger /sbin/healthd -c
     class charger
+    critical
+    seclabel u:r:healthd:s0
 
 # add from init.rc
 service akmd /system/bin/akmd8963
