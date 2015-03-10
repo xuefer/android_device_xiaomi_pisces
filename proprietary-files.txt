@@ -73,6 +73,7 @@ lib/hw/sensors.pisces.so
 lib/libardrv_dynamic.so
 lib/libaudioavp.so
 lib/libcgdrv.so
+lib/libDiracAPI_SHARED.so
 lib/libfcamdng.so
 lib/libImmVibeJ.so
 lib/libjni_nvremoteprotopkg.so
