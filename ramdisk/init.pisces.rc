@@ -35,7 +35,7 @@ on init
     symlink /mnt/media_rw/usbdrive /storage/usbdrive
     symlink /mnt/media_rw/usbdrive /usbdrive
 
-    mkdir /storage_int 0775 media_rw media_rw
+    mkdir /data/media 0775 media_rw media_rw
     mkdir /persist 0771 system system
 
     # Immersion
@@ -55,12 +55,12 @@ on fs
     chown system system /persist
     chmod 0771 /persist
 
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/STO /storage_int
-    chmod 0775 /storage_int
-    chown media_rw media_rw /storage_int
+    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/STO /data/media
+    chmod 0775 /data/media
+    chown media_rw media_rw /data/media
 
-    mkdir /storage_int/.android_secure 0700 root root
-    mount - /storage_int/.android_secure /mnt/secure/asec bind
+    mkdir /data/media/.android_secure 0700 root root
+    mount - /data/media/.android_secure /mnt/secure/asec bind
 
     mkdir /mnt/modem/data 0770 root radio
     mkdir /mnt/modem/data/factory 0770 root radio
@@ -437,7 +437,7 @@ service iprenew_eth0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /storage_int /mnt/shell/emulated
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
 
 service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
