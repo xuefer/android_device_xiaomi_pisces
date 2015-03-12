@@ -109,6 +109,9 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 BACKLIGHT_PATH := /sys/class/backlight/lm3533-backlight0/brightness
 
+# device specific settings menu
+BOARD_HARDWARE_CLASS := device/xiaomi/pisces/cmhw/
+
 # recovery
 TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/fstab.pisces
 RECOVERY_FSTAB_VERSION           := 2
