@@ -505,6 +505,7 @@ service wlbwservice /system/bin/wlbwservice -t 50 6 70 2
     class main
     user system
     group system inet net_admin
+    disabled
 
 #Raydium touch setting
 service rm_ts_service    /system/bin/rm_ts_server
