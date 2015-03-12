@@ -111,6 +111,22 @@ index bfaef3b..47954a5 100644
  
  /**********************************************************************/
 
+diff --git a/include/hardware/audio.h b/include/hardware/audio.h
+index 23f28b2..8b55b28 100644
+--- a/hardware/libhardware/include/hardware/audio.h
++++ b/hardware/libhardware/include/hardware/audio.h
+@@ -698,6 +698,11 @@ struct audio_hw_device {
+      */
+     int (*get_master_mute)(struct audio_hw_device *dev, bool *mute);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    /** MIUI blob, set fm volume */
++    int (*set_fm_volume)(struct audio_hw_device *dev, float volume, int delay_ms);
++#endif
++
+     /**
+      * Routing control
+      */
 project hardware/libhardware_legacy/
 diff --git a/audio/AudioPolicyCompatClient.cpp b/audio/AudioPolicyCompatClient.cpp
 index 162968c..c1bbe9a 100644
