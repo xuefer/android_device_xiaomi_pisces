@@ -51,7 +51,6 @@ etc/nfcse_access.xml
 etc/nvcpud.conf
 etc/nvram_43341.txt
 etc/power.pisces.rc
-etc/ppp/ip-up-vpn
 etc/ril_atc_sprd.config
 etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin
 etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca
