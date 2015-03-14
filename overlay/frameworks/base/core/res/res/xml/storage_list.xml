@@ -37,20 +37,14 @@
 <!-- See storage config details at http://source.android.com/tech/storage/ -->
 
 <StorageList xmlns:android="http://schemas.android.com/apk/res/android">
-
     <!-- internal SD card -->
-    <storage android:mountPoint="/storage/sdcard0"
+    <storage android:mountPoint="/data/media"
             android:storageDescription="@string/storage_internal"
-            android:primary="true"
             android:emulated="true"
-            android:removable="false"
-            android:maxFileSize="4096" />
+            android:mtpReserve="100" />
 
     <!-- external usb storage -->
-    <storage android:mountPoint="/storage/usbdrive"
-             android:storageDescription="@string/storage_usb"
-             android:primary="false"
-             android:emulated="false"
-             android:removable="true" />
-
+    <storage android:mountPoint="/storage/usbdisk"
+            android:storageDescription="@string/storage_usb"
+            android:removable="true" />
 </StorageList>
