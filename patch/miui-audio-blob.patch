@@ -181,3 +181,33 @@ index 7847bdd..f557e5a 100644
  
  extern "C" AudioPolicyInterface* createAudioPolicyManager(AudioPolicyClientInterface *clientInterface);
 
+diff --git a/include/tinyalsa/asoundlib.h b/include/tinyalsa/asoundlib.h
+index 75e5cda..759d805 100644
+--- a/external/tinyalsa/include/tinyalsa/asoundlib.h
++++ b/external/tinyalsa/include/tinyalsa/asoundlib.h
+@@ -115,10 +115,12 @@ struct pcm_config {
+ /* PCM parameters */
+ enum pcm_param
+ {
++#ifndef HAVE_MIUI_AUDIO_BLOB
+     /* mask parameters */
+     PCM_PARAM_ACCESS,
+     PCM_PARAM_FORMAT,
+     PCM_PARAM_SUBFORMAT,
++#endif
+     /* interval parameters */
+     PCM_PARAM_SAMPLE_BITS,
+     PCM_PARAM_FRAME_BITS,
+@@ -132,6 +134,12 @@ enum pcm_param
+     PCM_PARAM_BUFFER_SIZE,
+     PCM_PARAM_BUFFER_BYTES,
+     PCM_PARAM_TICK_TIME,
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    /* mask parameters */
++    PCM_PARAM_ACCESS,
++    PCM_PARAM_FORMAT,
++    PCM_PARAM_SUBFORMAT,
++#endif
+ };
+ 
+ /* Mixer control types */
