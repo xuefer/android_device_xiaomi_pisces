@@ -144,8 +144,9 @@ PRODUCT_PACKAGES += \
     librs_jni \
     com.android.future.usb.accessory \
     libnetcmdiface  \
-    tinycap \
     tinymix \
+    tinypcminfo \
+    tinycap \
     tinyplay
 
 # Vendor Apps
