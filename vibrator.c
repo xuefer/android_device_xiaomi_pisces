@@ -90,10 +90,7 @@ typedef unsigned short                  VibeWChar;
 typedef VibeInt32   VibeStatus;
 
 // ..
-
-#define VIBE_LICENSE_KEY_GALAXYS "DH75NDX26JR75GCZ5CKKTD25M9JP62TG"
-// 3.3.13.1
-#define VIBE_GALAXYS_VERSION_NUMBER 0x0303010D
+#define VIBE_GALAXYS_VERSION_NUMBER 0x0307010A
 
 #define IN
 #define OUT
@@ -229,27 +226,7 @@ static VibeStatus vibrate_on(int duration)
 {
 	VibeInt32 effectHandle;
 
-	VibeInt32 magnitude;
-	if (duration < 200) {
-		magnitude = 200;
-	}
-	else if (duration * 10 > VIBE_MAX_MAGNITUDE) {
-		magnitude = VIBE_MAX_MAGNITUDE;
-	}
-	else {
-		magnitude = duration * 10;
-	}
-
-	VibeInt32 style;
-	if (duration >= 5000) {
-		style = VIBE_STYLE_STRONG;
-	}
-	else {
-		style = VIBE_STYLE_SMOOTH;
-	}
-
-	ALOGV("Vibrating duration=%d magnitude=%d style=%d", (int) duration, (int) magnitude, (int) style);
-	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, magnitude, style, 0, 0, 0, 0, &effectHandle);
+	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, 5000, VIBE_STYLE_STRONG, 0, 0, 0, 0, &effectHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibePlayMagSweepEffect failed, status=%d", (int) vs);
 		vibrate_terminate();
