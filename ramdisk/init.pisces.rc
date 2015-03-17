@@ -61,6 +61,8 @@ on fs
     chmod 0770 /data/media
     exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/STO /data/media
 
+    exec /system/bin/sh /system/bin/upgrade_layout.sh
+
     # sdcard service is sometimes too slow and can't create nodes properly
     start sdcard
 
