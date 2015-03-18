@@ -88,6 +88,31 @@ index 2e32bd0..745694f 100644
  
      virtual status_t listAudioPorts(audio_port_role_t role,
                                      audio_port_type_t type,
+commit 9b6bdbafaa66c8516d6a0d322ed2c774e8e20193
+Author: Xuefer <xuefer@gmail.com>
+Date:   Wed Mar 18 17:07:23 2015 +0800
+
+    standby input before stopping audio
+    
+    I can't find where and how in 4.4 standby() for input is called and
+    marked before stop, but in 5.0 it's not called before stop()
+    Then standby() is done in clean up after stop() causing the driver to
+    crash (happens on tegra3, xiaomi pisces audio driver)
+    
+    Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
+
+diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
+index 3e58ff7..39cef8f 100644
+--- a/frameworks/av/services/audioflinger/Threads.cpp
++++ b/frameworks/av/services/audioflinger/Threads.cpp
+@@ -5854,6 +5854,7 @@ bool AudioFlinger::RecordThread::stop(RecordThread::RecordTrack* recordTrack) {
+     if (exitPending()) {
+         return true;
+     }
++    standbyIfNotAlreadyInStandby();
+     // FIXME incorrect usage of wait: no explicit predicate or loop
+     mStartStopCond.wait(mLock);
+     // if we have been restarted, recordTrack is in mActiveTracks here
 project hardware/libhardware/
 diff --git a/include/hardware/audio_policy.h b/include/hardware/audio_policy.h
 index bfaef3b..47954a5 100644
