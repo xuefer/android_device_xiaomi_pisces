@@ -122,6 +122,9 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 RECOVERY_SDCARD_ON_DATA := true
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 DEVICE_RESOLUTION := 1080x1920
+TW_CUSTOM_BATTERY_PATH       := /sys/devices/platform/tegra11-i2c.0/i2c-0/0-0036/power_supply/max170xx_battery/
+TW_BRIGHTNESS_PATH           := /sys/class/backlight/lm3533-backlight0/brightness
+TW_SECONDARY_BRIGHTNESS_PATH := /sys/class/backlight/lm3533-backlight1/brightness
 
 
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
