@@ -42,6 +42,8 @@ on init
     # Immersion
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 system system
+    mkdir /tmp 0771 system system
+    mount tmpfs tmpfs /tmp mode=0751,gid=1000
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
@@ -635,6 +637,7 @@ service nv_power_low /system/bin/power_mode.sh 2
     disabled
 
 service immvibed /system/bin/immvibed
+    setenv TMPDIR /tmp
     class late_start
     user system
     group system
