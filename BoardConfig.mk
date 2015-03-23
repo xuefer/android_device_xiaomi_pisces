@@ -82,6 +82,9 @@ BOARD_USE_SKIA_LCDTEXT := true
 #TARGET_PROVIDES_LIBRIL := vendor/xiaomi/pisces/proprietary/lib/libril-xiaomi-sprd.so
 #BOARD_RIL_NO_CELLINFOLIST := true
 
+# init
+INIT_MI3TD_HACK := true
+
 # Audio
 USE_LEGACY_AUDIO_POLICY := 1
 COMMON_GLOBAL_CFLAGS += -DHAVE_MIUI_AUDIO_BLOB

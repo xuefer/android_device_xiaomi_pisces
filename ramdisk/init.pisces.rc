@@ -48,18 +48,18 @@ on fs
     setprop ro.crypto.fuse_sdcard true
     mount_all /fstab.pisces
 
-    wait /dev/block/platform/sdhci-tegra.3/by-name/CAC
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/CAC /cache
+    wait /dev/block/platform/sdhci-tegra.3/by-name/cache
+    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/cache /cache
 
-    wait /dev/block/platform/sdhci-tegra.3/by-name/PST
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/PST /persist
+    wait /dev/block/platform/sdhci-tegra.3/by-name/persist
+    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/persist /persist
     chown system system /persist
     chmod 0771 /persist
 
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
     chmod 0770 /data/media
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/STO /data/media
+    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/storage /data/media
 
     exec /system/bin/sh /system/bin/upgrade_layout.sh
 
@@ -578,7 +578,7 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
 on charger
     write /sys/class/backlight/lm3533-backlight0/brightness 100
     write /sys/class/backlight/lm3533-backlight1/brightness 100
-    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/APP /system wait ro barrier=1
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system wait ro barrier=1
     setprop sys.usb.config adb
     write /sys/kernel/cluster/immediate 1
     write /sys/kernel/cluster/force 1
