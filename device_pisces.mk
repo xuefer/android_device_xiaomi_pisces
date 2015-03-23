@@ -34,6 +34,10 @@ PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/bin/upgrade_layout.sh:system/bin/upgrade_layout.sh \
     device/xiaomi/pisces/bin/mount_ext4.sh:system/bin/mount_ext4.sh
 
+# recovery
+PRODUCT_COPY_FILES += \
+    device/xiaomi/pisces/recovery/twrp.fstab:recovery/root/etc/twrp.fstab
+
 #ramdisk
 PRODUCT_COPY_FILES += \
     device/xiaomi/pisces/ramdisk/ueventd.pisces.rc:root/ueventd.pisces.rc \

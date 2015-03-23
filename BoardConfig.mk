@@ -98,8 +98,6 @@ USE_CAMERA_STUB := false
 #BOARD_HAS_NVDPS := true
 #NVCMS_CMU_USE_CONFIG := true
 
-TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/fstab.pisces
-
 # GPS
 BOARD_HAVE_GPS_BCM := true
 
@@ -116,9 +114,14 @@ BACKLIGHT_PATH := /sys/class/backlight/lm3533-backlight0/brightness
 BOARD_HARDWARE_CLASS := device/xiaomi/pisces/cmhw/
 
 # recovery
-TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/fstab.pisces
+TARGET_RECOVERY_FSTAB := device/xiaomi/pisces/recovery/recovery.fstab
 RECOVERY_FSTAB_VERSION           := 2
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+
+# TWRP recovery
+RECOVERY_SDCARD_ON_DATA := true
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+DEVICE_RESOLUTION := 1080x1920
 
 
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
