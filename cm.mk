@@ -20,6 +20,13 @@ PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := MI 3
 PRODUCT_MANUFACTURER := Xiaomi
 
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.timezone=Asia/Shanghai \
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.product.locale.language=zh \
+    ro.product.locale.region=CN \
+
 # Boot animation
 TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
