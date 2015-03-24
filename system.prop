@@ -1,6 +1,3 @@
-#
-# from device/xiaomi/pisces/system.prop
-#
 ro.opengles.version = 131072
 wifi.interface=wlan0
 ap.interface=wlan0
@@ -9,11 +6,6 @@ persist.wlan.ti.calibrated = 0
 ro.ril.wake_lock_timeout=200000
 ro.sf.override_null_lcd_density = 0
 ro.sf.lcd_density = 480
-
-debug.hwui.render_dirty_regions=false
-drm.service.enabled=true
-
-
 
 #NFC
 debug.nfc.fw_download=false
@@ -93,4 +85,3 @@ persist.sys.NV_POWER_MODE=1
 persist.sys.NV_PROFILE_MODEL=MI3
 # don't preload OpenGL in Zygote, the Tegra drivers do not like it
 ro.zygote.disable_gl_preload=true
-
