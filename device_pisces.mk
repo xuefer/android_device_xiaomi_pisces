@@ -64,10 +64,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/system,system) \
 
-# recovery
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/twrp.fstab:recovery/root/etc/twrp.fstab \
-
 # init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/fstab.pisces:root/fstab.pisces \

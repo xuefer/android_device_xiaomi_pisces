@@ -76,6 +76,10 @@ DEVICE_RESOLUTION                := 1080x1920
 TW_CUSTOM_BATTERY_PATH           := /sys/devices/platform/tegra11-i2c.0/i2c-0/0-0036/power_supply/max170xx_battery/
 TW_BRIGHTNESS_PATH               := /sys/class/backlight/lm3533-backlight0/brightness
 TW_SECONDARY_BRIGHTNESS_PATH     := /sys/class/backlight/lm3533-backlight1/brightness
+TW_EXCLUDE_SUPERSU               := true
+TW_INCLUDE_CRYPTO                := true
+TARGET_RECOVERY_DEVICE_MODULES += \
+    twrp.fstab \
 
 # GPS
 BOARD_HAVE_GPS_BCM := true

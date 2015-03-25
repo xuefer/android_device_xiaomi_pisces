@@ -1,10 +1,12 @@
-/recovery   emmc      /dev/block/platform/sdhci-tegra.3/by-name/recovery
-/boot       emmc      /dev/block/platform/sdhci-tegra.3/by-name/boot
-/cache      ext4      /dev/block/platform/sdhci-tegra.3/by-name/cache
-/misc       emmc      /dev/block/platform/sdhci-tegra.3/by-name/misc
-/staging    emmc      /dev/block/platform/sdhci-tegra.3/by-name/staging
-/metadata   emmc      /dev/block/platform/sdhci-tegra.3/by-name/MDA
-/data       ext4      /dev/block/platform/sdhci-tegra.3/by-name/userdata
-/data/media ext4      /dev/block/platform/sdhci-tegra.3/by-name/storage
+/recovery        emmc   /dev/block/platform/sdhci-tegra.3/by-name/recovery
+/boot            emmc   /dev/block/platform/sdhci-tegra.3/by-name/boot
+/system          ext4   /dev/block/platform/sdhci-tegra.3/by-name/system
+/data            ext4   /dev/block/platform/sdhci-tegra.3/by-name/userdata      flags=encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
+/internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Legacy Emulated Internal Storage"
+/cache           ext4   /dev/block/platform/sdhci-tegra.3/by-name/cache
+/persist         ext4   /dev/block/platform/sdhci-tegra.3/by-name/persist       flags=display="Persist Data";wipeingui;backup=1
+/misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="Dualboot Mark";backup=1
+/staging         emmc   /dev/block/platform/sdhci-tegra.3/by-name/staging
+/metadata        emmc   /dev/block/platform/sdhci-tegra.3/by-name/MDA           flags=display="Encrypt Table";backup=1
 
-/usb-otg    vfat      /dev/block/sda1         /dev/block/sda                  flags=storage;wipeingui;removable;display="USB-OTG"
+/usbdrive        vfat   /dev/block/sda1         /dev/block/sda                  flags=display="USB Drive";storage;wipeingui;removable
