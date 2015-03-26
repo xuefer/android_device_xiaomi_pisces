@@ -78,6 +78,7 @@ TW_BRIGHTNESS_PATH               := /sys/class/backlight/lm3533-backlight0/brigh
 TW_SECONDARY_BRIGHTNESS_PATH     := /sys/class/backlight/lm3533-backlight1/brightness
 TW_EXCLUDE_SUPERSU               := true
 TW_INCLUDE_CRYPTO                := true
+TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
 TARGET_RECOVERY_DEVICE_MODULES += \
     twrp.fstab \
 
