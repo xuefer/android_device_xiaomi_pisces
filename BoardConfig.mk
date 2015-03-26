@@ -81,6 +81,7 @@ TW_INCLUDE_CRYPTO                := true
 TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
 TARGET_RECOVERY_DEVICE_MODULES += \
     twrp.fstab \
+    init.recovery.pisces.rc \
 
 # GPS
 BOARD_HAVE_GPS_BCM := true

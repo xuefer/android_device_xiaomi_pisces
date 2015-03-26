@@ -22,6 +22,11 @@
 			<fill color="%button_fill_color%" />
 		</style>
 
+		<style name="activesystembutton">
+			<style name="fillbutton" />
+			<font resource="font" color="%activesystem_color%" />
+		</style>
+
 		<style name="rebootsystem">
 			<condition var1="tw_reboot_system" var2="1" />
 			<style name="button" />
@@ -2625,6 +2630,13 @@
 				</actions>
 			</object>
 
+			<object type="button">
+				<condition var1="property.ro.tw_has_dualboot" var2="1" />
+				<placement x="%col2_x%" y="%row4_y%" />
+				<text>Switch System</text>
+				<action function="page">switchsystem</action>
+			</object>
+
 			<object type="action">
 				<touch key="home" />
 				<action function="page">main</action>
@@ -2788,6 +2800,76 @@
 					<action function="set">tw_complete_text1=HTC Dumlock Install Complete</action>
 					<action function="set">tw_slider_text=Swipe to Confirm</action>
 					<action function="page">confirm_action</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<touch key="home" />
+				<action function="page">main</action>
+			</object>
+
+			<object type="action">
+				<touch key="back" />
+				<action function="page">advanced</action>
+			</object>
+
+			<object type="template" name="footer" />
+		</page>
+
+		<page name="switchsystem">
+			<object type="template" name="header" />
+
+			<object type="action">
+				<condition var1="property.dualboot.system" op="!=" var2="2" />
+				<actions>
+					<action function="set">text_dualboot.system1=System 1 *</action>
+					<action function="set">text_dualboot.system2=System 2</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<condition var1="property.dualboot.system" op="=" var2="2" />
+				<actions>
+					<action function="set">text_dualboot.system1=System 1</action>
+					<action function="set">text_dualboot.system2=System 2 *</action>
+				</actions>
+			</object>
+
+			<object type="text">
+				<placement x="%col1_x%" y="%row1_text_y%" />
+				<text>Dual boot supported. Press button to switch active system.</text>
+			</object>
+
+			<object type="text">
+				<placement x="%col1_x%" y="%row2_text_y%" />
+				<text>All operation on the selected active "boot" and "system".</text>
+			</object>
+
+			<object type="text">
+				<placement x="%col1_x%" y="%row3_text_y%" />
+				<text>If partition table is changed (using parted or fdisk etc),</text>
+			</object>
+
+			<object type="text">
+				<placement x="%col1_x%" y="%row4_text_y%" />
+				<text>please reselect active system.</text>
+			</object>
+
+			<object type="button">
+				<placement x="%col1_x%" y="%row4_y%" />
+				<text>%text_dualboot.system1%</text>
+				<actions>
+					<action function="set">property.dualboot.system=1</action>
+					<action function="page">switchsystem</action>
+				</actions>
+			</object>
+
+			<object type="button">
+				<placement x="%col2_x%" y="%row4_y%" />
+				<text>%text_dualboot.system2%</text>
+				<actions>
+					<action function="set">property.dualboot.system=2</action>
+					<action function="page">switchsystem</action>
 				</actions>
 			</object>
 

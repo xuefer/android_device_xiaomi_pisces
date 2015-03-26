@@ -74,8 +74,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/init.pisces.rc:root/init.pisces.rc \
     $(LOCAL_PATH)/ramdisk/ueventd.pisces.rc:root/ueventd.pisces.rc \
 
-# safe mount_ext4, mount helper script
+# safe mount_ext4, dualboot/mount helper script
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bin/dualboot.sh:system/dualboot.sh \
     $(LOCAL_PATH)/bin/mount_ext4.sh:system/bin/mount_ext4.sh \
     $(LOCAL_PATH)/bin/upgrade_layout.sh:system/bin/upgrade_layout.sh \
 

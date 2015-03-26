@@ -1,0 +1,14 @@
+# vim:expandtab
+
+on early-boot
+    setprop ro.tw_has_dualboot 1
+    wait /dev/block/mmcblk0p19
+    wait /dev/block/mmcblk0p20
+    wait /dev/block/mmcblk0p24
+    wait /dev/block/mmcblk0p25
+    # load dualboot.system 
+    exec /sbin/dualboot -l load
+
+on property:dualboot.system=*
+    # save dualboot.system 
+    exec /sbin/dualboot -l save

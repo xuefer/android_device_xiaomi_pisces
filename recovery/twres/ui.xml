@@ -200,6 +200,7 @@
 		<variable name="slidervalue_padding" value="30" />
 		<variable name="slidervalue_sliderw" value="15" />
 		<variable name="slidervalue_sliderh" value="90" />
+		<variable name="activesystem_color" value="#329DDC" />
 	</variables>
 
 	<mousecursor>
@@ -234,6 +235,13 @@
 				<font resource="font" />
 				<placement x="180" y="114" />
 				<text>%tw_time%</text>
+			</object>
+
+			<object type="button" style="activesystembutton">
+				<placement x="660" y="64" w="400" h="54" />
+				<condition var1="property.ro.tw_has_dualboot" var2="1" />
+				<text>Current System: %property.dualboot.system%</text>
+				<action function="page">switchsystem</action>
 			</object>
 
 			<object type="text" color="%text_color%">
