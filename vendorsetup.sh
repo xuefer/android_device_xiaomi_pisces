@@ -20,7 +20,11 @@
 # In particular, you can add lunch options with the add_lunch_combo
 # function: add_lunch_combo generic-eng
 
+applymi3tdpatch() {
+	sh device/xiaomi/pisces/patch/applypatch.sh
+}
+
 add_lunch_combo cm_pisces-userdebug
 add_lunch_combo cm_pisces-eng
-sh device/xiaomi/pisces/patch/applypatch.sh
 
+echo "** Make sure you have run after repo sync: applymi3tdpatch"
