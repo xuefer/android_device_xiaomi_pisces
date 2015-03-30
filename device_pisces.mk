@@ -19,6 +19,7 @@ PRODUCT_CHARACTERISTICS := nosdcard
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp,adb \
+    persist.sys.isUsbOtgEnabled=1 \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true \
