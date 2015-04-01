@@ -18,5 +18,6 @@
 #define _BDROID_BUILDCFG_H
 
 #define BTM_DEF_LOCAL_NAME "Xiaomi 3"
+#define BTA_AV_SINK_INCLUDED TRUE
 
 #endif
