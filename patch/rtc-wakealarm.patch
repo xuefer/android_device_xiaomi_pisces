@@ -1,0 +1,74 @@
+commit 17798637e2ec5e9abc3ca58eb35e289eca43bf2d
+Author: Xuefer <xuefer@gmail.com>
+Date:   Wed Apr 1 15:26:16 2015 +0800
+
+    add support for sysfs rtc wakealarm, supported and required by in tegra 4
+    
+    BOARD_RTC_WAKEALARM_PATH is usually /sys/class/rtc/rtc0/wakealarm
+    
+    Change-Id: Iff03db11af08f5523eb9ae5686c9d4568b670acb
+
+diff --git a/services/core/jni/Android.mk b/services/core/jni/Android.mk
+index 904fce5..daa1486 100644
+--- a/frameworks/base/services/core/jni/Android.mk
++++ b/frameworks/base/services/core/jni/Android.mk
+@@ -70,3 +70,8 @@ $(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/)
+ $(shell touch $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/export_includes)
+ endif
+ 
++# usually /sys/class/rtc/rtc0/wakealarm
++ifneq ($(strip $(BOARD_RTC_WAKEALARM_PATH)),)
++LOCAL_CFLAGS += -DBOARD_RTC_WAKEALARM_PATH=\"$(BOARD_RTC_WAKEALARM_PATH)\"
++endif
++
+diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
+index 5e85157..76557c2 100644
+--- a/frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp
++++ b/frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp
+@@ -390,6 +390,24 @@ static void android_server_AlarmManagerService_close(JNIEnv*, jobject, jlong nat
+     delete impl;
+ }
+ 
++static void rtc_wakealarm_write(jlong seconds)
++{
++#ifdef BOARD_RTC_WAKEALARM_PATH
++    int fd = open(BOARD_RTC_WAKEALARM_PATH, O_RDWR);
++    if (fd < 0) {
++        ALOGV("Unable to open RTC wakealarm driver %s: %s, skipping\n", BOARD_RTC_WAKEALARM_PATH, strerror(errno));
++    }
++    else {
++        char buffer[80];
++        int length = snprintf(buffer, sizeof(buffer), "%lu\n", (unsigned long) seconds);
++        if (write(fd, buffer, length) != length) {
++            ALOGE("Failed writing to wakealarm: %s\n", strerror(errno));
++        }
++        close(fd);
++    }
++#endif
++}
++
+ static void android_server_AlarmManagerService_set(JNIEnv*, jobject, jlong nativeData, jint type, jlong seconds, jlong nanoseconds)
+ {
+     AlarmImpl *impl = reinterpret_cast<AlarmImpl *>(nativeData);
+@@ -397,6 +415,10 @@ static void android_server_AlarmManagerService_set(JNIEnv*, jobject, jlong nativ
+     ts.tv_sec = seconds;
+     ts.tv_nsec = nanoseconds;
+ 
++    if (type == ANDROID_ALARM_SYSTEMTIME) {
++        rtc_wakealarm_write(seconds);
++    }
++
+     int result = impl->set(type, &ts);
+     if (result < 0)
+     {
+@@ -413,6 +435,10 @@ static void android_server_AlarmManagerService_clear(JNIEnv*, jobject, jlong nat
+     ts.tv_sec = seconds;
+     ts.tv_nsec = nanoseconds;
+ 
++    if (type == ANDROID_ALARM_SYSTEMTIME) {
++        rtc_wakealarm_write(0);
++    }
++
+     int result = impl->clear(type, &ts);
+     if (result < 0)
+     {

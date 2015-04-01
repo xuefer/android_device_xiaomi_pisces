@@ -62,6 +62,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
 # init
 INIT_MI3TD_HACK := true
+TARGET_INIT_VENDOR_LIB := libinit_pisces
 
 # Recovery
 TARGET_RECOVERY_FSTAB            := $(LOCAL_PATH)/recovery/recovery.fstab
@@ -89,11 +90,13 @@ BOARD_HAVE_GPS_BCM := true
 # Vibrator
 BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/xiaomi/pisces/vibrator.c
 
-# Charger
+# Charger, healthd, alarm
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 BACKLIGHT_PATH := /sys/class/backlight/lm3533-backlight0/brightness
+BOARD_HAL_STATIC_LIBRARIES += libhealthd.pisces
+BOARD_RTC_WAKEALARM_PATH := /sys/class/rtc/rtc0/wakealarm
 
 # Graphics
 BOARD_EGL_CFG := $(LOCAL_PATH)/egl.cfg

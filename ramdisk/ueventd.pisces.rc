@@ -108,3 +108,9 @@
 
 # Touch
 /sys/devices/platform/tegra11-i2c.1/i2c-1/1-004a              sensitive_mode                    0660  system system
+
+# rtc
+/sys/devices/platform/tegra11-i2c.4/i2c-4/4-0058/palmas-rtc.4/rtc/rtc* date                     0660  system system
+/sys/devices/platform/tegra11-i2c.4/i2c-4/4-0058/palmas-rtc.4/rtc/rtc* since_epoch              0660  system system
+/sys/devices/platform/tegra11-i2c.4/i2c-4/4-0058/palmas-rtc.4/rtc/rtc* time                     0660  system system
+/sys/devices/platform/tegra11-i2c.4/i2c-4/4-0058/palmas-rtc.4/rtc/rtc* wakealarm                0660  system system
