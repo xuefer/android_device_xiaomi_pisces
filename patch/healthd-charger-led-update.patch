@@ -1,8 +1,16 @@
+commit e207b12adbe0c80ae63b961d8de8f4dcc70537b2
+Author: Xuefer <xuefer@gmail.com>
+Date:   Tue Mar 10 19:14:31 2015 +0800
+
+    charger: MI3 TD led need update to use the new color value
+    
+    Change-Id: I504071ca3b5e81047aab96e54a4be242e59b8e0e
+
 diff --git a/healthd/Android.mk b/healthd/Android.mk
-index 17e51d8..63ed990 100644
+index 06f1fad..b182e43 100644
 --- a/system/core/healthd/Android.mk
 +++ b/system/core/healthd/Android.mk
-@@ -30,6 +30,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
+@@ -35,6 +35,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
  HEALTHD_CHARGER_DEFINES := RED_LED_PATH \
      GREEN_LED_PATH \
      BLUE_LED_PATH \
