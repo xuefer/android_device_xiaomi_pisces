@@ -8,8 +8,8 @@ Date:   Fri Apr 3 01:41:38 2015 +0800
 
 diff --git a/src/com/android/deskclock/alarms/AlarmStateManager.java b/src/com/android/deskclock/alarms/AlarmStateManager.java
 index 412469e..a710717 100755
---- a/src/com/android/deskclock/alarms/AlarmStateManager.java
-+++ b/src/com/android/deskclock/alarms/AlarmStateManager.java
+--- a/packages/apps/DeskClock/src/com/android/deskclock/alarms/AlarmStateManager.java
++++ b/packages/apps/DeskClock/src/com/android/deskclock/alarms/AlarmStateManager.java
 @@ -456,6 +456,12 @@ public final class AlarmStateManager extends BroadcastReceiver {
       * @param instance to set state to
       */

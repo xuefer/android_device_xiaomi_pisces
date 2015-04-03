@@ -97,6 +97,7 @@ BOARD_CHARGER_SHOW_PERCENTAGE := true
 BACKLIGHT_PATH := /sys/class/backlight/lm3533-backlight0/brightness
 BOARD_HAL_STATIC_LIBRARIES += libhealthd.pisces
 BOARD_RTC_WAKEALARM_PATH := /sys/class/rtc/rtc0/wakealarm
+BOARD_HEALTHD_CUSTOM_CHARGER_RES := $(LOCAL_PATH)/libhealthd/images
 
 # Graphics
 BOARD_EGL_CFG := $(LOCAL_PATH)/egl.cfg
