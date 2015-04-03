@@ -37,32 +37,81 @@
 #include "util.h"
 
 #define POWERUP_REASON_PATH "/sys/bootinfo/powerup_reason"
+#define RTC_WAKEALARM_PATH "/sys/class/rtc/rtc0/wakealarm"
 
-static void load_bootinfo()
+static ssize_t read_string(char const *path, char *string, size_t size)
 {
-	char buffer[80];
 	int fd;
 	ssize_t length;
 
-	fd = open(POWERUP_REASON_PATH, O_RDONLY);
+	fd = open(path, O_RDONLY);
 	if (fd < 0) {
-		ERROR("Failed to open %s: %s", POWERUP_REASON_PATH, strerror(errno));
-		return;
+		ERROR("Failed to open %s: %s", path, strerror(errno));
+		return -errno;
 	}
 
-	length = read(fd, buffer, sizeof(buffer));
-	if (length <= 0) {
-		ERROR("Failed to open %s: %s", POWERUP_REASON_PATH, strerror(errno));
-		goto cleanup;
+	length = read(fd, string, size);
+	if (length < 0) {
+		length = -errno;
+		ERROR("Failed to reading %s: %s", path, strerror(errno));
 	}
 
-	if (length == 3 && memcmp(buffer, "rtc", 3) == 0) {
-		property_set("ro.alarm_boot", "true");
-	}
-
-cleanup:
 	close(fd);
-	return;
+	return length;
+}
+
+static int read_int(char const *path, int default_value)
+{
+	char buffer[80];
+	char *end;
+	ssize_t length;
+
+	length = read_string(path, buffer, sizeof(buffer));
+	if (length <= 0) {
+		return default_value;
+	}
+
+	end = buffer + length;
+	if (end[-1] == '\n') {
+		--end;
+	}
+
+	return strtol(buffer, &end, 10);
+}
+
+static int write_int(char const *path, int value)
+{
+	int fd;
+
+	fd = open(path, O_RDWR);
+	if (fd < 0) {
+		ERROR("write_int failed to open %s\n", path);
+		return -errno;
+	} else {
+		char buffer[20];
+		int bytes = sprintf(buffer, "%d\n", value);
+		int ret = 0;
+
+		if (write(fd, buffer, bytes) != bytes) {
+			ret = -errno;
+			ERROR("write_int failed to write %s: %s", path, strerror(errno));
+		}
+
+		close(fd);
+		return ret;
+	}
+}
+
+static void load_bootinfo()
+{
+	char powerup_reason[80];
+
+	if (read_string(POWERUP_REASON_PATH, powerup_reason, sizeof(powerup_reason)) == 3 && memcmp(powerup_reason, "rtc", 3) == 0) {
+		property_set("ro.alarm_boot", "true");
+	} else if (read_int(RTC_WAKEALARM_PATH, 0) != 0) {
+		property_set("ro.alarm_boot", "true");
+		write_int(RTC_WAKEALARM_PATH, 0);
+	}
 }
 
 void vendor_load_properties()
