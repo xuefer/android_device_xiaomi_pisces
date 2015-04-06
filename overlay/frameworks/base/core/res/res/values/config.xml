@@ -369,6 +369,15 @@
          for long messages. -->
     <bool name="config_ascii_7bit_support_for_long_message">true</bool>
 
+    <!-- monitor locale change -->
+    <bool name="config_monitor_locale_change">true</bool>
+
+    <!-- display for radio tech -->
+    <bool name="config_display_rat">true</bool>
+
+    <!-- spn display control -->
+    <bool name="config_spn_display_control">true</bool>
+
     <!-- Configuration to restart radio upon PDP_DEACTIVATE with
          error cause as Regular deactivation(36). -->
     <bool name="config_radio_reset_on_regular_deactivation">false</bool>
