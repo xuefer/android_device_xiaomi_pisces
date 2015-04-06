@@ -84,6 +84,9 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     twrp.fstab \
     init.recovery.pisces.rc \
 
+# ril
+BOARD_PROVIDES_LIBRIL:= true
+
 # GPS
 BOARD_HAVE_GPS_BCM := true
 
