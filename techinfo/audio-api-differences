@@ -1,0 +1,4 @@
+system/audio.h
+new audio_offload_info_t::use_small_bufs
+new audio_config::frame_count
+changed enum pcm_param

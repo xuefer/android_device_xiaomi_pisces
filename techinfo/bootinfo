@@ -1,0 +1,6 @@
+/sys/bootinfo/powerup_reason rtc (no EOL)
+/sys/bootinfo/powerup_reason_details 0x2
+/sys/bootinfo/powerup_reason reboot (no EOL)
+/sys/bootinfo/powerup_reason_details 0x400
+/sys/bootinfo/powerup_reason keypad (no EOL)
+/sys/bootinfo/powerup_reason_details 0x1
