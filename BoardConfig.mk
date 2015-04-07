@@ -81,6 +81,7 @@ TW_EXCLUDE_SUPERSU               := true
 TW_INCLUDE_CRYPTO                := true
 TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
 TARGET_RECOVERY_DEVICE_MODULES += \
+    dualboot \
     twrp.fstab \
     init.recovery.pisces.rc \
 

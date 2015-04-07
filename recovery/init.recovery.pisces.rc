@@ -8,7 +8,3 @@ on early-boot
     wait /dev/block/mmcblk0p25
     # load dualboot.system 
     exec /sbin/dualboot -l load
-
-on property:dualboot.system=*
-    # save dualboot.system 
-    exec /sbin/dualboot -l save

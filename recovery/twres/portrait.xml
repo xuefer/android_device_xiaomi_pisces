@@ -2860,6 +2860,7 @@
 				<text>%text_dualboot.system1%</text>
 				<actions>
 					<action function="set">property.dualboot.system=1</action>
+					<action function="cmd">/sbin/dualboot -l save</action>
 					<action function="page">switchsystem</action>
 				</actions>
 			</object>
@@ -2869,6 +2870,7 @@
 				<text>%text_dualboot.system2%</text>
 				<actions>
 					<action function="set">property.dualboot.system=2</action>
+					<action function="cmd">/sbin/dualboot -l save</action>
 					<action function="page">switchsystem</action>
 				</actions>
 			</object>
