@@ -28,6 +28,7 @@
 //#define LOG_NDEBUG 0
 #define LOG_TAG "Vibrator"
 #include <utils/Log.h>
+#include <cutils/properties.h>
  
 // copy from api
 #include <sys/types.h>
@@ -226,7 +227,8 @@ static VibeStatus vibrate_on(int duration)
 {
 	VibeInt32 effectHandle;
 
-	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, 5000, VIBE_STYLE_STRONG, 0, 0, 0, 0, &effectHandle);
+	int32_t intensity = property_get_int32("persist.vibrator_intensity", 5000);
+	VibeStatus vs = ImmVibePlayMagSweepEffect(devHandle, duration, intensity, VIBE_STYLE_STRONG, 0, 0, 0, 0, &effectHandle);
 	if (VIBE_FAILED(vs)) {
 		ALOGE("ImmVibePlayMagSweepEffect failed, status=%d", (int) vs);
 		vibrate_terminate();
