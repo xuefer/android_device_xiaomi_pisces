@@ -91,12 +91,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/gpsconfigftm.xml:system/etc/gpsconfigftm.xml \
     $(LOCAL_PATH)/gps/gpsconfig.xml:system/etc/gps/gpsconfig.xml \
 
-# audio
+# bluetooth
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/asound.conf:system/etc/asound.conf \
-    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
-    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
-    $(LOCAL_PATH)/audio/nvaudio_conf.xml:system/etc/nvaudio_conf.xml \
+    $(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
 
 # camera
 PRODUCT_COPY_FILES += \
@@ -110,6 +107,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/enctune.conf:system/etc/enctune.conf \
 
 # Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/asound.conf:system/etc/asound.conf \
+    $(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
+    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/audio/nvaudio_conf.xml:system/etc/nvaudio_conf.xml \
+
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
