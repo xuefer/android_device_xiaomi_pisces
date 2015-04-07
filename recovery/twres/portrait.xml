@@ -786,6 +786,10 @@
 
 		<page name="rebootcheck">
 			<object type="action">
+				<action function="cmd">/sbin/dualboot -l installpatch</action>
+			</object>
+
+			<object type="action">
 				<condition var1="tw_backup_system_size" op="&gt;=" var2="%tw_min_system%" />
 				<action function="reboot">%tw_action_param%</action>
 			</object>

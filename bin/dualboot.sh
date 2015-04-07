@@ -78,6 +78,18 @@ dualboot_hacknodes() {
 	chmod 600 $devblks
 }
 
+# helper function
+installoverridefile() {
+	local newfile="$1"
+	local targetfile="$2"
+	if [[ ! -e "$targetfile.orig" ]]; then
+		mv "$targetfile" "$targetfile.orig"
+	fi
+	cp -a "$newfile" "$targetfile" || die "Can't copy file $newfile to $targetfile"
+	chmod 755 "$targetfile"
+	chown root:shell "$targetfile"
+}
+
 #
 # commands
 #
@@ -99,6 +111,7 @@ recovery_umount() {
 	umount /boot 2>&1 | grep -v "Invalid argument"
 	umount /system 2>&1 | grep -v "Invalid argument"
 }
+
 recovery_save() {
 	recovery_umount
 
@@ -113,6 +126,11 @@ recovery_load() {
 	local which=`dualboot_read`
 	setprop dualboot.system "$which" || die "Failed loading dualboot setting"
 	dualboot_hacknodes "$which"
+}
+
+recovery_installpatch() {
+	mount /system || die "Can't mount /system"
+	installoverridefile /twres/mount_ext4.sh /system/bin/mount_ext4.sh || die "Can't install override file"
 }
 
 #
@@ -141,7 +159,7 @@ case "$command" in
 set|get)
 	do_$command "$@"
 ;;
-save|load)
+save|load|installpatch)
 	recovery_$command "$@"
 ;;
 *)
