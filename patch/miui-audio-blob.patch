@@ -206,15 +206,25 @@ index 7847bdd..f557e5a 100644
  
  extern "C" AudioPolicyInterface* createAudioPolicyManager(AudioPolicyClientInterface *clientInterface);
 
+commit 23787476a8059628287200a6b73d22944e160ba0
+Author: Xuefer <xuefer@gmail.com>
+Date:   Mon Mar 16 02:02:15 2015 +0800
+
+    pre-lollipop-audio-blob: fix compatibility of pcm_param
+    
+    enum value changes pcm_param, define HAVE_PRE_LOLLIPOP_AUDIO_BLOB to work with old audio blobs
+    
+    Change-Id: Ia9d15e4613f7a7fcb1422ee001ca9187af6575be
+
 diff --git a/include/tinyalsa/asoundlib.h b/include/tinyalsa/asoundlib.h
-index 75e5cda..759d805 100644
+index 75e5cda..64bd917 100644
 --- a/external/tinyalsa/include/tinyalsa/asoundlib.h
 +++ b/external/tinyalsa/include/tinyalsa/asoundlib.h
 @@ -115,10 +115,12 @@ struct pcm_config {
  /* PCM parameters */
  enum pcm_param
  {
-+#ifndef HAVE_MIUI_AUDIO_BLOB
++#ifndef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
      /* mask parameters */
      PCM_PARAM_ACCESS,
      PCM_PARAM_FORMAT,
@@ -227,7 +237,7 @@ index 75e5cda..759d805 100644
      PCM_PARAM_BUFFER_SIZE,
      PCM_PARAM_BUFFER_BYTES,
      PCM_PARAM_TICK_TIME,
-+#ifdef HAVE_MIUI_AUDIO_BLOB
++#ifdef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
 +    /* mask parameters */
 +    PCM_PARAM_ACCESS,
 +    PCM_PARAM_FORMAT,
