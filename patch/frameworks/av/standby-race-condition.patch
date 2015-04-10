@@ -1,0 +1,40 @@
+commit e631d119b6a258f63d3e5d0afbc7c4065d0ffe69
+Author: Xuefer <xuefer@gmail.com>
+Date:   Wed Mar 18 17:07:23 2015 +0800
+
+    fix standby/stopInpu) race condition
+    
+    standby() is currently likely be called after stopInput()
+    crashing the driver (happens on Tegra 4, Xiaomi MI 3 TD, pisces)
+    
+    fixed by calling standby() before condition broadcast
+    
+    Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
+
+diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
+index 3e58ff7..25f1d3e 100644
+--- a/services/audioflinger/Threads.cpp
++++ b/services/audioflinger/Threads.cpp
+@@ -5136,10 +5136,9 @@ reacquire_wakelock:
+                 break;
+             }
+ 
+-            // if no active track(s), then standby and release wakelock
++            // if no active track(s), then standby (down below) and release wakelock (here)
+             size_t size = mActiveTracks.size();
+             if (size == 0) {
+-                standbyIfNotAlreadyInStandby();
+                 // exitPending() can't become true here
+                 releaseWakeLock_l();
+                 ALOGV("RecordThread: loop stopping");
+@@ -5215,6 +5214,10 @@ reacquire_wakelock:
+                     fastTrack = activeTrack;
+                 }
+             }
++            // standby must be done before mStartStopCond broadcast
++            if (activeTracks.size() == 0) {
++                standbyIfNotAlreadyInStandby();
++            }
+             if (doBroadcast) {
+                 mStartStopCond.broadcast();
+             }
