@@ -5,11 +5,11 @@
 #
 
 
-dir=`cd $(dirname $0) && pwd`
-top=$dir/../../../..
+localdir=$(cd "$(dirname "$0")" && pwd)
+topdir=$(cd "$localdir/../../../.." && pwd)
 
-for patch in `ls $dir/*.patch` ; do
-	echo " * Applying patch $patch"
-	patch -p1 -N -i $patch -r - -d $top
+(cd $localdir; find . -iname '*.patch' -type f) | while read patch; do
+	echo " *** Applying patch $patch"
+	patch -p1 -N -i "$localdir/$patch" -r - -d "$topdir/$(dirname "$patch")/"
 done
 
