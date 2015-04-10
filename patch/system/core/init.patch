@@ -1,4 +1,4 @@
-commit 8fe1a4d3f06827788bf5955ab71064f2b174d1e6
+commit 2f69764265f0462d2e49b0218cd12b532c404e40
 Author: Xuefer <xuefer@gmail.com>
 Date:   Mon Mar 23 16:40:30 2015 +0800
 
@@ -10,8 +10,8 @@ Date:   Mon Mar 23 16:40:30 2015 +0800
 
 diff --git a/init/Android.mk b/init/Android.mk
 index db000c2..da0af78 100755
---- a/system/core/init/Android.mk
-+++ b/system/core/init/Android.mk
+--- a/init/Android.mk
++++ b/init/Android.mk
 @@ -25,6 +25,10 @@ LOCAL_SRC_FILES += bootchart.c
  LOCAL_CFLAGS    += -DBOOTCHART=1
  endif
@@ -25,8 +25,8 @@ index db000c2..da0af78 100755
  endif
 diff --git a/init/devices.c b/init/devices.c
 index 9852eb4..5da6b31 100644
---- a/system/core/init/devices.c
-+++ b/system/core/init/devices.c
+--- a/init/devices.c
++++ b/init/devices.c
 @@ -56,6 +56,38 @@
  #define FIRMWARE_DIR3   "/firmware/image"
  #define DEVICES_BASE    "/devices/soc.0"
@@ -106,8 +106,8 @@ index 9852eb4..5da6b31 100644
                  link_num++;
 diff --git a/init/init.c b/init/init.c
 index 7a68e62..c22a132 100644
---- a/system/core/init/init.c
-+++ b/system/core/init/init.c
+--- a/init/init.c
++++ b/init/init.c
 @@ -746,6 +746,8 @@ static void import_kernel_nv(char *name, int for_emulator)
          cnt = snprintf(prop, sizeof(prop), "ro.boot.%s", boot_prop_name);
          if (cnt < PROP_NAME_MAX)
@@ -118,9 +118,9 @@ index 7a68e62..c22a132 100644
  }
  
 diff --git a/liblog/logd_write.c b/liblog/logd_write.c
-index 520106e..0ba8ed6 100644
---- a/system/core/liblog/logd_write.c
-+++ b/system/core/liblog/logd_write.c
+index df077f7..e6341ae 100644
+--- a/liblog/logd_write.c
++++ b/liblog/logd_write.c
 @@ -439,7 +439,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
          !strcmp(tag, "STK") ||
          !strcmp(tag, "CDMA") ||
@@ -136,8 +136,8 @@ index 520106e..0ba8ed6 100644
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
 diff --git a/liblog/logd_write_kern.c b/liblog/logd_write_kern.c
 index 34fcb1c..91d93f3 100644
---- a/system/core/liblog/logd_write_kern.c
-+++ b/system/core/liblog/logd_write_kern.c
+--- a/liblog/logd_write_kern.c
++++ b/liblog/logd_write_kern.c
 @@ -284,7 +284,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
          !strcmp(tag, "STK") ||
          !strcmp(tag, "CDMA") ||
@@ -151,8 +151,7 @@ index 34fcb1c..91d93f3 100644
              log_id = LOG_ID_RADIO;
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
-
-commit 7344e436cb6c60819f593e02916b715dbaf44eb0
+commit 7acb4c3d0e55d715b2c657a965f0dd2936c52ad0
 Author: Xuefer <xuefer@gmail.com>
 Date:   Tue Mar 24 01:28:30 2015 +0800
 
@@ -162,8 +161,8 @@ Date:   Tue Mar 24 01:28:30 2015 +0800
 
 diff --git a/fs_mgr/Android.mk b/fs_mgr/Android.mk
 index 92aeb4e..e996179 100644
---- a/system/core/fs_mgr/Android.mk
-+++ b/system/core/fs_mgr/Android.mk
+--- a/fs_mgr/Android.mk
++++ b/fs_mgr/Android.mk
 @@ -13,6 +13,10 @@ LOCAL_C_INCLUDES += system/extras/ext4_utils external/e2fsprogs/lib
  LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
  LOCAL_CFLAGS := -Werror
@@ -177,8 +176,8 @@ index 92aeb4e..e996179 100644
  
 diff --git a/fs_mgr/fs_mgr_fstab.c b/fs_mgr/fs_mgr_fstab.c
 index 3f84179..249b8ae 100644
---- a/system/core/fs_mgr/fs_mgr_fstab.c
-+++ b/system/core/fs_mgr/fs_mgr_fstab.c
+--- a/fs_mgr/fs_mgr_fstab.c
++++ b/fs_mgr/fs_mgr_fstab.c
 @@ -19,6 +19,9 @@
  #include <stdlib.h>
  #include <string.h>

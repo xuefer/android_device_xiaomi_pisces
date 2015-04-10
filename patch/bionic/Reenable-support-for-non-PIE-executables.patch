@@ -34,8 +34,8 @@ Date:   Thu Jun 19 08:08:12 2014 -0700
 
 diff --git a/linker/linker.cpp b/linker/linker.cpp
 index a22233d..e202aaf 100644
---- a/bionic/linker/linker.cpp
-+++ b/bionic/linker/linker.cpp
+--- a/linker/linker.cpp
++++ b/linker/linker.cpp
 @@ -59,6 +59,7 @@
   *
   * open issues / todo:

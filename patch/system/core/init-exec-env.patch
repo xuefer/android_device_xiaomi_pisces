@@ -1,4 +1,4 @@
-commit fe257a134fb19b26c5e7dfd04ac9470987e2f096
+commit 9d9fc722d9324b87300fe5aa20fc7b2c9a1cbb6d
 Author: Xuefer <xuefer@gmail.com>
 Date:   Thu Mar 26 15:32:55 2015 +0800
 
@@ -8,8 +8,8 @@ Date:   Thu Mar 26 15:32:55 2015 +0800
 
 diff --git a/init/builtins.c b/init/builtins.c
 index 10a810e..1823ebf 100644
---- a/system/core/init/builtins.c
-+++ b/system/core/init/builtins.c
+--- a/init/builtins.c
++++ b/init/builtins.c
 @@ -48,6 +48,7 @@
  #include "log.h"
  
@@ -38,8 +38,8 @@ index 10a810e..1823ebf 100644
      else
 diff --git a/init/init.c b/init/init.c
 index 7a68e62..978b879 100644
---- a/system/core/init/init.c
-+++ b/system/core/init/init.c
+--- a/init/init.c
++++ b/init/init.c
 @@ -97,7 +97,7 @@ static int have_console;
  static char console_name[PROP_VALUE_MAX] = "/dev/console";
  static time_t process_needs_restart;

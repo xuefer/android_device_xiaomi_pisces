@@ -1,4 +1,4 @@
-commit 536e448256af7bfc6d68695fd3897460857c3210
+commit 0fc3d5e873ffa73a5fe72c0137a9a90c0cf2e6aa
 Author: Xuefer <xuefer@gmail.com>
 Date:   Mon Mar 9 22:17:31 2015 +0800
 
@@ -8,8 +8,8 @@ Date:   Mon Mar 9 22:17:31 2015 +0800
 
 diff --git a/libcutils/Android.mk b/libcutils/Android.mk
 index bee2bd7..bb321ba 100644
---- a/system/core/libcutils/Android.mk
-+++ b/system/core/libcutils/Android.mk
+--- a/libcutils/Android.mk
++++ b/libcutils/Android.mk
 @@ -118,6 +118,10 @@ LOCAL_SRC_FILES := $(commonSources) \
          trace.c \
          uevent.c \
@@ -23,11 +23,11 @@ index bee2bd7..bb321ba 100644
  
 diff --git a/libcutils/list.c b/libcutils/list.c
 new file mode 100644
-index 0000000..829340d
+index 0000000..88c189c
 --- /dev/null
-+++ b/system/core/libcutils/list.c
++++ b/libcutils/list.c
 @@ -0,0 +1,5 @@
-+/* include every header as in list.h first to avoid pollutnig those headers */
++/* include every header used in list.h first to avoid pollutting those headers */
 +#include <stddef.h>
 +/* export list functions */
 +#define static

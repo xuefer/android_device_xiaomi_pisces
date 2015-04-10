@@ -1,4 +1,4 @@
-commit 17798637e2ec5e9abc3ca58eb35e289eca43bf2d
+commit dd1cecd776b9e567f0245abca07dae4bf4c03042
 Author: Xuefer <xuefer@gmail.com>
 Date:   Wed Apr 1 15:26:16 2015 +0800
 
@@ -10,8 +10,8 @@ Date:   Wed Apr 1 15:26:16 2015 +0800
 
 diff --git a/services/core/jni/Android.mk b/services/core/jni/Android.mk
 index 904fce5..daa1486 100644
---- a/frameworks/base/services/core/jni/Android.mk
-+++ b/frameworks/base/services/core/jni/Android.mk
+--- a/services/core/jni/Android.mk
++++ b/services/core/jni/Android.mk
 @@ -70,3 +70,8 @@ $(shell mkdir -p $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/)
  $(shell touch $(OUT)/obj/SHARED_LIBRARIES/libtime_genoff_intermediates/export_includes)
  endif
@@ -23,8 +23,8 @@ index 904fce5..daa1486 100644
 +
 diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
 index 5e85157..76557c2 100644
---- a/frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp
-+++ b/frameworks/base/services/core/jni/com_android_server_AlarmManagerService.cpp
+--- a/services/core/jni/com_android_server_AlarmManagerService.cpp
++++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
 @@ -390,6 +390,24 @@ static void android_server_AlarmManagerService_close(JNIEnv*, jobject, jlong nat
      delete impl;
  }

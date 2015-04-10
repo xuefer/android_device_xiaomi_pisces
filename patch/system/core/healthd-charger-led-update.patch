@@ -8,8 +8,8 @@ Date:   Tue Mar 10 19:14:31 2015 +0800
 
 diff --git a/healthd/Android.mk b/healthd/Android.mk
 index 06f1fad..b182e43 100644
---- a/system/core/healthd/Android.mk
-+++ b/system/core/healthd/Android.mk
+--- a/healthd/Android.mk
++++ b/healthd/Android.mk
 @@ -35,6 +35,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
  HEALTHD_CHARGER_DEFINES := RED_LED_PATH \
      GREEN_LED_PATH \
@@ -20,8 +20,8 @@ index 06f1fad..b182e43 100644
  
 diff --git a/healthd/healthd_mode_charger.cpp b/healthd/healthd_mode_charger.cpp
 index 2b71ce2..bd49073 100644
---- a/system/core/healthd/healthd_mode_charger.cpp
-+++ b/system/core/healthd/healthd_mode_charger.cpp
+--- a/healthd/healthd_mode_charger.cpp
++++ b/healthd/healthd_mode_charger.cpp
 @@ -82,6 +82,9 @@ char *locale;
  #ifndef BLUE_LED_PATH
  #define BLUE_LED_PATH           "/sys/class/leds/blue/brightness"

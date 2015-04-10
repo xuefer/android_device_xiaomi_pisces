@@ -1,6 +1,6 @@
-commit 756c8a326291a2183fa40f84e9c57d5cb7f14888
-Author: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
-Date:   Tue Feb 8 02:25:18 2011 +0000
+commit cb02b5c9e80da2f18009469b151338678b69c2fb
+Author: Xuefer <xuefer@gmail.com>
+Date:   Wed Apr 8 14:06:58 2015 +0800
 
     hardware_legacy: allow alternative vibrator implementations
     
@@ -18,12 +18,13 @@ Date:   Tue Feb 8 02:25:18 2011 +0000
     
     BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/vendor/model/vibrator.c
     
+    Signed-off-by: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
     Change-Id: I78d60480f87ef00a0bab096d7f42e47501def936
 
 diff --git a/vibrator/Android.mk b/vibrator/Android.mk
 index 6681f84..6f7e262 100644
---- a/hardware/libhardware_legacy/vibrator/Android.mk
-+++ b/hardware/libhardware_legacy/vibrator/Android.mk
+--- a/vibrator/Android.mk
++++ b/vibrator/Android.mk
 @@ -2,3 +2,8 @@
  
  LOCAL_SRC_FILES += vibrator/vibrator.c
@@ -35,8 +36,8 @@ index 6681f84..6f7e262 100644
 +endif
 diff --git a/vibrator/vibrator.c b/vibrator/vibrator.c
 index f946ce1..b1c98eb 100644
---- a/hardware/libhardware_legacy/vibrator/vibrator.c
-+++ b/hardware/libhardware_legacy/vibrator/vibrator.c
+--- a/vibrator/vibrator.c
++++ b/vibrator/vibrator.c
 @@ -21,6 +21,11 @@
  #include <fcntl.h>
  #include <errno.h>
