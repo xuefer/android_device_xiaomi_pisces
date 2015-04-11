@@ -6,5 +6,5 @@ on early-boot
     wait /dev/block/mmcblk0p20
     wait /dev/block/mmcblk0p24
     wait /dev/block/mmcblk0p25
-    # load dualboot.system 
-    exec /sbin/dualboot -l load
+    # load dualboot.system & dualboot.dualdata
+    exec /sbin/dualboot -ll load

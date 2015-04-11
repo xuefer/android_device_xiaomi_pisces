@@ -237,10 +237,24 @@
 				<text>%tw_time%</text>
 			</object>
 
+			<object type="action">
+				<condition var1="property.dualboot.dualdata" op="=" var2="1" />
+				<actions>
+					<action function="set">text_dualboot.dualdatamark=+</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<condition var1="property.dualboot.dualdata" op="!=" var2="1" />
+				<actions>
+					<action function="set">text_dualboot.dualdatamark=</action>
+				</actions>
+			</object>
+
 			<object type="button" style="activesystembutton">
 				<placement x="660" y="64" w="400" h="54" />
 				<condition var1="property.ro.tw_has_dualboot" var2="1" />
-				<text>Current System: %property.dualboot.system%</text>
+				<text>Current System: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
 				<action function="page">switchsystem</action>
 			</object>
 
