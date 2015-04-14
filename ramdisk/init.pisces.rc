@@ -68,9 +68,6 @@ on fs
     # sdcard service is sometimes too slow and can't create nodes properly
     start sdcard
 
-    mkdir /data/media/.android_secure 0700 root root
-    mount - /data/media/.android_secure /mnt/secure/asec bind
-
     mkdir /mnt/modem/data 0770 root radio
     mkdir /mnt/modem/data/factory 0770 root radio
     exec /system/bin/conn_init -o
