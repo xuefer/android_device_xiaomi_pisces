@@ -50,7 +50,7 @@ rename_directory() {
 	local from="$1"
 	local to="$2"
 	if [[ -d $from ]] && [[ ! -d $to ]]; then
-		mv "$from" "$to"
+		mv -v "$from" "$to"
 	fi
 }
 
@@ -230,13 +230,14 @@ dualdata_reopen() {
 dualdata_enable() {
 	local currentsysid=$1
 
+	echo "Enabling dual data ..."
 	rename_directory "$SYSTEMS/system-1.disabled" "$SYSTEMS/system-1"
 	rename_directory "$SYSTEMS/system-2.disabled" "$SYSTEMS/system-2"
 	dualdata_reopen
 	case "$DUALDATA_ENABLED" in
 	1)
 		# enabled, do nothing
-		echo "Ignored, dualdata already enabled"
+		echo "Dualdata enabled"
 		;;
 	*)
 		# guessing current systemid
@@ -267,11 +268,14 @@ dualdata_enable() {
 		dualdata_create_layout_version_ "$SYSTEMS/system-$newsysid/.layout_version"
 		;;
 	esac
+	echo "Done"
 }
 
 dualdata_disable() {
+	echo "Disabling dual data ..."
 	rename_directory "$SYSTEMS/system-1" "$SYSTEMS/system-1.disabled"
 	rename_directory "$SYSTEMS/system-2" "$SYSTEMS/system-2.disabled"
+	echo "Done"
 	dualdata_reopen
 }
 
@@ -293,7 +297,7 @@ dualdata_switchtodata() {
 
 	local packtodir="$SYSTEMS/system-$packsysid"
 	if [[ ! -d $packtodir ]]; then
-		echo "Packing data system-$packsysid to alternative data"
+		echo "Packing /data to alternative location: /data/media/system-$packsysid"
 		mkdir -p "$packtodir.tmp"
 		mv_q "$DATA/"* "$DATA/".* "$packtodir.tmp"
 		mv "$packtodir.tmp" "$packtodir"
@@ -302,7 +306,7 @@ dualdata_switchtodata() {
 
 	local unpackfromdir="$SYSTEMS/system-$unpacksysid"
 	if [[ -d $unpackfromdir ]] && [[ ! -d $unpackfromdir.tmp ]]; then
-		echo "Unpacking data system-$unpacksysid from alternative data"
+		echo "Unpacking /data from alternative location: /data/media/system-$unpacksysid"
 		mv "$unpackfromdir" "$unpackfromdir.tmp"
 	fi
 	if [[ -d $unpackfromdir.tmp ]]; then
