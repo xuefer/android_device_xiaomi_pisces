@@ -107,9 +107,10 @@
 		<variable name="text_fail_color" value="#FF0101" />
 		<variable name="highlight_color" value="#90909080" />
 		<variable name="caps_highlight_color" value="#33B5E580" />
-		<variable name="home_button_x" value="10" />
+		<variable name="slideout_button_x" value="141" />
+		<variable name="home_button_x" value="477" />
 		<variable name="home_button_y" value="1839" />
-		<variable name="back_button_x" value="1070" />
+		<variable name="back_button_x" value="950" />
 		<variable name="back_button_y" value="1839" />
 		<variable name="sort_text_x" value="10" />
 		<variable name="sort_asc_text_y" value="1635" />
@@ -417,7 +418,7 @@
 
 		<template name="footer">
 			<object type="console">
-				<slideout resource="slideout" x="%center_x%" y="1841" placement="5" />
+				<slideout resource="slideout" x="%slideout_button_x%" y="1841" />
 				<placement x="%console_x%" y="0" w="%console_width%" h="1841" />
 				<color foreground="%console_foreground%" background="%console_background%" scroll="%console_scroll%" />
 				<font resource="fixed" />
