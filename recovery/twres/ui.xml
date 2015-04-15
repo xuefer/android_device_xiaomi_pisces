@@ -270,7 +270,7 @@
 			<object type="button" style="activesystembutton">
 				<placement x="660" y="70" w="400" h="54" />
 				<condition var1="property.ro.tw_has_dualboot" var2="1" />
-				<text>Current System: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
+				<text>Active System: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
 				<action function="page">switchsystem</action>
 			</object>
 

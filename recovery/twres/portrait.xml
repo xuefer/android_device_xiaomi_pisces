@@ -2846,7 +2846,7 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>All operation on the selected active "boot" and "system".</text>
+				<text>Only active "boot" and "system" partition are operated.</text>
 			</object>
 
 			<object type="text">
