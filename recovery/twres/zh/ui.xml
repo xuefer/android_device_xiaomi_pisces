@@ -250,7 +250,7 @@
 			</object>
 
 			<object type="button" style="activelanguage">
-				<placement x="180" y="60" w="400" h="54" />
+				<placement x="180" y="70" w="400" h="52" />
 				<text>Language: 中文</text>
 				<action function="overlay">languageselect</action>
 			</object>
@@ -276,7 +276,7 @@
 			</object>
 
 			<object type="button" style="activesystembutton">
-				<placement x="660" y="70" w="400" h="54" />
+				<placement x="660" y="70" w="400" h="52" />
 				<condition var1="property.ro.tw_has_dualboot" var2="1" />
 				<text>当前系统: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
 				<action function="page">switchsystem</action>
