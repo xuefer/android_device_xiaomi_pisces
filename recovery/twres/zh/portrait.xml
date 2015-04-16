@@ -602,7 +602,7 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row15_text_y%" placement="5" />
-				<text>Press back button to cancel.</text>
+				<text>按返回按钮取消操作.</text>
 			</object>
 
 			<object type="slider">
@@ -2839,16 +2839,16 @@
 			<object type="action">
 				<condition var1="property.dualboot.system" op="!=" var2="2" />
 				<actions>
-					<action function="set">text_dualboot.system1=System 1 *</action>
-					<action function="set">text_dualboot.system2=System 2</action>
+					<action function="set">text_dualboot.system1=系统 1 (当前)</action>
+					<action function="set">text_dualboot.system2=系统 2</action>
 				</actions>
 			</object>
 
 			<object type="action">
 				<condition var1="property.dualboot.system" op="=" var2="2" />
 				<actions>
-					<action function="set">text_dualboot.system1=System 1</action>
-					<action function="set">text_dualboot.system2=System 2 *</action>
+					<action function="set">text_dualboot.system1=系统 1</action>
+					<action function="set">text_dualboot.system2=系统 2 (当前)</action>
 				</actions>
 			</object>
 
@@ -2859,7 +2859,7 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>每个系统拥有不同的 "boot" 和 "system" 分区.</text>
+				<text>只有当前 "boot" 和 "system" 分区可被操作.</text>
 			</object>
 
 			<object type="text">
@@ -2914,22 +2914,10 @@
 				<text>先开启双 Data 之前，请先切换到相应的系统.</text>
 			</object>
 
-			<object type="text">
-				<condition var1="property.dualboot.dualdata" op="=" var2="1" />
-				<placement x="%col1_x%" y="%row17_text_y%" />
-				<text>双 Data 状态: 启用</text>
-			</object>
-
-			<object type="text">
-				<condition var1="property.dualboot.dualdata" op="!=" var2="1" />
-				<placement x="%col1_x%" y="%row17_text_y%" />
-				<text>双 Data 状态: 禁用</text>
-			</object>
-
 			<object type="button">
 				<condition var1="property.dualboot.dualdata" op="!=" var2="1" />
 				<placement x="%col2_x%" y="%row4_y%" />
-				<text>启用双 Data</text>
+				<text>双 Data: 已禁用</text>
 				<actions>
 					<action function="set">tw_back=switchsystem</action>
 					<action function="set">tw_action=cmd</action>
@@ -2946,7 +2934,7 @@
 			<object type="button">
 				<condition var1="property.dualboot.dualdata" op="=" var2="1" />
 				<placement x="%col2_x%" y="%row4_y%" />
-				<text>禁用双 Data</text>
+				<text>双 Data: 已启用</text>
 				<actions>
 					<action function="set">tw_back=switchsystem</action>
 					<action function="set">tw_action=cmd</action>

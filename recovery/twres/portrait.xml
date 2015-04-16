@@ -2839,7 +2839,7 @@
 			<object type="action">
 				<condition var1="property.dualboot.system" op="!=" var2="2" />
 				<actions>
-					<action function="set">text_dualboot.system1=System 1 *</action>
+					<action function="set">text_dualboot.system1=System 1 (Active)</action>
 					<action function="set">text_dualboot.system2=System 2</action>
 				</actions>
 			</object>
@@ -2848,7 +2848,7 @@
 				<condition var1="property.dualboot.system" op="=" var2="2" />
 				<actions>
 					<action function="set">text_dualboot.system1=System 1</action>
-					<action function="set">text_dualboot.system2=System 2 *</action>
+					<action function="set">text_dualboot.system2=System 2 (Active)</action>
 				</actions>
 			</object>
 
@@ -2859,7 +2859,7 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>Only active "boot" and "system" partition are operated.</text>
+				<text>Only active "boot" and "system" partition can be operated.</text>
 			</object>
 
 			<object type="text">
@@ -2914,22 +2914,10 @@
 				<text>Switch to corresponding system before enabling dual data.</text>
 			</object>
 
-			<object type="text">
-				<condition var1="property.dualboot.dualdata" op="=" var2="1" />
-				<placement x="%col1_x%" y="%row17_text_y%" />
-				<text>Dual data status: Enabled</text>
-			</object>
-
-			<object type="text">
-				<condition var1="property.dualboot.dualdata" op="!=" var2="1" />
-				<placement x="%col1_x%" y="%row17_text_y%" />
-				<text>Dual data status: Disabled</text>
-			</object>
-
 			<object type="button">
 				<condition var1="property.dualboot.dualdata" op="!=" var2="1" />
 				<placement x="%col2_x%" y="%row4_y%" />
-				<text>Enable Dual Data</text>
+				<text>Dual Data: Disabled</text>
 				<actions>
 					<action function="set">tw_back=switchsystem</action>
 					<action function="set">tw_action=cmd</action>
@@ -2946,7 +2934,7 @@
 			<object type="button">
 				<condition var1="property.dualboot.dualdata" op="=" var2="1" />
 				<placement x="%col2_x%" y="%row4_y%" />
-				<text>Disable Dual Data</text>
+				<text>Dual Data: Enabled</text>
 				<actions>
 					<action function="set">tw_back=switchsystem</action>
 					<action function="set">tw_action=cmd</action>
