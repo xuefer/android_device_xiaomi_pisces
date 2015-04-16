@@ -14,10 +14,11 @@
 	</include>
 
 	<resources>
-		<resource name="font" type="font" filename="RobotoCondensed-Regular.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="mediumfont" type="font" filename="RobotoCondensed-Regular.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="filelist" type="font" filename="RobotoCondensed-Regular.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="fixed" type="font" filename="DroidSansMono.ttf" size="30" />
+		<resource name="bigfont" type="font" filename="DroidSansFallback.ttf" size="60" fallback="Roboto-Condensed-40" />
+		<resource name="font" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
+		<resource name="mediumfont" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
+		<resource name="filelist" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
+		<resource name="fixed" type="font" filename="DroidSansMono.ttf" size="30" fallback="Roboto-Condensed-40" />
 		<resource name="twrplogo" type="image" filename="twrplogo" retainaspect="1" />
 		<resource name="main_button" type="image" filename="menu-button" />
 		<resource name="file_icon" type="image" filename="file" retainaspect="1" />
@@ -208,6 +209,7 @@
 		<variable name="pattern_dot_radius" value="23" />
 		<variable name="pattern_line_color" value="#33B5E5" />
 		<variable name="pattern_line_width" value="18" />
+		<variable name="activelanguage_color" value="#329DDC" />
 		<variable name="activesystem_color" value="#329DDC" />
 	</variables>
 
@@ -245,6 +247,12 @@
 				<font resource="font" />
 				<placement x="180" y="60" />
 				<text>SIMULATING ACTIONS</text>
+			</object>
+
+			<object type="button" style="activelanguage">
+				<placement x="180" y="60" w="400" h="54" />
+				<text>Language [%tw_language%]</text>
+				<action function="overlay">languageselect</action>
 			</object>
 
 			<object type="text" color="%text_color%">

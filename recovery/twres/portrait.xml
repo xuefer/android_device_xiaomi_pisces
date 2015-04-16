@@ -22,6 +22,11 @@
 			<fill color="%button_fill_color%" />
 		</style>
 
+		<style name="activelanguage">
+			<style name="fillbutton" />
+			<font resource="font" color="%activelanguage_color%" />
+		</style>
+
 		<style name="activesystembutton">
 			<style name="fillbutton" />
 			<font resource="font" color="%activesystem_color%" />
@@ -115,6 +120,14 @@
 
 		<page name="main2">
 			<object type="template" name="header" />
+
+			<object type="action">
+				<conditions>
+					<condition var1="tw_language" op="!=" var2="en" />
+					<condition var1="tw_language" op="!=" var2="zh" />
+				</conditions>
+				<action function="overlay">languageselect</action>
+			</object>
 
 			<object type="button">
 				<placement x="%col1_x%" y="%row1_y%" />
@@ -2970,6 +2983,28 @@
 
 			<object type="slider">
 				<text>Swipe to Unlock</text>
+				<action function="overlay"></action>
+			</object>
+		</page>
+
+		<page name="languageselect">
+			<background color="#000000A0" />
+
+			<object type="button">
+				<placement x="%center_x%" y="%row2_y%" placement="4" />
+				<font resource="bigfont" color="%text_color%" />
+				<text>中文</text>
+				<action function="set">tw_language=zh</action>
+				<action function="reload"></action>
+				<action function="overlay"></action>
+			</object>
+
+			<object type="button">
+				<placement x="%center_x%" y="%row3_y%" placement="4" />
+				<font resource="bigfont" color="%text_color%" />
+				<text>English</text>
+				<action function="set">tw_language=en</action>
+				<action function="reload"></action>
 				<action function="overlay"></action>
 			</object>
 		</page>
