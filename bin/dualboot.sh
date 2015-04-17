@@ -13,8 +13,17 @@
 # helper functions
 #
 
-die() {
-	echo "dualboot: Error: $@" >&2
+lecho() {
+	case "$language" in
+	zh*) echo "$2";;
+	*) echo "$1";;
+	esac
+}
+
+ldie() {
+	>&2 \
+	lecho "dualboot: Error: $1" \
+	      "dualboot: 错误: $2"
 	exit 1
 }
 
@@ -132,10 +141,10 @@ dualboot_hacknodes() {
 	/dev/block/mmcblk0p${partnum_system1}
 	"
 	rm -f $devblks
-	mknod /dev/block/mmcblk0p${partnum_boot}    b 179 "$minor_boot"   || die "Failed hacking boot node"
-	mknod /dev/block/mmcblk0p${partnum_boot1}   b 179 "$minor_boot"   || die "Failed hacking boot1 node"
-	mknod /dev/block/mmcblk0p${partnum_system}  b 179 "$minor_system" || die "Failed hacking system node"
-	mknod /dev/block/mmcblk0p${partnum_system1} b 179 "$minor_system" || die "Failed hacking system1 node"
+	mknod /dev/block/mmcblk0p${partnum_boot}    b 179 "$minor_boot"   || ldie "Failed hacking boot node"     "hack boot    设备节点失败"
+	mknod /dev/block/mmcblk0p${partnum_boot1}   b 179 "$minor_boot"   || ldie "Failed hacking boot1 node"    "hack boot1   设备节点失败"
+	mknod /dev/block/mmcblk0p${partnum_system}  b 179 "$minor_system" || ldie "Failed hacking system node"   "hack system  设备节点失败"
+	mknod /dev/block/mmcblk0p${partnum_system1} b 179 "$minor_system" || ldie "Failed hacking system1 node"  "hack system1 设备节点失败"
 	chmod 600 $devblks
 }
 
@@ -147,12 +156,17 @@ dualdata_migrate_() {
 	local from=$1
 	local to=$2
 	if [[ -d $from ]]; then
-		echo "Migrating legacy $from to $to"
+		lecho "Migrating legacy $from to $to" \
+		      "正在升级旧的 $from 到 $to"
+
 		if [[ -d "$to" ]]; then
-			echo "new data found, discarding legacy data"
+			lecho "new data found, discarding legacy data" \
+			      "已有对应新数据, 废弃旧数据"
 			rm -rf "$from"
 		else
-			mv "$from" "$to" || echo "Failed migrating system0 to media/system-1"
+			mv "$from" "$to" \
+			|| lecho "failed" \
+			         "失败"
 		fi
 	fi
 }
@@ -178,7 +192,9 @@ dualdata_create_layout_version_() {
 }
 
 dualdata_open() {
-	is_mounted_mountpoint /data || die "/data must be mounted"
+	is_mounted_mountpoint /data \
+	|| ldie "/data must be mounted" \
+	        "必须先挂载 /data"
 
 	DUALDATA_ENABLED=
 	DATA=/dev/data
@@ -230,14 +246,17 @@ dualdata_reopen() {
 dualdata_enable() {
 	local currentsysid=$1
 
-	echo "Enabling dual data ..."
+	lecho "Enabling dual data ..." \
+	      "正在启用双数据 ..."
+
 	rename_directory "$SYSTEMS/system-1.disabled" "$SYSTEMS/system-1"
 	rename_directory "$SYSTEMS/system-2.disabled" "$SYSTEMS/system-2"
 	dualdata_reopen
 	case "$DUALDATA_ENABLED" in
 	1)
 		# enabled, do nothing
-		echo "Dualdata enabled"
+		lecho "Dualdata enabled" \
+		      "双数据已启用"
 		;;
 	*)
 		# guessing current systemid
@@ -255,7 +274,8 @@ dualdata_enable() {
 			esac
 		fi
 
-		echo "Assuming current system is system-$currentsysid";
+		lecho "Assuming current system is system-$currentsysid" \
+		      "假设当前系统是 system-$currentsysid"
 
 		local newsysid=
 		case "$currentsysid" in
@@ -263,25 +283,30 @@ dualdata_enable() {
 		2) newsysid=1;;
 		esac
 
-		echo "Creating new system-$newsysid"
+		lecho "Creating new data for system-$newsysid" \
+		      "正在创建系统 system-$newsysid 的新数据"
 		mkdir -p "$SYSTEMS/system-$newsysid"
 		dualdata_create_layout_version_ "$SYSTEMS/system-$newsysid/.layout_version"
 		;;
 	esac
-	echo "Done"
+	lecho "Done" \
+	      "完成"
 }
 
 dualdata_disable() {
-	echo "Disabling dual data ..."
+	lecho "Disabling dual data ..." \
+	      "正在禁用双数据 ..."
 	rename_directory "$SYSTEMS/system-1" "$SYSTEMS/system-1.disabled"
 	rename_directory "$SYSTEMS/system-2" "$SYSTEMS/system-2.disabled"
-	echo "Done"
+	lecho "Done" \
+	      "完成"
 	dualdata_reopen
 }
 
 dualdata_switchtodata() {
 	if [[ -z $DUALDATA_ENABLED ]]; then
-		echo "Dualdata disabled, not switching data"
+		lecho "Dualdata disabled, not switching data" \
+		      "双数据已禁用, 不切换数据"
 		return
 	fi
 
@@ -290,14 +315,20 @@ dualdata_switchtodata() {
 	case "$unpacksysid" in
 	1) packsysid=2;;
 	2) packsysid=1;;
-	*) die "Switching to wrong system id"; return;;
+	*)
+		ldie "Invalidate system id to switch" \
+		     "要切换的系统 ID 无效"
+		return
+	;;
 	esac
 
-	echo "Dualdata enabled, using data $unpacksysid"
+	lecho "Dual Data enabled, using data $unpacksysid" \
+	      "双数据已启用, 正在启用数据 $unpacksysid"
 
 	local packtodir="$SYSTEMS/system-$packsysid"
 	if [[ ! -d $packtodir ]]; then
-		echo "Packing /data to alternative location: /data/media/system-$packsysid"
+		lecho "Packing /data to seal location: /data/media/system-$packsysid" \
+		      "正在将 /data 打包到封存位置: /data/media/system-$packsysid"
 		mkdir -p "$packtodir.tmp"
 		mv_q "$DATA/"* "$DATA/".* "$packtodir.tmp"
 		mv "$packtodir.tmp" "$packtodir"
@@ -306,7 +337,8 @@ dualdata_switchtodata() {
 
 	local unpackfromdir="$SYSTEMS/system-$unpacksysid"
 	if [[ -d $unpackfromdir ]] && [[ ! -d $unpackfromdir.tmp ]]; then
-		echo "Unpacking /data from alternative location: /data/media/system-$unpacksysid"
+		lecho "Unpacking /data from seal location: /data/media/system-$unpacksysid" \
+		      "正在从封存位置释放到 /data: /data/media/system-$unpacksysid"
 		mv "$unpackfromdir" "$unpackfromdir.tmp"
 	fi
 	if [[ -d $unpackfromdir.tmp ]]; then
@@ -325,7 +357,9 @@ installoverridefile() {
 	if [[ ! -e "$targetfile.orig" ]]; then
 		mv "$targetfile" "$targetfile.orig"
 	fi
-	cp -a "$newfile" "$targetfile" || die "Can't copy file $newfile to $targetfile"
+	cp -a "$newfile" "$targetfile" \
+	|| ldie "Can't copy file $newfile to $targetfile" \
+	        "无法复制文件 $newfile 到 $targetfile"
 	chmod 755 "$targetfile"
 	chown root:shell "$targetfile"
 }
@@ -346,15 +380,31 @@ do_set() {
 
 do_get() {
 	case "`dualboot_read`" in
-	1) echo "Active/next boot: System-1, using partition boot & system";;
-	2) echo "Active/next boot: System-2, using partition boot1 & system1";;
+	1)
+		lecho "Active/next boot: System-1, using partition boot & system" \
+		      "当前/下次引导: 系统-1, 使用分区 boot & system"
+	;;
+	2)
+		lecho "Active/next boot: System-2, using partition boot1 & system1" \
+		      "当前/下次引导: 系统-2, 使用分区 boot1 & system1"
+	;;
 	esac
+
 	dualdata_open
+
 	case "$DUALDATA_ENABLED" in
-	1) echo "Dual data: enabled";;
-	*) echo "Dual data: disabled";;
+	1)
+		lecho "Dual data: enabled" \
+		      "双数据: 已启用"
+	;;
+	*)
+		lecho "Dual data: disabled" \
+		      "双数据: 已禁用"
+	;;
 	esac
-	echo "Alternative data:"
+
+	lecho "Sealed data:" \
+	      "封存数据:"
 	local dir
 	for dir in \
 		$SYSTEMS/system-1* \
@@ -431,24 +481,30 @@ recovery_disabledualdata() {
 # main
 #
 
+language=`getprop user.language`
+
 # log to recovery
 case "$1" in
 -ll)
 	shift
 	exec >>/tmp/recovery.log 2>&1
-	echo "Executing $0 $@"
+	lecho "Executing $0 $@" \
+	     "正在执行 $0 $@"
 ;;
 -l)
 	shift
 	exec 2>&1
-	echo "Executing $0 $@"
+	lecho "Executing $0 $@" \
+	      "正在执行 $0 $@"
 ;;
 esac
 
 readprop() {
 	local name=$1
 	local value="`getprop "ro.$name"`"
-	[[ -z $value ]] && die "Missing ro.$name"
+	[[ -z $value ]] \
+	&& ldie "Missing ro.$name" \
+	        "缺少 ro.$name"
 	eval $name='"'"$value"'"'
 }
 
@@ -462,6 +518,7 @@ save|load|installpatch|enabledualdata|disabledualdata)
 	recovery_$command "$@"
 ;;
 *)
-	die "Unknown command $command, available command: get, set"
+	ldie "Unknown command $command. available command: get, set" \
+	     "未知命令 $command. 有效命令: get, set"
 ;;
 esac

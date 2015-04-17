@@ -129,6 +129,10 @@
 				<action function="overlay">languageselect</action>
 			</object>
 
+			<object type="action">
+				<action function="set">property.user.language=zh</action>
+			</object>
+
 			<object type="button">
 				<placement x="%col1_x%" y="%row1_y%" />
 				<text>安装卡刷包</text>
