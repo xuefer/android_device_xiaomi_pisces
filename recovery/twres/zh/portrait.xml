@@ -282,14 +282,14 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row8_text_y%" />
-				<text>卡刷包文件签名校验.</text>
+				<text>卡刷包文件签名校验。</text>
 				<data variable="tw_signed_zip_verify" />
 			</object>
 
 			<object type="checkbox">
 				<condition var1="tw_has_injecttwrp" var2="1" />
 				<placement x="%col1_x%" y="%row10_text_y%" />
-				<text>安装后重新注入 TWRP.</text>
+				<text>安装后重新注入 TWRP。</text>
 				<data variable="tw_inject_after_zip" />
 			</object>
 
@@ -602,7 +602,7 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row15_text_y%" placement="5" />
-				<text>按返回按钮取消操作.</text>
+				<text>按返回按钮取消操作。</text>
 			</object>
 
 			<object type="slider">
@@ -854,12 +854,12 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row7_text_y%" placement="5" />
-				<text>进行此清除操作即可.</text>
+				<text>进行此清除操作即可。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row16_text_y%" placement="5" />
-				<text>按返回按钮退出.</text>
+				<text>按返回按钮退出。</text>
 			</object>
 
 			<object type="button">
@@ -992,27 +992,27 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
-				<text>格式化 Data 分区将擦除你安装的所有软件,</text>
+				<text>格式化 Data 分区将擦除您安装的所有软件,</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_text_y%" placement="5" />
-				<text>短信，通话记录，软件使用记录，</text>
+				<text>备份，图片，视频，媒体文件，以及</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row2_text_y%" placement="5" />
-				<text>以及内置存储上的加密设置等.</text>
+				<text>以及内置存储上的加密设置等。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row3_text_y%" placement="5" />
-				<text>此操作无法恢复. 点返回按钮可取消操作.</text>
+				<text>此操作无法恢复. 点返回按钮可取消操作。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row4_text_y%" placement="5" />
-				<text>输入 yes 继续.</text>
+				<text>输入 yes 继续。</text>
 			</object>
 
 			<object type="input">
@@ -1221,7 +1221,7 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row4_text_y%" placement="5" />
-				<text>文件系统. 请谨慎操作!</text>
+				<text>文件系统。请谨慎操作!</text>
 			</object>
 
 			<object type="button">
@@ -1415,20 +1415,20 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row15_text_y%" />
-				<text>启用压缩.</text>
+				<text>启用压缩。</text>
 				<data variable="tw_use_compression" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row16_text_y%" />
-				<text>备份时跳过生成 MD5.</text>
+				<text>备份时跳过生成 MD5。</text>
 				<data variable="tw_skip_md5_generate" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row17_text_y%" />
 				<font resource="font" color="%text_color%" />
-				<text>禁用剩余空间检测.</text>
+				<text>禁用剩余空间检测。</text>
 				<data variable="tw_disable_free_space" />
 				<image checked="checkbox_true" unchecked="checkbox_false" />
 			</object>
@@ -1849,7 +1849,7 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_text_y%" placement="5" />
-				<text>正在验证你的密码</text>
+				<text>正在验证您的密码</text>
 			</object>
 
 			<object type="template" name="action_page_console" />
@@ -1921,7 +1921,7 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row15_text_y%" />
-				<text>打开备份文件的 MD5 验证.</text>
+				<text>打开备份文件的 MD5 验证。</text>
 				<data variable="tw_skip_md5_check" />
 			</object>
 
@@ -2150,12 +2150,12 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row1_text_y%" />
-				<text>确保卸载前从你的电</text>
+				<text>确保卸载前从您的电脑</text>
 			</object>
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>脑上安全移除设备!</text>
+				<text>上安全移除设备!</text>
 			</object>
 
 			<object type="button">
@@ -2206,11 +2206,11 @@
 					<action function="set">tw_action=reboot</action>
 					<action function="set">tw_action_param=poweroff</action>
 					<action function="set">tw_has_action2=0</action>
-					<action function="set">tw_text1=未安装系统! 你</action>
-					<action function="set">tw_text2=确定想要关机么?</action>
+					<action function="set">tw_text1=未安装系统!</action>
+					<action function="set">tw_text2=你确定想要关机么?</action>
 					<action function="set">tw_action_text1=关机中...</action>
 					<action function="set">tw_complete_text1=关机中...</action>
-					<action function="set">tw_slider_text=滑动按钮以关机</action>
+					<action function="set">tw_slider_text=滑动按钮开始关机</action>
 					<action function="page">rebootcheck</action>
 				</actions>
 			</object>
@@ -2228,7 +2228,7 @@
 					<action function="set">tw_text2=你确定想要重启么?</action>
 					<action function="set">tw_action_text1=重启中...</action>
 					<action function="set">tw_complete_text1=重启中...</action>
-					<action function="set">tw_slider_text=滑动按钮以重启</action>
+					<action function="set">tw_slider_text=滑动按钮开始重启</action>
 					<action function="page">rebootcheck</action>
 				</actions>
 			</object>
@@ -2246,7 +2246,7 @@
 					<action function="set">tw_text2=你确定想要重启么?</action>
 					<action function="set">tw_action_text1=重启中...</action>
 					<action function="set">tw_complete_text1=重启中...</action>
-					<action function="set">tw_slider_text=滑动按钮以重启</action>
+					<action function="set">tw_slider_text=滑动按钮开始重启</action>
 					<action function="page">rebootcheck</action>
 				</actions>
 			</object>
@@ -2264,7 +2264,7 @@
 					<action function="set">tw_text2=你确定想要重启么?</action>
 					<action function="set">tw_action_text1=重启中...</action>
 					<action function="set">tw_complete_text1=重启中...</action>
-					<action function="set">tw_slider_text=滑动按钮以重启</action>
+					<action function="set">tw_slider_text=滑动按钮开始重启</action>
 					<action function="page">rebootcheck</action>
 				</actions>
 			</object>
@@ -2292,7 +2292,7 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row1_text_y%" />
-				<text>卡刷包文件签名校验.</text>
+				<text>卡刷包文件签名校验。</text>
 				<data variable="tw_signed_zip_verify" />
 			</object>
 
@@ -2304,32 +2304,32 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row3_text_y%" />
-				<text>备份时忽略 MD5.</text>
+				<text>备份时忽略 MD5。</text>
 				<data variable="tw_skip_md5_generate" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row4_text_y%" />
-				<text>启用 MD5 校验所有备份文件.</text>
+				<text>启用 MD5 校验所有备份文件。</text>
 				<data variable="tw_skip_md5_check" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row5_text_y%" />
-				<text>使用 24 小时制显示时间.</text>
+				<text>使用 24 小时制显示时间。</text>
 				<data variable="tw_military_time" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row6_text_y%" />
-				<text>主题测试时的模拟操作.</text>
+				<text>主题测试时的模拟操作。</text>
 				<data variable="tw_simulate_actions" />
 			</object>
 
 			<object type="checkbox">
 				<condition var1="tw_simulate_actions" var2="1" />
 				<placement x="%col1_x%" y="%row7_text_y%" />
-				<text>模拟失败的操作.</text>
+				<text>模拟失败的操作。</text>
 				<data variable="tw_simulate_fail" />
 			</object>
 
@@ -2580,10 +2580,10 @@
 				<actions>
 					<action function="set">tw_back=advanced</action>
 					<action function="set">tw_action=copylog</action>
-					<action function="set">tw_text1=确定复制log到SD卡?</action>
-					<action function="set">tw_action_text1=复制log到SD卡中...</action>
-					<action function="set">tw_complete_text1=log复制完成</action>
-					<action function="set">tw_slider_text=滑动按钮以确认</action>
+					<action function="set">tw_text1=确定复制日志到 SD 卡?</action>
+					<action function="set">tw_action_text1=复制日志到 SD 卡中...</action>
+					<action function="set">tw_complete_text1=日志复制完成</action>
+					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
 			</object>
@@ -2621,7 +2621,7 @@
 
 			<object type="button">
 				<placement x="%col1_x%" y="%row4_y%" />
-				<text>ADB线刷</text>
+				<text>ADB Sideload 线刷模式</text>
 				<action function="page">sideload</action>
 			</object>
 
@@ -2642,7 +2642,7 @@
 					<action function="set">tw_text1=重新注入TWRP?</action>
 					<action function="set">tw_action_text1=重新注入TWRP中...</action>
 					<action function="set">tw_complete_text1=TWRP注入完成</action>
-					<action function="set">tw_slider_text=滑动按钮以确认</action>
+					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
 			</object>
@@ -2733,12 +2733,12 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row12_text_y%" />
-				<text>SD卡上所有文件将被清除!</text>
+				<text>您将丢失 SD 卡上的所有文件!</text>
 			</object>
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row13_text_y%" />
-				<text>此操作无法恢复!</text>
+				<text>此操作将无法恢复!</text>
 			</object>
 
 			<object type="slider">
@@ -2751,7 +2751,7 @@
 					<action function="set">tw_action2=set</action>
 					<action function="set">tw_action2_param=tw_zip_location=/sdcard</action>
 					<action function="set">tw_action_text1=分区SD卡...</action>
-					<action function="set">tw_action_text2=这将需要几分钟.</action>
+					<action function="set">tw_action_text2=这将需要几分钟。</action>
 					<action function="set">tw_complete_text1=分区完成</action>
 					<action function="page">action_page</action>
 				</actions>
@@ -2787,7 +2787,7 @@
 					<action function="set">tw_text1=恢复初始内核boot镜像?</action>
 					<action function="set">tw_action_text1=恢复初始Boot中...</action>
 					<action function="set">tw_complete_text1=恢复初始Boot完成</action>
-					<action function="set">tw_slider_text=滑动按钮以确认</action>
+					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
 			</object>
@@ -2801,7 +2801,7 @@
 					<action function="set">tw_text1=重刷 recovery 到boot?</action>
 					<action function="set">tw_action_text1=重刷 recovery 到boot中...</action>
 					<action function="set">tw_complete_text1=重刷 recovery 到 boot 完成</action>
-					<action function="set">tw_slider_text=滑动按钮以确认</action>
+					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
 			</object>
@@ -2815,7 +2815,7 @@
 					<action function="set">tw_text1=安装 HTC dumlock 文件到 ROM?</action>
 					<action function="set">tw_action_text1=安装 HTC Dumlock 中...</action>
 					<action function="set">tw_complete_text1=HTC Dumlock 安装完成</action>
-					<action function="set">tw_slider_text=滑动按钮以确认</action>
+					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
 			</object>
@@ -2854,12 +2854,12 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row1_text_y%" />
-				<text>支持双系统引导. 请点击按钮切换系统.</text>
+				<text>支持双系统引导。请点击按钮切换系统。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>只有当前 "boot" 和 "system" 分区可被操作.</text>
+				<text>只有当前 "boot" 和 "system" 分区可被操作。</text>
 			</object>
 
 			<object type="text">
@@ -2869,7 +2869,7 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row4_text_y%" />
-				<text>请重新点击当前系统.</text>
+				<text>请重新点击当前系统。</text>
 			</object>
 
 			<object type="button">
@@ -2906,12 +2906,12 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row12_text_y%" />
-				<text>支持双系统数据共存. 请使用开启和禁用的按钮.</text>
+				<text>支持双系统数据共存。请使用开启和禁用的按钮。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row13_text_y%" />
-				<text>先开启双 Data 之前，请先切换到相应的系统.</text>
+				<text>先开启双 Data 之前，请先切换到相应的系统。</text>
 			</object>
 
 			<object type="button">
@@ -3394,7 +3394,7 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row10_text_y%" placement="5"/>
-				<text>按返回按钮取消.</text>
+				<text>按返回按钮取消。</text>
 			</object>
 
 			<object type="slider">
@@ -3674,13 +3674,13 @@
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row2_text_y%" />
-				<text>清除 Dalvik 缓存.</text>
+				<text>清除 Dalvik 缓存。</text>
 				<data variable="tw_wipe_dalvik" />
 			</object>
 
 			<object type="checkbox">
 				<placement x="%col1_x%" y="%row3_text_y%" />
-				<text>清除 Cache 分区.</text>
+				<text>清除 Cache 分区。</text>
 				<data variable="tw_wipe_cache" />
 			</object>
 
@@ -3689,9 +3689,9 @@
 				<actions>
 					<action function="set">tw_back=advanced</action>
 					<action function="set">tw_action=adbsideload</action>
-					<action function="set">tw_action_text1=线刷模式</action>
+					<action function="set">tw_action_text1=ADB Sideload 线刷模式</action>
 					<action function="set">tw_action_text2=使用方法: adb sideload 卡刷包文件名.zip</action>
-					<action function="set">tw_complete_text1=ADB sideload 线刷完成</action>
+					<action function="set">tw_complete_text1=ADB Sideload 线刷完成</action>
 					<action function="set">tw_has_cancel=1</action>
 					<action function="set">tw_show_reboot=1</action>
 					<action function="set">tw_cancel_action=adbsideloadcancel</action>
@@ -3733,7 +3733,7 @@
 
 			<object type="text">
 				<placement x="%col1_x%" y="%row4_text_y%" />
-				<text>修复SELinux可能导致</text>
+				<text>修复 SELinux 可能导致</text>
 			</object>
 
 			<object type="text">
@@ -3772,22 +3772,22 @@
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
-				<text>是否安装SuperSU (root)?</text>
+				<text>是否安装 SuperSU?</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row2_text_y%" placement="5"/>
-				<text>系统没有root.</text>
+				<text>系统看起来尚未 root。</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row3_text_y%" placement="5"/>
-				<text>是否安装SuperSU(root)?</text>
+				<text>是否安装 SuperSU?</text>
 			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row4_text_y%" placement="5"/>
-				<text>将对你的手机进行root操作.</text>
+				<text>将对你的手机进行 root 操作。</text>
 			</object>
 
 			<object type="button">
@@ -3800,7 +3800,7 @@
 				<text>滑动按钮安装</text>
 				<actions>
 					<action function="set">tw_action=installsu</action>
-					<action function="set">tw_action_text1=安装SuperSU(root)中</action>
+					<action function="set">tw_action_text1=安装 SuperSU 中</action>
 					<action function="set">tw_action_text2=</action>
 					<action function="page">singleaction_page</action>
 				</actions>
