@@ -2995,6 +2995,26 @@
 				<action function="reload"></action>
 				<action function="overlay"></action>
 			</object>
+
+			<object type="button">
+				<highlight color="%highlight_color%" />
+				<placement x="%back_button_x%" y="%back_button_y%" placement="1" />
+				<font resource="font" color="%button_text_color%" />
+				<text></text>
+				<image resource="back_icon" />
+				<condition var1="tw_busy" var2="0" />
+				<action function="overlay"></action>
+			</object>
+
+			<object type="action">
+				<touch key="power" />
+				<action function="overlay">lock</action>
+			</object>
+
+			<object type="action">
+				<touch key="power+voldown" />
+				<action function="screenshot" />
+			</object>
 		</page>
 
 		<page name="filemanagerlist">
