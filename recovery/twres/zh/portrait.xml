@@ -35,7 +35,7 @@
 		<style name="rebootsystem">
 			<condition var1="tw_reboot_system" var2="1" />
 			<style name="button" />
-			<text>重启系统</text>
+			<text>重启到 系统 %property.dualboot.system%</text>
 			<actions>
 				<action function="set">tw_back=main2</action>
 				<action function="set">tw_action=reboot</action>
@@ -2194,7 +2194,7 @@
 			<object type="button" style="rebootsystem">
 				<condition var1="tw_reboot_system" var2="1" />
 				<placement x="%col1_x%" y="%row1_y%" />
-				<text>重启进入系统</text>
+				<text>系统 %property.dualboot.system%</text>
 			</object>
 
 			<object type="button">
@@ -2218,7 +2218,7 @@
 			<object type="button">
 				<condition var1="tw_reboot_recovery" var2="1" />
 				<placement x="%col1_x%" y="%row2_y%" />
-				<text>重启进入 Recovery</text>
+				<text>Recovery</text>
 				<actions>
 					<action function="set">tw_back=reboot</action>
 					<action function="set">tw_action=reboot</action>
@@ -2236,7 +2236,7 @@
 			<object type="button">
 				<condition var1="tw_reboot_bootloader" var2="1" />
 				<placement x="%col2_x%" y="%row2_y%" />
-				<text>重启进入 Bootloader</text>
+				<text>Bootloader</text>
 				<actions>
 					<action function="set">tw_back=reboot</action>
 					<action function="set">tw_action=reboot</action>

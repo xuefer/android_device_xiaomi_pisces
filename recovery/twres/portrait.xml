@@ -35,7 +35,7 @@
 		<style name="rebootsystem">
 			<condition var1="tw_reboot_system" var2="1" />
 			<style name="button" />
-			<text>Reboot System</text>
+			<text>Reboot System %property.dualboot.system%</text>
 			<actions>
 				<action function="set">tw_back=main2</action>
 				<action function="set">tw_action=reboot</action>
@@ -2194,7 +2194,7 @@
 			<object type="button" style="rebootsystem">
 				<condition var1="tw_reboot_system" var2="1" />
 				<placement x="%col1_x%" y="%row1_y%" />
-				<text>System</text>
+				<text>System %property.dualboot.system%</text>
 			</object>
 
 			<object type="button">
