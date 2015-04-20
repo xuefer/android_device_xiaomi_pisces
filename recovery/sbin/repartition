@@ -1,0 +1,326 @@
+#!/sbin/sh
+# vim:noet
+
+MMCBLK=${MMCBLK:-/dev/block/mmcblk0}
+DATA_PARTNAME=UDA
+DATA_PARTNUM=27
+MEDIA_PARTNAME=STO
+MEDIA_PARTNUM=28
+
+# MB reserve due to parted alignment
+SHRINK_RESERVE_SIZE=8
+
+#
+# helper functions
+#
+
+lecho() {
+	case "$language" in
+	zh*) echo "$2";;
+	*) echo "$1";;
+	esac
+}
+
+ldie() {
+	>&2 \
+	lecho "repartition: Error: $1" \
+	      "repartition: 错误: $2"
+	exit 1
+}
+
+ldiefailed() {
+	ldie "Failed: $@" \
+	     "失败: $@"
+}
+
+for cmd in \
+	awk \
+	grep \
+	printf \
+	sed \
+	sleep \
+;
+do
+	type "$cmd" &>/dev/null || alias $cmd="busybox $cmd"
+done
+
+if [[ -z /sbin/e2fsck-wrapper.sh ]]; then
+	alias e2fsck=/sbin/e2fsck-wrapper.sh
+fi
+
+#
+# utils
+#
+
+parted_print() {
+	parted -ms "${MMCBLK}" unit MB print "$@" 2>&1 | sed 's/MB//g; s/;$//g'
+}
+
+waitpath_gone() {
+	for i in 1 2 3 4 5 6 7 8 9 10; do
+		if [[ ! -e "$1" ]]; then
+			return 0
+		fi
+		sleep 1
+	done
+	return 1
+}
+
+waitpath() {
+	for i in 1 2 3 4 5 6 7 8 9 10; do
+		if [[ -e "$1" ]]; then
+			return 0
+		fi
+		sleep 1
+	done
+	return 1
+}
+
+get_data_blocksize() {
+	local blocksize=$(dumpe2fs "${MMCBLK}"p$DATA_PARTNUM 2>/dev/null | sed 's#  \+# #g' | awk 'BEGIN { FS=":"; } /Block size/ { print $2; } ')
+	if [[ -z $blocksize ]]; then
+		blocksize=4096
+	fi
+	echo "$blocksize"
+}
+
+resize_datafs() {
+	local blocksize=$(get_data_blocksize)
+	local devpath="${MMCBLK}p${DATA_PARTNUM}"
+
+	waitpath "$devpath" \
+	|| ldie "$devpath not found" \
+	        "找不到 $devpath"
+
+	e2fsck -p "$devpath" || ldiefailed
+
+	if [[ -z $1 ]]; then
+		resize2fs -p "$devpath" || ldiefailed
+	else
+		local blocks=$(echo "$blocksize" "$1" | awk '{ print $1 * $2; }')
+		resize2fs -p "$devpath" "$blocks" || ldiefailed
+	fi
+
+	e2fsck -p "$devpath" || ldiefailed
+}
+
+#
+# api
+#
+
+repartition_get_datamedia_size() {
+	parted_print free | { read; awk '
+			BEGIN {
+				totalsize = 0;
+				part26size = 0;
+				FS = ":";
+			}
+			{
+				if (!totalsize) {
+					totalsize = $2;
+					next;
+				}
+			}
+			/^26:.*/ {
+				part26size=$3
+				print totalsize - part26size
+			}
+		';
+	}
+}
+
+repartition_get_data_size() {
+	parted_print | { read; awk '
+			BEGIN  { FS = ":"; }
+			/^'$DATA_PARTNUM':/ { print $4; }
+		'
+	}
+}
+
+repartition_get_data_minsize() {
+	local blocksize=$(get_data_blocksize)
+	local minblocks=$(resize2fs "${MMCBLK}"p$DATA_PARTNUM -P 2>/dev/null | sed 's#  \+# #g' | awk 'BEGIN { FS=":"; } /Estimated minimum size of the filesystem/ { print $2; } ')
+	echo "$minblocks" "$blocksize" "$SHRINK_RESERVE_SIZE" | awk '{ print $1 * $2 / 1024 / 1024 + $3; }'
+}
+
+#
+# recovery commands
+#
+
+recovery_resize() {
+	local datamedia_size=`repartition_get_datamedia_size`
+	local data_size=`repartition_get_data_size`
+	local data_minsize=`repartition_get_data_minsize`
+	if [[ -z $datamedia_size ]]; then
+		ldiefailed "detecting data+media size" \
+		           "检测 data+media 大小"
+	fi
+	if [[ -z $data_size ]]; then
+		ldiefailed "detecting data size" \
+		           "检测 data 容量"
+	fi
+	if [[ -z $data_minsize ]]; then
+		ldiefailed "detecting data minimal size" \
+		           "检测 data 最小容量"
+	fi
+
+	# -> die_if_media_not_empty
+
+	local data_newsize=$1
+	if echo "$data_newsize" "$data_minsize" | awk '{ exit $1 < $2 ? 0 : 1; }'; then
+		ldie "Not allowed to resize data to less than minimal size $data_minsize" \
+		     "不允许将 data 调整到少于最小容量 $data_minsize"
+	fi
+
+	if echo "$data_newsize" "$datamedia_size" | awk '{ exit $1 > $2 ? 0 : 1; }'; then
+		ldie "Not allowed to resize data to more than maximal available space $datamedia_size" \
+		     "不允许将 data 调整到大于最大有效空间 $datamedia_size"
+	fi
+
+	local media_newsize=$(echo "$data_newsize" "$datamedia_size" | awk '{
+		freesize = $2 - $1;
+		if (freesize < 64) {
+			freesize = 0;
+		}
+		print freesize;
+	}')
+
+	if [[ $media_newsize = 0 ]]; then
+		data_newsize=$datamedia_size
+	fi
+
+	lecho "Available space: ${datamedia_size}MB" \
+	      "有效空间: ${datamedia_size}MB"
+
+	lecho "Planning size: data=${data_newsize}MB media=${media_newsize}MB" \
+	      "执行调整到: data=${data_newsize}MB media=${media_newsize}MB"
+
+	echo
+
+	local is_shrinking=0
+	if echo "$data_newsize" "$data_size" | awk '{ exit $1 < $2 ? 0 : 1; }'; then
+		is_shrinking=1
+	fi
+
+	local prevpartnumprev=$((DATA_PARTNUM-1))
+	local data_newbegin=$(
+		parted_print | { read; awk '
+				BEGIN  {
+					FS = ":";
+					prevend = 0;
+					databegin = 0;
+				}
+				/^'$prevpartnum':/ { prevend = $3; }
+				/^'$DATA_PARTNUM':/ { databegin = $2; }
+				END    { print databegin ? databegin : prevend; }
+			'
+		}
+	)
+
+	local data_newend=$(echo "$data_newbegin" "$data_newsize" | awk '{ print $1 + $2; }')
+
+	local parted_data_newbegin=${data_newbegin}MB
+	local parted_data_newend
+	if [[ $media_newsize = 0 ]]; then
+		parted_data_newend=100%
+	else
+		parted_data_newend=${data_newend}MB
+	fi
+
+	if [[ $is_shrinking = 1 ]]; then
+		lecho "Shrinking data filesystem from ${data_size}MB to ${data_newsize}MB" \
+		      "正在将 data 文件系统 ($DATA_PARTNUM) 从 ${data_size}MB 缩小到 ${data_newsize}MB"
+		local data_shrinkto=$(echo "${data_newsize}" "$SHRINK_RESERVE_SIZE" | awk '{ print $1 - $2; }')
+		resize_datafs ${data_shrinkto} || ldiefailed
+	fi
+
+	lecho "Removing media partition ($MEDIA_PARTNUM) if found" \
+	      "正在删除 media 分区 ($MEDIA_PARTNUM) (如果存在)"
+	parted -ms "${MMCBLK}" rm "$MEDIA_PARTNUM" 2>/dev/null
+	rm -f "${MMCBLK}p${MEDIA_PARTNUM}"
+
+	lecho "Removing data partition ($DATA_PARTNUM) if found" \
+	      "正在删除 data 分区 ($DATA_PARTNUM) (如果存在)"
+	parted -ms "${MMCBLK}" rm "$DATA_PARTNUM" 2>/dev/null
+	rm -f "${MMCBLK}p${DATA_PARTNUM}"
+
+	lecho "Re-creating data partition ($DATA_PARTNUM): ${data_newsize}MB" \
+	      "正在重建 data 分区 ($DATA_PARTNUM): ${data_newsize}MB"
+	parted -ms -a optimal "${MMCBLK}" \
+		mkpart "$DATA_PARTNAME" ${parted_data_newbegin} ${parted_data_newend} \
+		name "$DATA_PARTNUM" "$DATA_PARTNAME" \
+		|| ldiefailed
+
+	lecho "Resizing data filesystem to fill up whole partition" \
+	      "正在将 data 调整到充满整个分区"
+	resize_datafs || ldiefailed
+
+	local parted_media_newbegin=$parted_data_newend
+	if [[ $parted_media_newbegin = 100% ]]; then
+		lecho "No more free space left, skipped creating new media partition ($MEDIA_PARTNUM)" \
+	        "空间已满, 略过/不创建 media 分区 ($MEDIA_PARTNUM)"
+	else
+		lecho "Re-creating media partition ($MEDIA_PARTNUM): ${media_newsize}MB" \
+	        "正在重建 media 分区 ($MEDIA_PARTNUM): ${media_newsize}MB"
+		parted -ms -a optimal "${MMCBLK}" \
+			mkpart "$MEDIA_PARTNAME" ext4 "$parted_media_newbegin" 100% \
+			name "$MEDIA_PARTNUM" "$MEDIA_PARTNAME" \
+		|| ldiefailed
+
+		lecho "Re-creating media filesystemB" \
+	        "正在重建 media 文件系统"
+		local mediadevpath="${MMCBLK}p${MEDIA_PARTNUM}"
+		waitpath "$mediadevpath" || ldiefailed
+		sleep 1
+		mke2fs -F -t ext4 "$mediadevpath" || ldiefailed
+	fi
+
+	lecho "Current partition table (tail part):" \
+	      "现有分区布局 (尾部):"
+	parted -s "${MMCBLK}" \
+		unit MB \
+		print free | tail -n4
+
+	recovery_loadsize
+}
+
+recovery_loadsize() {
+	setprop partition.datamedia_size `repartition_get_datamedia_size`
+	setprop partition.data_size `repartition_get_data_size`
+	setprop partition.data_minsize `repartition_get_data_minsize`
+}
+
+#
+# main
+#
+
+language=`getprop user.language`
+
+# log to recovery
+case "$1" in
+-ll)
+	shift
+	exec >>/tmp/recovery.log 2>&1
+	lecho "Executing $0 $@" \
+	     "正在执行 $0 $@"
+;;
+-l)
+	shift
+	exec 2>&1
+	lecho "Executing $0 $@" \
+	      "正在执行 $0 $@"
+;;
+esac
+
+
+command="$1"
+shift
+case "$command" in
+resize|loadsize)
+	recovery_$command "$@"
+;;
+*)
+	ldie "invoke by recovery only" \
+	     "仅用于 recovery"
+;;
+esac

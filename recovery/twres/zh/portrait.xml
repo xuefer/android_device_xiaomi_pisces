@@ -2679,60 +2679,66 @@
 				<text>SD 卡分区</text>
 			</object>
 
+			<!-- initialize -->
+			<object type="action">
+				<actions>
+					<action function="set">repartition_data_size=%property.partition.data_size%</action>
+					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
+					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+				</actions>
+			</object>
+
+			<!-- minus -->
 			<object type="button">
 				<placement x="%col1_x%" y="%row1_y%" />
 				<text></text>
 				<image resource="minus_button" />
-				<action function="addsubtract">tw_sdext_size-128</action>
+				<actions>
+					<action function="compute">repartition_data_size-128</action>
+					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
+					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+				</actions>
 			</object>
 
+			<!-- plus -->
 			<object type="button">
-				<placement x="%sd_plus_x%" y="%row1_y%" />
+				<placement x="%sd_plus_x%" y="%row1_y%" placement="1" />
 				<text></text>
 				<image resource="plus_button" />
-				<action function="addsubtract">tw_sdext_size+128</action>
+				<actions>
+					<action function="compute">repartition_media_size-128</action>
+					<action function="set">repartition_data_size=%property.partition.datamedia_size%</action>
+					<action function="compute">repartition_data_size-%repartition_media_size%</action>
+				</actions>
 			</object>
 
 			<object type="text">
 				<placement x="%sdext_text_x%" y="%sdext_text_y%" />
-				<text>EXT 分区大小: %tw_sdext_size%</text>
-			</object>
-
-			<object type="button">
-				<placement x="%col1_x%" y="%sdswap_button_y%" />
-				<text></text>
-				<image resource="minus_button" />
-				<action function="addsubtract">tw_swap_size-32</action>
-			</object>
-
-			<object type="button">
-				<placement x="%sd_plus_x%" y="%sdswap_button_y%" />
-				<text></text>
-				<image resource="plus_button" />
-				<action function="addsubtract">tw_swap_size+32</action>
+				<text>Data 分区大小: %repartition_data_size%MB</text>
 			</object>
 
 			<object type="text">
 				<placement x="%sdswap_text_x%" y="%sdswap_text_y%" />
-				<text>Swap 分区大小: %tw_swap_size%</text>
-			</object>
-
-			<object type="text">
-				<placement x="%col1_x%" y="%sdfilesystem_text_y%" />
-				<text>文件系统: %tw_sdpart_file_system%</text>
+				<text>Media(SD) 分区大小: %repartition_media_size%MB</text>
 			</object>
 
 			<object type="button">
 				<placement x="%col1_x%" y="%sdfilesystem_button_y%" />
-				<text>EXT3</text>
-				<action function="set">tw_sdpart_file_system=ext3</action>
+				<text>合并成一个</text>
+				<actions>
+					<action function="set">repartition_media_size=0</action>
+					<action function="set">repartition_data_size=%property.partition.datamedia_size%</action>
+				</actions>
 			</object>
 
 			<object type="button">
-				<condition var1="tw_sdext_disable_ext4" var2="0" />
 				<placement x="%col2_x%" y="%sdfilesystem_button_y%" />
-				<text>EXT4</text>
-				<action function="set">tw_sdpart_file_system=ext4</action>
+				<text>默认</text>
+				<actions>
+					<action function="set">repartition_data_size=3758</action>
+					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
+					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+				</actions>
 			</object>
 
 			<object type="text">
@@ -2750,10 +2756,9 @@
 				<action function="page">partsdcardaction</action>
 				<actions>
 					<action function="set">tw_back=partsdcard</action>
-					<action function="set">tw_action=partitionsd</action>
-					<action function="set">tw_has_action2=1</action>
-					<action function="set">tw_action2=set</action>
-					<action function="set">tw_action2_param=tw_zip_location=/sdcard</action>
+					<action function="set">tw_action=cmd</action>
+					<action function="set">tw_action_param=/sbin/repartition -l resize %repartition_data_size%</action>
+					<action function="set">tw_has_action2=0</action>
 					<action function="set">tw_action_text1=分区SD卡...</action>
 					<action function="set">tw_action_text2=这将需要几分钟。</action>
 					<action function="set">tw_complete_text1=分区完成</action>

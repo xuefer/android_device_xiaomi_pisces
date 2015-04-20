@@ -81,6 +81,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/bin/mount_ext4.sh:system/bin/mount_ext4.sh \
     $(LOCAL_PATH)/bin/upgrade_layout.sh:system/bin/upgrade_layout.sh \
 
+PRODUCT_PACKAGES += \
+    dumpe2fs \
+
 # phone
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/bin/fild:system/bin/fild \

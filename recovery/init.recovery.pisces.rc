@@ -9,3 +9,4 @@ on early-boot
     wait /dev/block/mmcblk0p25
     # load dualboot.system & dualboot.dualdata
     exec /sbin/dualboot -ll load
+    exec /sbin/repartition -ll loadsize

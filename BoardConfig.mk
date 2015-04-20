@@ -81,10 +81,18 @@ TW_SECONDARY_BRIGHTNESS_PATH     := /sys/class/backlight/lm3533-backlight1/brigh
 TW_EXCLUDE_SUPERSU               := true
 TW_INCLUDE_CRYPTO                := true
 TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
+
+TW_RECOVERY_ADDITIONAL_RELINK_FILES := \
+    $(CURDIR)/out/target/product/pisces/system/bin/resize2fs \
+    $(CURDIR)/out/target/product/pisces/system/bin/dumpe2fs \
+
 TARGET_RECOVERY_DEVICE_MODULES += \
     dualboot \
-    twrp.fstab \
+    dumpe2fs \
     init.recovery.pisces.rc \
+    repartition \
+    resize2fs \
+    twrp.fstab \
 
 # ril
 #BOARD_PROVIDES_LIBRIL:= true
