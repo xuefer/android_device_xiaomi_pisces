@@ -1,4 +1,4 @@
-commit 2163cdad90a896d319e65ba177b14df7f8bcfee4
+commit b86ca15af5f3df70fb83a0eadb14dfffb72f27b3
 Author: Xuefer <xuefer@gmail.com>
 Date:   Fri Apr 3 01:41:38 2015 +0800
 
@@ -7,10 +7,10 @@ Date:   Fri Apr 3 01:41:38 2015 +0800
     Change-Id: Id626cb856c61ec419db5f9694274a8389ab1287a
 
 diff --git a/src/com/android/deskclock/alarms/AlarmStateManager.java b/src/com/android/deskclock/alarms/AlarmStateManager.java
-index 67e0f90..78047ae 100755
+index 9b2c534..988cce5 100755
 --- a/src/com/android/deskclock/alarms/AlarmStateManager.java
 +++ b/src/com/android/deskclock/alarms/AlarmStateManager.java
-@@ -470,6 +470,12 @@ public final class AlarmStateManager extends BroadcastReceiver {
+@@ -473,6 +473,12 @@ public final class AlarmStateManager extends BroadcastReceiver {
       * @param instance to set state to
       */
      public static void setMissedState(Context context, AlarmInstance instance) {
@@ -23,7 +23,7 @@ index 67e0f90..78047ae 100755
          LogUtils.v("Setting missed state to instance " + instance.mId);
          // Stop alarm if this instance is firing it
          AlarmService.stopAlarm(context, instance);
-@@ -712,9 +718,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
+@@ -715,9 +721,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
                  break;
              case AlarmInstance.MISSED_STATE:
                  setMissedState(context, instance);

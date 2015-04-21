@@ -1,4 +1,4 @@
-commit e207b12adbe0c80ae63b961d8de8f4dcc70537b2
+commit da8b2a09b010315e1d729e17bd71575403e2f491
 Author: Xuefer <xuefer@gmail.com>
 Date:   Tue Mar 10 19:14:31 2015 +0800
 
@@ -7,10 +7,10 @@ Date:   Tue Mar 10 19:14:31 2015 +0800
     Change-Id: I504071ca3b5e81047aab96e54a4be242e59b8e0e
 
 diff --git a/healthd/Android.mk b/healthd/Android.mk
-index 06f1fad..b182e43 100644
+index 17e51d8..63ed990 100644
 --- a/healthd/Android.mk
 +++ b/healthd/Android.mk
-@@ -35,6 +35,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
+@@ -30,6 +30,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
  HEALTHD_CHARGER_DEFINES := RED_LED_PATH \
      GREEN_LED_PATH \
      BLUE_LED_PATH \
@@ -19,10 +19,10 @@ index 06f1fad..b182e43 100644
      CHARGING_ENABLED_PATH
  
 diff --git a/healthd/healthd_mode_charger.cpp b/healthd/healthd_mode_charger.cpp
-index 2b71ce2..bd49073 100644
+index bc10d60..913a5c7 100644
 --- a/healthd/healthd_mode_charger.cpp
 +++ b/healthd/healthd_mode_charger.cpp
-@@ -82,6 +82,9 @@ char *locale;
+@@ -81,6 +81,9 @@ char *locale;
  #ifndef BLUE_LED_PATH
  #define BLUE_LED_PATH           "/sys/class/leds/blue/brightness"
  #endif
@@ -32,7 +32,7 @@ index 2b71ce2..bd49073 100644
  #ifndef BACKLIGHT_PATH
  #define BACKLIGHT_PATH          "/sys/class/leds/lcd-backlight/brightness"
  #endif
-@@ -242,6 +245,14 @@ static int set_tricolor_led(int on, int color)
+@@ -241,6 +244,14 @@ static int set_tricolor_led(int on, int color)
          }
      }
  

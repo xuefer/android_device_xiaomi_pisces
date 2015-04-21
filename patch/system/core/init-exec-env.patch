@@ -1,4 +1,4 @@
-commit 9d9fc722d9324b87300fe5aa20fc7b2c9a1cbb6d
+commit 17abf8861e74a86a220e815c9c269e692edc9b4d
 Author: Xuefer <xuefer@gmail.com>
 Date:   Thu Mar 26 15:32:55 2015 +0800
 
@@ -7,7 +7,7 @@ Date:   Thu Mar 26 15:32:55 2015 +0800
     Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
 
 diff --git a/init/builtins.c b/init/builtins.c
-index 10a810e..1823ebf 100644
+index 3ca0e9c..3aff669 100644
 --- a/init/builtins.c
 +++ b/init/builtins.c
 @@ -48,6 +48,7 @@

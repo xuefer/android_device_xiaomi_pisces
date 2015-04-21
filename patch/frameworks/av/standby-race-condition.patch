@@ -1,8 +1,8 @@
-commit e631d119b6a258f63d3e5d0afbc7c4065d0ffe69
+commit 8f480bd2664e836beb0d82583d9ee0cfe2fadb9c
 Author: Xuefer <xuefer@gmail.com>
 Date:   Wed Mar 18 17:07:23 2015 +0800
 
-    fix standby/stopInpu) race condition
+    fix standby/stopInput race condition
     
     standby() is currently likely be called after stopInput()
     crashing the driver (happens on Tegra 4, Xiaomi MI 3 TD, pisces)
@@ -12,10 +12,10 @@ Date:   Wed Mar 18 17:07:23 2015 +0800
     Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
 
 diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
-index 3e58ff7..25f1d3e 100644
+index 3192cd8..82a6ba3 100644
 --- a/services/audioflinger/Threads.cpp
 +++ b/services/audioflinger/Threads.cpp
-@@ -5136,10 +5136,9 @@ reacquire_wakelock:
+@@ -5584,10 +5584,9 @@ reacquire_wakelock:
                  break;
              }
  
@@ -27,7 +27,7 @@ index 3e58ff7..25f1d3e 100644
                  // exitPending() can't become true here
                  releaseWakeLock_l();
                  ALOGV("RecordThread: loop stopping");
-@@ -5215,6 +5214,10 @@ reacquire_wakelock:
+@@ -5663,6 +5662,10 @@ reacquire_wakelock:
                      fastTrack = activeTrack;
                  }
              }

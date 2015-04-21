@@ -1,4 +1,4 @@
-commit dd1cecd776b9e567f0245abca07dae4bf4c03042
+commit 11a826472c96da7a4a7ab20c03fd080b4696da4d
 Author: Xuefer <xuefer@gmail.com>
 Date:   Wed Apr 1 15:26:16 2015 +0800
 
@@ -22,10 +22,10 @@ index 904fce5..daa1486 100644
 +endif
 +
 diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
-index 5e85157..76557c2 100644
+index 254c8ab..5928c64 100644
 --- a/services/core/jni/com_android_server_AlarmManagerService.cpp
 +++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
-@@ -390,6 +390,24 @@ static void android_server_AlarmManagerService_close(JNIEnv*, jobject, jlong nat
+@@ -460,6 +460,24 @@ static void android_server_AlarmManagerService_close(JNIEnv*, jobject, jlong nat
      delete impl;
  }
  
@@ -50,7 +50,7 @@ index 5e85157..76557c2 100644
  static void android_server_AlarmManagerService_set(JNIEnv*, jobject, jlong nativeData, jint type, jlong seconds, jlong nanoseconds)
  {
      AlarmImpl *impl = reinterpret_cast<AlarmImpl *>(nativeData);
-@@ -397,6 +415,10 @@ static void android_server_AlarmManagerService_set(JNIEnv*, jobject, jlong nativ
+@@ -467,6 +485,10 @@ static void android_server_AlarmManagerService_set(JNIEnv*, jobject, jlong nativ
      ts.tv_sec = seconds;
      ts.tv_nsec = nanoseconds;
  
@@ -61,7 +61,7 @@ index 5e85157..76557c2 100644
      int result = impl->set(type, &ts);
      if (result < 0)
      {
-@@ -413,6 +435,10 @@ static void android_server_AlarmManagerService_clear(JNIEnv*, jobject, jlong nat
+@@ -483,6 +505,10 @@ static void android_server_AlarmManagerService_clear(JNIEnv*, jobject, jlong nat
      ts.tv_sec = seconds;
      ts.tv_nsec = nanoseconds;
  

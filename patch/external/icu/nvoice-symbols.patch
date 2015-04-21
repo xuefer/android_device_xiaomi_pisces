@@ -1,4 +1,13 @@
-symbols needed by libnvoice.so
+commit 88c10e7d34425586ae44e1e7711f696f2b774a89
+Author: Prashant Somashekar <prashsomash@gmail.com>
+Date:   Sat Nov 22 22:36:14 2014 -0500
+
+    icu4c: add *_51 symbols
+    
+    required by Nvidia Tegra 4 audio nvoice blob (built for AOSP 4.4)
+    
+    Change-Id: Ic2cfbfc7322388a7dea975a3b9d0365a0509411e
+
 diff --git a/icu4c/source/common/ucnv.c b/icu4c/source/common/ucnv.c
 index 5cf4d15..f31fbc3 100644
 --- a/icu4c/source/common/ucnv.c

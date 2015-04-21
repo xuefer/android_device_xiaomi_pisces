@@ -1,4 +1,4 @@
-commit 2f69764265f0462d2e49b0218cd12b532c404e40
+commit 10a5b5e4a0c688eb9ed34072155748aba9b33eee
 Author: Xuefer <xuefer@gmail.com>
 Date:   Mon Mar 23 16:40:30 2015 +0800
 
@@ -151,7 +151,7 @@ index 34fcb1c..91d93f3 100644
              log_id = LOG_ID_RADIO;
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
-commit 7acb4c3d0e55d715b2c657a965f0dd2936c52ad0
+commit ff2641c9f39d69ba4d3b18be9f19b8148e1cfcd7
 Author: Xuefer <xuefer@gmail.com>
 Date:   Tue Mar 24 01:28:30 2015 +0800
 
@@ -160,12 +160,12 @@ Date:   Tue Mar 24 01:28:30 2015 +0800
     Change-Id: I2d5da99d02f3557f5e91c722ed173a5cfd9d4328
 
 diff --git a/fs_mgr/Android.mk b/fs_mgr/Android.mk
-index 92aeb4e..e996179 100644
+index e1d2029..bf735d0 100644
 --- a/fs_mgr/Android.mk
 +++ b/fs_mgr/Android.mk
-@@ -13,6 +13,10 @@ LOCAL_C_INCLUDES += system/extras/ext4_utils external/e2fsprogs/lib
- LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
- LOCAL_CFLAGS := -Werror
+@@ -17,6 +17,10 @@ ifneq (,$(filter userdebug,$(TARGET_BUILD_VARIANT)))
+ LOCAL_CFLAGS += -DALLOW_ADBD_DISABLE_VERITY=1
+ endif
  
 +ifneq ($(strip $(INIT_MI3TD_HACK)),)
 +LOCAL_CFLAGS += -DINIT_MI3TD_HACK
@@ -175,7 +175,7 @@ index 92aeb4e..e996179 100644
  
  
 diff --git a/fs_mgr/fs_mgr_fstab.c b/fs_mgr/fs_mgr_fstab.c
-index 3f84179..249b8ae 100644
+index ab8f128..fcc9763 100644
 --- a/fs_mgr/fs_mgr_fstab.c
 +++ b/fs_mgr/fs_mgr_fstab.c
 @@ -19,6 +19,9 @@
