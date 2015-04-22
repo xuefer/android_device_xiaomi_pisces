@@ -471,8 +471,7 @@ service btmacwriter /system/bin/btmacwriter
     oneshot
 
 # Start GPS daemon
-on boot
-    service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsconfig.xml
+service gps-daemon /system/bin/glgps_nvidiaTegra2android -c /system/etc/gps/gpsconfig.xml
     user gps
     socket gps seqpacket 0660 gps system
     group system inet sdcard_rw sdcard_r
