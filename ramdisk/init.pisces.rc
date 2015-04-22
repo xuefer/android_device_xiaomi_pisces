@@ -42,8 +42,8 @@ on init
     # Immersion
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 system system
-    mkdir /tmp 0771 system system
-    mount tmpfs tmpfs /tmp mode=0751,gid=1000
+    mkdir /tmp 1777 system system
+    mount tmpfs tmpfs /tmp mode=1777,gid=1000
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
