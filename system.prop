@@ -85,3 +85,7 @@ persist.sys.NV_POWER_MODE=1
 persist.sys.NV_PROFILE_MODEL=MI3
 # don't preload OpenGL in Zygote, the Tegra drivers do not like it
 ro.zygote.disable_gl_preload=true
+
+# enable dirac sound for speaker
+persist.audio.dirac.speaker=true
+
