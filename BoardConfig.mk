@@ -87,7 +87,7 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     init.recovery.pisces.rc \
 
 # ril
-BOARD_PROVIDES_LIBRIL:= true
+#BOARD_PROVIDES_LIBRIL:= true
 
 # GPS
 BOARD_HAVE_GPS_BCM := true
