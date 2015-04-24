@@ -122,12 +122,9 @@
 			<object type="template" name="header" />
 
 			<object type="action">
-				<conditions>
-					<condition var1="tw_language" op="!=" var2="en" />
-					<condition var1="tw_language" op="!=" var2="zh" />
-				</conditions>
+				<condition var1="language_selected" op="!=" var2="1" />
 				<actions>
-					<action function="set">tw_language=en</action>
+					<action function="overlay"></action>
 					<action function="overlay">languageselect</action>
 				</actions>
 			</object>
@@ -2990,9 +2987,9 @@
 				<font resource="bigfont" color="%text_color%" />
 				<text>中文</text>
 				<actions>
+					<action function="set">language_selected=1</action>
 					<action function="set">tw_language=zh</action>
 					<action function="reload"></action>
-					<action function="overlay"></action>
 				</actions>
 			</object>
 
@@ -3001,6 +2998,7 @@
 				<font resource="bigfont" color="%text_color%" />
 				<text>English</text>
 				<actions>
+					<action function="set">language_selected=1</action>
 					<action function="set">tw_language=en</action>
 					<action function="overlay"></action>
 				</actions>
@@ -3013,7 +3011,10 @@
 				<text></text>
 				<image resource="back_icon" />
 				<condition var1="tw_busy" var2="0" />
-				<action function="overlay"></action>
+				<actions>
+					<action function="set">language_selected=1</action>
+					<action function="overlay"></action>
+				</actions>
 			</object>
 
 			<object type="action">
