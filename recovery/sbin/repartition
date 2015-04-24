@@ -4,8 +4,8 @@
 MMCBLK=${MMCBLK:-/dev/block/mmcblk0}
 DATA_PARTNAME=UDA
 DATA_PARTNUM=27
-MEDIA_PARTNAME=STO
-MEDIA_PARTNUM=28
+STORAGE_PARTNAME=STO
+STORAGE_PARTNUM=28
 
 # MB reserve due to parted alignment
 SHRINK_RESERVE_SIZE=8
@@ -108,7 +108,7 @@ resize_datafs() {
 # api
 #
 
-repartition_get_datamedia_size() {
+repartition_get_datastorage_size() {
 	parted_print free | { read; awk '
 			BEGIN {
 				totalsize = 0;
@@ -148,12 +148,12 @@ repartition_get_data_minsize() {
 #
 
 recovery_resize() {
-	local datamedia_size=`repartition_get_datamedia_size`
+	local datastorage_size=`repartition_get_datastorage_size`
 	local data_size=`repartition_get_data_size`
 	local data_minsize=`repartition_get_data_minsize`
-	if [[ -z $datamedia_size ]]; then
-		ldiefailed "detecting data+media size" \
-		           "检测 data+media 大小"
+	if [[ -z $datastorage_size ]]; then
+		ldiefailed "detecting data+storage size" \
+		           "检测 data+storage 大小"
 	fi
 	if [[ -z $data_size ]]; then
 		ldiefailed "detecting data size" \
@@ -166,12 +166,12 @@ recovery_resize() {
 
 	local devpath
 
-	devpath="${MMCBLK}p${MEDIA_PARTNUM}"
+	devpath="${MMCBLK}p${STORAGE_PARTNUM}"
 	if [[ -e $devpath ]]; then
-		umount /storage_int &>/dev/null
-		mkdir -p /storage_int
-		mount -t ext4 "$devpath" /storage_int 2>/dev/null
-		if ls /storage_int/* 2>/dev/null | grep . >/dev/null; then
+		umount /internal_sdcard &>/dev/null
+		mkdir -p /internal_sdcard
+		mount -t ext4 "$devpath" /internal_sdcard 2>/dev/null
+		if ls /internal_sdcard/* 2>/dev/null | grep . >/dev/null; then
 			ldiefailed "Internal Storage not empty, format it before continue" \
 			           "内部存储卡有数据, 请格式化 Internal Storage"
 		fi
@@ -194,12 +194,12 @@ recovery_resize() {
 		     "不允许将 data 调整到少于最小容量 $data_minsize"
 	fi
 
-	if echo "$data_newsize" "$datamedia_size" | awk '{ exit $1 > $2 ? 0 : 1; }'; then
-		ldie "Not allowed to resize data to more than maximal available space $datamedia_size" \
-		     "不允许将 data 调整到大于最大有效空间 $datamedia_size"
+	if echo "$data_newsize" "$datastorage_size" | awk '{ exit $1 > $2 ? 0 : 1; }'; then
+		ldie "Not allowed to resize data to more than maximal available space $datastorage_size" \
+		     "不允许将 data 调整到大于最大有效空间 $datastorage_size"
 	fi
 
-	local media_newsize=$(echo "$data_newsize" "$datamedia_size" | awk '{
+	local storage_newsize=$(echo "$data_newsize" "$datastorage_size" | awk '{
 		freesize = $2 - $1;
 		if (freesize < 64) {
 			freesize = 0;
@@ -207,15 +207,15 @@ recovery_resize() {
 		print freesize;
 	}')
 
-	if [[ $media_newsize = 0 ]]; then
-		data_newsize=$datamedia_size
+	if [[ $storage_newsize = 0 ]]; then
+		data_newsize=$datastorage_size
 	fi
 
-	lecho "Available space: ${datamedia_size}MB" \
-	      "有效空间: ${datamedia_size}MB"
+	lecho "Available space: ${datastorage_size}MB" \
+	      "有效空间: ${datastorage_size}MB"
 
-	lecho "Planning size: data=${data_newsize}MB media=${media_newsize}MB" \
-	      "执行调整到: data=${data_newsize}MB media=${media_newsize}MB"
+	lecho "Planning size: data=${data_newsize}MB storage=${storage_newsize}MB" \
+	      "执行调整到: data=${data_newsize}MB storage=${storage_newsize}MB"
 
 	echo
 
@@ -243,7 +243,7 @@ recovery_resize() {
 
 	local parted_data_newbegin=${data_newbegin}MB
 	local parted_data_newend
-	if [[ $media_newsize = 0 ]]; then
+	if [[ $storage_newsize = 0 ]]; then
 		parted_data_newend=100%
 	else
 		parted_data_newend=${data_newend}MB
@@ -256,10 +256,10 @@ recovery_resize() {
 		resize_datafs ${data_shrinkto} || ldiefailed
 	fi
 
-	lecho "Removing media partition ($MEDIA_PARTNUM) if found" \
-	      "正在删除 media 分区 ($MEDIA_PARTNUM) (如果存在)"
-	parted -ms "${MMCBLK}" rm "$MEDIA_PARTNUM" 2>/dev/null
-	rm -f "${MMCBLK}p${MEDIA_PARTNUM}"
+	lecho "Removing storage partition ($STORAGE_PARTNUM) if found" \
+	      "正在删除 storage 分区 ($STORAGE_PARTNUM) (如果存在)"
+	parted -ms "${MMCBLK}" rm "$STORAGE_PARTNUM" 2>/dev/null
+	rm -f "${MMCBLK}p${STORAGE_PARTNUM}"
 
 	lecho "Removing data partition ($DATA_PARTNUM) if found" \
 	      "正在删除 data 分区 ($DATA_PARTNUM) (如果存在)"
@@ -277,24 +277,24 @@ recovery_resize() {
 	      "正在将 data 调整到充满整个分区"
 	resize_datafs || ldiefailed
 
-	local parted_media_newbegin=$parted_data_newend
-	if [[ $parted_media_newbegin = 100% ]]; then
-		lecho "No more free space left, skipped creating new media partition ($MEDIA_PARTNUM)" \
-	        "空间已满, 略过/不创建 media 分区 ($MEDIA_PARTNUM)"
+	local parted_storage_newbegin=$parted_data_newend
+	if [[ $parted_storage_newbegin = 100% ]]; then
+		lecho "No more free space left, skipped creating new storage partition ($STORAGE_PARTNUM)" \
+	        "空间已满, 略过/不创建 storage 分区 ($STORAGE_PARTNUM)"
 	else
-		lecho "Re-creating media partition ($MEDIA_PARTNUM): ${media_newsize}MB" \
-	        "正在重建 media 分区 ($MEDIA_PARTNUM): ${media_newsize}MB"
+		lecho "Re-creating storage partition ($STORAGE_PARTNUM): ${storage_newsize}MB" \
+	        "正在重建 storage 分区 ($STORAGE_PARTNUM): ${storage_newsize}MB"
 		parted -ms "${MMCBLK}" \
-			mkpart "$MEDIA_PARTNAME" ext4 "$parted_media_newbegin" 100% \
-			name "$MEDIA_PARTNUM" "$MEDIA_PARTNAME" \
+			mkpart "$STORAGE_PARTNAME" ext4 "$parted_storage_newbegin" 100% \
+			name "$STORAGE_PARTNUM" "$STORAGE_PARTNAME" \
 		|| ldiefailed
 
-		lecho "Re-creating media filesystemB" \
-	        "正在重建 media 文件系统"
-		local mediadevpath="${MMCBLK}p${MEDIA_PARTNUM}"
-		waitpath "$mediadevpath" || ldiefailed
+		lecho "Re-creating storage filesystemB" \
+	        "正在重建 storage 文件系统"
+		local storagedevpath="${MMCBLK}p${STORAGE_PARTNUM}"
+		waitpath "$storagedevpath" || ldiefailed
 		sleep 1
-		mke2fs -F -t ext4 "$mediadevpath" || ldiefailed
+		mke2fs -F -t ext4 "$storagedevpath" || ldiefailed
 	fi
 
 	lecho "Current partition table (tail part):" \
@@ -307,7 +307,7 @@ recovery_resize() {
 }
 
 recovery_loadsize() {
-	setprop partition.datamedia_size `repartition_get_datamedia_size`
+	setprop partition.datastorage_size `repartition_get_datastorage_size`
 	setprop partition.data_size `repartition_get_data_size`
 	setprop partition.data_minsize `repartition_get_data_minsize`
 }

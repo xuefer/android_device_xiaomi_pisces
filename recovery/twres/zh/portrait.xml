@@ -2700,8 +2700,8 @@
 			<object type="action">
 				<actions>
 					<action function="set">repartition_data_size=%property.partition.data_size%</action>
-					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
-					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+					<action function="set">repartition_storage_size=%property.partition.datastorage_size%</action>
+					<action function="compute">repartition_storage_size-%repartition_data_size%</action>
 				</actions>
 			</object>
 
@@ -2712,8 +2712,8 @@
 				<image resource="minus_button" />
 				<actions>
 					<action function="compute">repartition_data_size-128</action>
-					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
-					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+					<action function="set">repartition_storage_size=%property.partition.datastorage_size%</action>
+					<action function="compute">repartition_storage_size-%repartition_data_size%</action>
 				</actions>
 			</object>
 
@@ -2723,9 +2723,9 @@
 				<text></text>
 				<image resource="plus_button" />
 				<actions>
-					<action function="compute">repartition_media_size-128</action>
-					<action function="set">repartition_data_size=%property.partition.datamedia_size%</action>
-					<action function="compute">repartition_data_size-%repartition_media_size%</action>
+					<action function="compute">repartition_storage_size-128</action>
+					<action function="set">repartition_data_size=%property.partition.datastorage_size%</action>
+					<action function="compute">repartition_data_size-%repartition_storage_size%</action>
 				</actions>
 			</object>
 
@@ -2736,15 +2736,15 @@
 
 			<object type="text">
 				<placement x="%sdswap_text_x%" y="%sdswap_text_y%" />
-				<text>Media(SD) 分区大小: %repartition_media_size%MB</text>
+				<text>Storage(SD) 分区大小: %repartition_storage_size%MB</text>
 			</object>
 
 			<object type="button">
 				<placement x="%col1_x%" y="%sdfilesystem_button_y%" />
 				<text>合并成一个</text>
 				<actions>
-					<action function="set">repartition_media_size=0</action>
-					<action function="set">repartition_data_size=%property.partition.datamedia_size%</action>
+					<action function="set">repartition_storage_size=0</action>
+					<action function="set">repartition_data_size=%property.partition.datastorage_size%</action>
 				</actions>
 			</object>
 
@@ -2753,8 +2753,8 @@
 				<text>默认</text>
 				<actions>
 					<action function="set">repartition_data_size=3758</action>
-					<action function="set">repartition_media_size=%property.partition.datamedia_size%</action>
-					<action function="compute">repartition_media_size-%repartition_data_size%</action>
+					<action function="set">repartition_storage_size=%property.partition.datastorage_size%</action>
+					<action function="compute">repartition_storage_size-%repartition_data_size%</action>
 				</actions>
 			</object>
 
