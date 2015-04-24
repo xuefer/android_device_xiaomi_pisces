@@ -2602,7 +2602,7 @@
 				<condition var1="tw_allow_partition_sdcard" var2="1" />
 				<placement x="%col1_x%" y="%row2_y%" />
 				<text>Partition SD Card</text>
-				<action function="page">partsdcard</action>
+				<action function="page">partsdcardload</action>
 			</object>
 
 			<object type="button">
@@ -2669,6 +2669,23 @@
 			</object>
 
 			<object type="template" name="footer" />
+		</page>
+
+		<page name="partsdcardload">
+			<object type="action">
+				<actions>
+					<action function="set">tw_back=advanced</action>
+					<action function="set">tw_action=cmd</action>
+					<action function="set">tw_action_param=/sbin/repartition -l loadsize</action>
+					<action function="set">tw_has_action2=1</action>
+					<action function="set">tw_action2=page</action>
+					<action function="set">tw_action2_param=partsdcard</action>
+					<action function="set">tw_action_text1=Loading Partition &amp; Filesystem info...</action>
+					<action function="set">tw_action_text2=This will take a few seconds.</action>
+					<action function="set">tw_complete_text1=Partitioning Complete</action>
+					<action function="page">action_page</action>
+				</actions>
+			</object>
 		</page>
 
 		<page name="partsdcard">
@@ -2755,7 +2772,7 @@
 				<text>Swipe to Partition</text>
 				<action function="page">partsdcardaction</action>
 				<actions>
-					<action function="set">tw_back=partsdcard</action>
+					<action function="set">tw_back=partsdcardload</action>
 					<action function="set">tw_action=cmd</action>
 					<action function="set">tw_action_param=/sbin/repartition -l resize %repartition_data_size%</action>
 					<action function="set">tw_has_action2=0</action>
