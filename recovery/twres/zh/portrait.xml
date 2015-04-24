@@ -2643,9 +2643,9 @@
 				<actions>
 					<action function="set">tw_back=advanced</action>
 					<action function="set">tw_action=reinjecttwrp</action>
-					<action function="set">tw_text1=重新注入TWRP?</action>
-					<action function="set">tw_action_text1=重新注入TWRP中...</action>
-					<action function="set">tw_complete_text1=TWRP注入完成</action>
+					<action function="set">tw_text1=重新注入 TWRP?</action>
+					<action function="set">tw_action_text1=重新注入 TWRP 中...</action>
+					<action function="set">tw_complete_text1=TWRP 注入完成</action>
 					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
