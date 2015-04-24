@@ -164,6 +164,17 @@ recovery_resize() {
 		           "检测 data 最小容量"
 	fi
 
+	lecho "umount'ing all mounted mmcblk0 partitions" \
+	      "正在 umount 所有已挂载的 mmcblk0 分区"
+	local devpath
+	mount | grep ^/dev/block/mmcblk0 | while read -r devpath b; do
+		umount "$devpath"
+	done
+	if mount | grep ^/dev/block/mmcblk0; then
+		ldiefailed "partitions above failed to mount" \
+		           "以上分区 umount 失败"
+	fi
+
 	# -> die_if_media_not_empty
 
 	local data_newsize=$1
@@ -246,7 +257,7 @@ recovery_resize() {
 
 	lecho "Re-creating data partition ($DATA_PARTNUM): ${data_newsize}MB" \
 	      "正在重建 data 分区 ($DATA_PARTNUM): ${data_newsize}MB"
-	parted -ms -a optimal "${MMCBLK}" \
+	parted -ms "${MMCBLK}" \
 		mkpart "$DATA_PARTNAME" ${parted_data_newbegin} ${parted_data_newend} \
 		name "$DATA_PARTNUM" "$DATA_PARTNAME" \
 		|| ldiefailed
@@ -262,7 +273,7 @@ recovery_resize() {
 	else
 		lecho "Re-creating media partition ($MEDIA_PARTNUM): ${media_newsize}MB" \
 	        "正在重建 media 分区 ($MEDIA_PARTNUM): ${media_newsize}MB"
-		parted -ms -a optimal "${MMCBLK}" \
+		parted -ms "${MMCBLK}" \
 			mkpart "$MEDIA_PARTNAME" ext4 "$parted_media_newbegin" 100% \
 			name "$MEDIA_PARTNUM" "$MEDIA_PARTNAME" \
 		|| ldiefailed
