@@ -126,7 +126,10 @@
 					<condition var1="tw_language" op="!=" var2="en" />
 					<condition var1="tw_language" op="!=" var2="zh" />
 				</conditions>
-				<action function="overlay">languageselect</action>
+				<actions>
+					<action function="set">tw_language=zh</action>
+					<action function="overlay">languageselect</action>
+				</actions>
 			</object>
 
 			<object type="action">
@@ -2988,7 +2991,6 @@
 				<text>中文</text>
 				<actions>
 					<action function="set">tw_language=zh</action>
-					<action function="reload"></action>
 					<action function="overlay"></action>
 				</actions>
 			</object>
