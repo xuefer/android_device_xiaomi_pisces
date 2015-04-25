@@ -10,7 +10,7 @@ loimg() {
 rebuildparts() {
 	parted -a optimal -ms $devpath \
 		mklabel gpt \
-		unit MB \
+		unit MiB \
 		mkpart p1 ext4 0% 8M \
 		$(for i in $(seq 2 28); do
 		((begin=i*4))
@@ -39,7 +39,7 @@ loimg
 rebuildparts
 
 parted -a optimal -ms $devpath \
-		unit MB \
+		unit MiB \
 		print free
 
 export MMCBLK=$devpath
@@ -52,7 +52,7 @@ $repart resize 12
 echo =================== done
 
 parted -a optimal -ms $devpath \
-		unit MB \
+		unit MiB \
 		print free | grep ':free\|^1:\|^2[5678]:'
 
 losetup -d $devpath 2>/dev/null
