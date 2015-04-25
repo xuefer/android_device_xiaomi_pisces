@@ -22,10 +22,16 @@ lecho() {
 }
 
 ldie() {
+	local ret=$?
+	if [[ $ret = 0 ]]; then
+		ret=1
+	fi
+
 	>&2 \
 	lecho "repartition: Error: $1" \
 	      "repartition: 错误: $2"
-	exit 1
+
+	exit $ret
 }
 
 ldiefailed() {
@@ -77,7 +83,7 @@ waitpath() {
 }
 
 get_data_blocksize() {
-	local blocksize=$(dumpe2fs "${MMCBLK}"p$DATA_PARTNUM 2>/dev/null | sed 's#  \+# #g' | awk 'BEGIN { FS=":"; } /Block size/ { print $2; } ')
+	local blocksize=$(dumpe2fs -h "${MMCBLK}"p$DATA_PARTNUM 2>/dev/null | sed 's# \+##g' | awk 'BEGIN { FS=":"; } /Blocksize/ { print $2; } ')
 	if [[ -z $blocksize ]]; then
 		blocksize=4096
 	fi
@@ -130,17 +136,24 @@ repartition_get_datastorage_size() {
 }
 
 repartition_get_data_size() {
-	parted_print | { read; awk '
+	local data_size=$(parted_print | { read; awk '
 			BEGIN  { FS = ":"; }
 			/^'$DATA_PARTNUM':/ { print $4; }
 		'
-	}
+	})
+	if [[ -z $data_size ]]; then
+		data_size=0
+	fi
+	echo $data_size
 }
 
 repartition_get_data_minsize() {
 	local blocksize=$(get_data_blocksize)
 	umount "${MMCBLK}"p$DATA_PARTNUM &>/dev/null
 	local minblocks=$(resize2fs -P "${MMCBLK}"p$DATA_PARTNUM 2>/dev/null | sed 's#  \+# #g' | awk 'BEGIN { FS=":"; } /Estimated minimum size of the filesystem/ { print $2; } ')
+	if [[ -z $minblocks ]]; then
+		minblocks=0
+	fi
 	echo "$minblocks" "$blocksize" "$SHRINK_RESERVE_SIZE" | awk '{ print $1 * $2 / 1024 / 1024 + $3; }'
 }
 
@@ -149,20 +162,14 @@ repartition_get_data_minsize() {
 #
 
 recovery_resize() {
-	local datastorage_size=`repartition_get_datastorage_size`
-	local data_size=`repartition_get_data_size`
-	local data_minsize=`repartition_get_data_minsize`
+	recovery_loadsize
+
+	local datastorage_size=$partition_datastorage_size
+	local data_size=$partition_data_size
+	local data_minsize=$partition_data_minsize
 	if [[ -z $datastorage_size ]]; then
 		ldiefailed "detecting data+storage size" \
 		           "检测 data+storage 大小"
-	fi
-	if [[ -z $data_size ]]; then
-		ldiefailed "detecting data size" \
-		           "检测 data 容量"
-	fi
-	if [[ -z $data_minsize ]]; then
-		ldiefailed "detecting data minimal size" \
-		           "检测 data 最小容量"
 	fi
 
 	local devpath
@@ -173,18 +180,20 @@ recovery_resize() {
 		mkdir -p /internal_sdcard
 		mount -t ext4 "$devpath" /internal_sdcard 2>/dev/null
 		if ls /internal_sdcard/* 2>/dev/null | grep . >/dev/null; then
+			umount /internal_sdcard &>/dev/null
 			ldiefailed "Internal Storage not empty, format it before continue" \
 			           "内部存储卡有数据, 请格式化 Internal Storage"
 		fi
+		umount /internal_sdcard &>/dev/null
 	fi
 
 	# umount
-	lecho "umount'ing all mounted mmcblk0 partitions" \
-	      "正在 umount 所有已挂载的 mmcblk0 分区"
-	mount | grep ^/dev/block/mmcblk0 | while read -r devpath b; do
+	lecho "umount'ing all mounted ${MMCBLK} partitions" \
+	      "正在 umount 所有已挂载的 ${MMCBLK} 分区"
+	mount | grep ^${MMCBLK} | while read -r devpath b; do
 		umount "$devpath"
 	done
-	if mount | grep ^/dev/block/mmcblk0; then
+	if mount | grep ^${MMCBLK}; then
 		ldiefailed "partitions above failed to mount" \
 		           "以上分区 umount 失败"
 	fi
@@ -225,7 +234,7 @@ recovery_resize() {
 		is_shrinking=1
 	fi
 
-	local prevpartnumprev=$((DATA_PARTNUM-1))
+	local prevpartnum=$((DATA_PARTNUM-1))
 	local data_newbegin=$(
 		parted_print | { read; awk '
 				BEGIN  {
@@ -312,13 +321,18 @@ recovery_resize() {
 recovery_loadsize() {
 	lecho "Loading partition size ..."\
 	      "正在载入分区大小 ..."
-	setprop partition.datastorage_size `repartition_get_datastorage_size`
+	partition_datastorage_size=`repartition_get_datastorage_size`
+	setprop partition.datastorage_size $partition_datastorage_size
+
 	lecho "Loading data partition size ..." \
 	      "正在载入 data 分区大小 ..."
-	setprop partition.data_size `repartition_get_data_size`
+	partition_data_size=`repartition_get_data_size`
+	setprop partition.data_size $partition_data_size
+
 	lecho "Checking data minimal size ..." \
 	      "正在检查 data 最小容量"
-	setprop partition.data_minsize `repartition_get_data_minsize`
+	partition_data_minsize=`repartition_get_data_minsize`
+	setprop partition.data_minsize $partition_data_minsize
 }
 
 #
