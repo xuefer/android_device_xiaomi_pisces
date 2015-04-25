@@ -1,0 +1,58 @@
+#!/bin/sh
+
+devpath=/dev/loop7
+
+loimg() {
+	losetup -d $devpath 2>/dev/null
+	losetup -P $devpath test.img
+}
+
+rebuildparts() {
+	parted -a optimal -ms $devpath \
+		mklabel gpt \
+		unit MB \
+		mkpart p1 ext4 0% 8M \
+		$(for i in $(seq 2 28); do
+		((begin=i*4))
+		((end=begin+4))
+		echo mkpart p$i ext4 ${begin}M ${end}M;
+		done) \
+		print
+	loimg
+
+	for i in \
+		${devpath}p27 \
+		${devpath}p28 \
+		; do
+		if [[ -f $i ]]; then
+			mkfs.ext2 -t ext4 "$i"
+		fi
+	done
+}
+
+if [[ ! -e test.img ]]; then
+	echo "Creating new test.img"
+	dd if=/dev/zero of=test.img bs=1M count=1024
+fi
+
+loimg
+rebuildparts
+
+parted -a optimal -ms $devpath \
+		unit MB \
+		print free
+
+export MMCBLK=$devpath
+repart="sh ../../recovery/sbin/repartition"
+
+echo =================== enlarge
+$repart resize 966
+echo =================== shrink
+$repart resize 12
+echo =================== done
+
+parted -a optimal -ms $devpath \
+		unit MB \
+		print free | grep ':free\|^1:\|^2[5678]:'
+
+losetup -d $devpath 2>/dev/null
