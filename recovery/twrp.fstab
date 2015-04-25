@@ -2,7 +2,7 @@
 /boot            emmc   /dev/block/platform/sdhci-tegra.3/by-name/boot
 /system          ext4   /dev/block/platform/sdhci-tegra.3/by-name/system
 /data            ext4   /dev/block/platform/sdhci-tegra.3/by-name/userdata      flags=encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
-/internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Internal Storage"
+/internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage"
 /cache           ext4   /dev/block/platform/sdhci-tegra.3/by-name/cache
 /persist         ext4   /dev/block/platform/sdhci-tegra.3/by-name/persist       flags=display="Persist Data";wipeingui;backup=1
 /misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="Dualboot Mark";backup=1

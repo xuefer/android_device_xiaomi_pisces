@@ -181,8 +181,8 @@ recovery_resize() {
 		mount -t ext4 "$devpath" /internal_sdcard 2>/dev/null
 		if ls /internal_sdcard/* 2>/dev/null | grep . >/dev/null; then
 			umount /internal_sdcard &>/dev/null
-			ldiefailed "Internal Storage not empty, format it before continue" \
-			           "内部存储卡有数据, 请格式化 Internal Storage"
+			ldiefailed "Old Internal Storage not empty, format it before continue" \
+			           "内部存储卡有数据, 请格式化 Old Internal Storage"
 		fi
 		umount /internal_sdcard &>/dev/null
 	fi
