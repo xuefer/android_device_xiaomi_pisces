@@ -161,7 +161,7 @@
 		<variable name="listbox_tz_height" value="885" />
 		<variable name="listbox_background" value="#303030" />
 		<variable name="listbox_spacing" value="24" />
-		<variable name="sd_plus_x" value="525" />
+		<variable name="sd_plus_x" value="1080" />
 		<variable name="sdext_text_x" value="165" />
 		<variable name="sdext_text_y" value="270" />
 		<variable name="sdswap_button_y" value="390" />
