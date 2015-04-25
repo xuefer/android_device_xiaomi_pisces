@@ -2731,12 +2731,12 @@
 
 			<object type="text">
 				<placement x="%sdext_text_x%" y="%sdext_text_y%" />
-				<text>Data Size: %repartition_data_size%MB</text>
+				<text>Data Size: %repartition_data_size%MiB</text>
 			</object>
 
 			<object type="text">
 				<placement x="%sdswap_text_x%" y="%sdswap_text_y%" />
-				<text>Storage(SD) Size: %repartition_storage_size%MB</text>
+				<text>Storage(SD) Size: %repartition_storage_size%MiB</text>
 			</object>
 
 			<object type="button">

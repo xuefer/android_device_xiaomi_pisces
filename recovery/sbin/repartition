@@ -7,7 +7,7 @@ DATA_PARTNUM=27
 STORAGE_PARTNAME=STO
 STORAGE_PARTNUM=28
 
-# MB reserve due to parted alignment
+# MiB reserve due to parted alignment
 SHRINK_RESERVE_SIZE=8
 
 #
@@ -50,16 +50,17 @@ do
 	type "$cmd" &>/dev/null || alias $cmd="busybox $cmd"
 done
 
-if [[ -z /sbin/e2fsck-wrapper.sh ]]; then
+if [[ -e /sbin/e2fsck-wrapper.sh ]]; then
 	alias e2fsck=/sbin/e2fsck-wrapper.sh
 fi
+alias
 
 #
 # utils
 #
 
 parted_print() {
-	parted -ms "${MMCBLK}" unit MB print "$@" 2>&1 | sed 's/MB//g; s/;$//g'
+	parted -ms "${MMCBLK}" unit MiB print "$@" 2>&1 | sed 's/MiB//g; s/;$//g'
 }
 
 waitpath_gone() {
@@ -91,6 +92,7 @@ get_data_blocksize() {
 }
 
 resize_datafs() {
+	local tosize=$1
 	local blocksize=$(get_data_blocksize)
 	local devpath="${MMCBLK}p${DATA_PARTNUM}"
 
@@ -98,12 +100,12 @@ resize_datafs() {
 	|| ldie "$devpath not found" \
 	        "找不到 $devpath"
 
-	e2fsck -p "$devpath" || ldiefailed
+	e2fsck -fp "$devpath" || ldiefailed
 
-	if [[ -z $1 ]]; then
+	if [[ -z $tosize ]]; then
 		resize2fs -p "$devpath" || ldiefailed
 	else
-		local blocks=$(echo "$blocksize" "$1" | awk '{ print $1 * $2; }')
+		local blocks=$(echo "$tosize" "$blocksize" | awk '{ print $1 * 1024 * 1024 / $2; }')
 		resize2fs -p "$devpath" "$blocks" || ldiefailed
 	fi
 
@@ -144,7 +146,7 @@ repartition_get_data_size() {
 	if [[ -z $data_size ]]; then
 		data_size=0
 	fi
-	echo $data_size
+	echo "$data_size"
 }
 
 repartition_get_data_minsize() {
@@ -221,11 +223,11 @@ recovery_resize() {
 		data_newsize=$datastorage_size
 	fi
 
-	lecho "Available space: ${datastorage_size}MB" \
-	      "有效空间: ${datastorage_size}MB"
+	lecho "Available space: ${datastorage_size}MiB" \
+	      "有效空间: ${datastorage_size}MiB"
 
-	lecho "Planning size: data=${data_newsize}MB storage=${storage_newsize}MB" \
-	      "执行调整到: data=${data_newsize}MB storage=${storage_newsize}MB"
+	lecho "Planning size: data=${data_newsize}MiB storage=${storage_newsize}MiB" \
+	      "执行调整到: data=${data_newsize}MiB storage=${storage_newsize}MiB"
 
 	echo
 
@@ -251,17 +253,17 @@ recovery_resize() {
 
 	local data_newend=$(echo "$data_newbegin" "$data_newsize" | awk '{ print $1 + $2; }')
 
-	local parted_data_newbegin=${data_newbegin}MB
+	local parted_data_newbegin=${data_newbegin}MiB
 	local parted_data_newend
 	if [[ $storage_newsize = 0 ]]; then
 		parted_data_newend=100%
 	else
-		parted_data_newend=${data_newend}MB
+		parted_data_newend=${data_newend}MiB
 	fi
 
 	if [[ $is_shrinking = 1 ]]; then
-		lecho "Shrinking data filesystem from ${data_size}MB to ${data_newsize}MB" \
-		      "正在将 data 文件系统 ($DATA_PARTNUM) 从 ${data_size}MB 缩小到 ${data_newsize}MB"
+		lecho "Shrinking data filesystem from ${data_size}MiB to ${data_newsize}MiB" \
+		      "正在将 data 文件系统 ($DATA_PARTNUM) 从 ${data_size}MiB 缩小到 ${data_newsize}MiB"
 		local data_shrinkto=$(echo "${data_newsize}" "$SHRINK_RESERVE_SIZE" | awk '{ print $1 - $2; }')
 		resize_datafs ${data_shrinkto} || ldiefailed
 	fi
@@ -276,8 +278,8 @@ recovery_resize() {
 	parted -ms "${MMCBLK}" rm "$DATA_PARTNUM" 2>/dev/null
 	rm -f "${MMCBLK}p${DATA_PARTNUM}"
 
-	lecho "Re-creating data partition ($DATA_PARTNUM): ${data_newsize}MB" \
-	      "正在重建 data 分区 ($DATA_PARTNUM): ${data_newsize}MB"
+	lecho "Re-creating data partition ($DATA_PARTNUM): ${data_newsize}MiB" \
+	      "正在重建 data 分区 ($DATA_PARTNUM): ${data_newsize}MiB"
 	parted -ms "${MMCBLK}" \
 		mkpart "$DATA_PARTNAME" ${parted_data_newbegin} ${parted_data_newend} \
 		name "$DATA_PARTNUM" "$DATA_PARTNAME" \
@@ -292,8 +294,8 @@ recovery_resize() {
 		lecho "No more free space left, skipped creating new storage partition ($STORAGE_PARTNUM)" \
 	        "空间已满, 略过/不创建 storage 分区 ($STORAGE_PARTNUM)"
 	else
-		lecho "Re-creating storage partition ($STORAGE_PARTNUM): ${storage_newsize}MB" \
-	        "正在重建 storage 分区 ($STORAGE_PARTNUM): ${storage_newsize}MB"
+		lecho "Re-creating storage partition ($STORAGE_PARTNUM): ${storage_newsize}MiB" \
+	        "正在重建 storage 分区 ($STORAGE_PARTNUM): ${storage_newsize}MiB"
 		parted -ms "${MMCBLK}" \
 			mkpart "$STORAGE_PARTNAME" ext4 "$parted_storage_newbegin" 100% \
 			name "$STORAGE_PARTNUM" "$STORAGE_PARTNAME" \
@@ -310,10 +312,8 @@ recovery_resize() {
 	lecho "Current partition table (tail part):" \
 	      "现有分区布局 (尾部):"
 	parted -s "${MMCBLK}" \
-		unit MB \
+		unit MiB \
 		print free | tail -n4
-
-	recovery_loadsize
 
 	/sbin/dualboot -l load
 }
