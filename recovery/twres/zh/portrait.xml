@@ -533,9 +533,9 @@
 					<action function="set">tw_back=flashimage_confirm</action>
 					<action function="set">tw_action=flashimage</action>
 					<action function="set">tw_has_action2=0</action>
-					<action function="set">tw_action_text1=Flashing Image...</action>
+					<action function="set">tw_action_text1=正在刷入镜像文件...</action>
 					<action function="set">tw_action_text2=</action>
-					<action function="set">tw_complete_text1=Image Flashed</action>
+					<action function="set">tw_complete_text1=镜像文件已刷入</action>
 					<action function="page">action_page</action>
 				</actions>
 			</object>
@@ -2810,9 +2810,9 @@
 				<actions>
 					<action function="set">tw_back=htcdumlock</action>
 					<action function="set">tw_action=htcdumlockrestoreboot</action>
-					<action function="set">tw_text1=恢复初始内核boot镜像?</action>
-					<action function="set">tw_action_text1=恢复初始Boot中...</action>
-					<action function="set">tw_complete_text1=恢复初始Boot完成</action>
+					<action function="set">tw_text1=恢复初始内核 boot 镜像?</action>
+					<action function="set">tw_action_text1=恢复初始 Boot 中...</action>
+					<action function="set">tw_complete_text1=恢复初始 Boot 完成</action>
 					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
 				</actions>
@@ -2825,7 +2825,7 @@
 					<action function="set">tw_back=htcdumlock</action>
 					<action function="set">tw_action=htcdumlockreflashrecovery</action>
 					<action function="set">tw_text1=重刷 recovery 到boot?</action>
-					<action function="set">tw_action_text1=重刷 recovery 到boot中...</action>
+					<action function="set">tw_action_text1=重刷 recovery 到 boot 中...</action>
 					<action function="set">tw_complete_text1=重刷 recovery 到 boot 完成</action>
 					<action function="set">tw_slider_text=滑动按钮确认操作</action>
 					<action function="page">confirm_action</action>
