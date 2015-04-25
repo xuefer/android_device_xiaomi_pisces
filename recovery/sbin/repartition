@@ -315,7 +315,12 @@ recovery_resize() {
 		unit MiB \
 		print free | tail -n4
 
-	/sbin/dualboot -l load
+	lecho "Re-partition finished" \
+	      "分区调整结束"
+
+	/sbin/dualboot -l load \
+	|| lecho "Partition table reload failed, ignore error above and please reboot to Recovery" \
+	         "分区表重载失败, 请忽略以上错误并手工重启 Recovery"
 }
 
 recovery_loadsize() {
