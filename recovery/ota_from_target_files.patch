@@ -1,0 +1,20 @@
+--- /home/xuefer/src/cm/repo/build/tools/releasetools/ota_from_target_files	2015-04-21 09:55:14.370000000 +0800
++++ ota_from_target_files	2015-04-26 19:44:36.850000000 +0800
+@@ -514,6 +514,17 @@
+                                              OPTIONS.info_dict),
+                 }
+ 
++  recovery_img = common.GetBootableImage("recovery.img", "recovery.img",
++                                         OPTIONS.input_tmp, "RECOVERY")
++  script.ShowProgress(1.0, 10)
++  script.WriteRawImage("/recovery", "recovery.img")
++  common.CheckSize(recovery_img.data, "recovery.img", OPTIONS.info_dict)
++  common.ZipWriteStr(output_zip, "recovery.img", recovery_img.data)
++
++  script.AddToZip(input_zip, output_zip, input_path=OPTIONS.updater_binary)
++  WriteMetadata(metadata, output_zip)
++  return
++
+   device_specific = common.DeviceSpecificParams(
+       input_zip=input_zip,
+       input_version=OPTIONS.info_dict["recovery_api_version"],
