@@ -3004,8 +3004,23 @@
 		<page name="languageselect">
 			<background color="#000000A0" />
 
+			<object type="text">
+				<placement x="%center_x%" y="%row4_text_y%" placement="4" />
+				<text>TWRP2 v%tw_version%</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row5_text_y%" placement="4" />
+				<text>发布日期: %property.ro.build.date%</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row6_text_y%" placement="4" />
+				<text>功能制作: Xuefer; 汉化: syhost</text>
+			</object>
+
 			<object type="button">
-				<placement x="%center_x%" y="%row2_y%" placement="4" />
+				<placement x="%center_x%" y="%row3_y%" placement="4" />
 				<font resource="bigfont" color="%text_color%" />
 				<text>中文</text>
 				<actions>
@@ -3016,7 +3031,7 @@
 			</object>
 
 			<object type="button">
-				<placement x="%center_x%" y="%row3_y%" placement="4" />
+				<placement x="%center_x%" y="%row4_y%" placement="4" />
 				<font resource="bigfont" color="%text_color%" />
 				<text>English</text>
 				<actions>
@@ -3032,7 +3047,6 @@
 				<font resource="font" color="%button_text_color%" />
 				<text></text>
 				<image resource="back_icon" />
-				<condition var1="tw_busy" var2="0" />
 				<actions>
 					<action function="set">language_selected=1</action>
 					<action function="overlay"></action>

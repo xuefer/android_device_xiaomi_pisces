@@ -239,7 +239,7 @@
 			<object type="text" color="%text_color%">
 				<font resource="font" />
 				<placement x="180" y="15" />
-				<text>MI3TD TWRP v%tw_version% by Xuefer (syhost 汉化) </text>
+				<text>Team Win Recovery Project  v%tw_version% MI3TD 专用版</text>
 			</object>
 
 			<object type="text" color="%text_color%">
