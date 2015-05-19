@@ -88,10 +88,8 @@ TW_RECOVERY_ADDITIONAL_RELINK_FILES := \
 
 TARGET_RECOVERY_DEVICE_MODULES += \
     dualboot \
-    dumpe2fs \
     init.recovery.pisces.rc \
     repartition \
-    resize2fs \
     twrp.fstab \
 
 # ril
