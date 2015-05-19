@@ -69,6 +69,9 @@ PRODUCT_COPY_FILES += \
 # init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/fstab.pisces:root/fstab.pisces \
+    $(LOCAL_PATH)/ramdisk/fstab.zram_128:root/fstab.zram_128 \
+    $(LOCAL_PATH)/ramdisk/fstab.zram_256:root/fstab.zram_256 \
+    $(LOCAL_PATH)/ramdisk/fstab.zram_512:root/fstab.zram_512 \
     $(LOCAL_PATH)/ramdisk/init.hdcp.rc:root/init.hdcp.rc \
     $(LOCAL_PATH)/ramdisk/init.modem_imc.rc:root/init.modem_imc.rc \
     $(LOCAL_PATH)/ramdisk/init.modem_sprd.rc:root/init.modem_sprd.rc \

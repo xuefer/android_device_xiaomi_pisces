@@ -11,6 +11,8 @@ import init.nv_dev_board.usb.rc
 import init.modem_${ro.boot.modem}.rc
 
 on early-init
+    write /sys/block/mmcblk0/queue/scheduler noop
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
     mount debugfs debugfs /sys/kernel/debug
 
 on init
@@ -299,6 +301,7 @@ on boot
 
     # TODO: Remove once powerhal takes over app profiles
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
 
 # thermal point path used by power HAL
     chown system system /sys/devices/virtual/thermal/thermal_zone5/pid_thermal_gov/max_err_temp
@@ -640,21 +643,37 @@ service immvibed /system/bin/immvibed
     group system
     oneshot
 
-on property:persist.sys.aries.power_profile=high
+on property:sys.boot_completed=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
+    write /sys/block/mmcblk0/queue/scheduler cfq
+    setprop sys.perf.profile middle
+
+on property:sys.perf.profile=high
     start nv_power_high
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "55 228000:65 1530000:75"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
 
-on property:persist.sys.aries.power_profile=middle
+on property:sys.perf.profile=middle
     start nv_power_middle
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
 
-on property:persist.sys.aries.power_profile=low
+on property:sys.perf.profile=low
     start nv_power_low
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
 
+on property:persist.zram.size=128
+    swapon_all fstab.zram_128
+
+on property:persist.zram.size=256
+    swapon_all fstab.zram_256
+
+on property:persist.zram.size=512
+    swapon_all fstab.zram_512
 
 on property:persist.sys.display_prefer=0
     write /sys/devices/platform/host1x/tegradc.0/graphics/fb0/set_dispparam 2
