@@ -1,4 +1,4 @@
-commit b86ca15af5f3df70fb83a0eadb14dfffb72f27b3
+commit c6a4b7cf91e0cf3f72ef63f0a52e0590b605e7ff
 Author: Xuefer <xuefer@gmail.com>
 Date:   Fri Apr 3 01:41:38 2015 +0800
 
@@ -7,23 +7,27 @@ Date:   Fri Apr 3 01:41:38 2015 +0800
     Change-Id: Id626cb856c61ec419db5f9694274a8389ab1287a
 
 diff --git a/src/com/android/deskclock/alarms/AlarmStateManager.java b/src/com/android/deskclock/alarms/AlarmStateManager.java
-index 9b2c534..988cce5 100755
+index 9b2c534..d9ee2f6 100755
 --- a/src/com/android/deskclock/alarms/AlarmStateManager.java
 +++ b/src/com/android/deskclock/alarms/AlarmStateManager.java
-@@ -473,6 +473,12 @@ public final class AlarmStateManager extends BroadcastReceiver {
+@@ -473,6 +473,16 @@ public final class AlarmStateManager extends BroadcastReceiver {
       * @param instance to set state to
       */
      public static void setMissedState(Context context, AlarmInstance instance) {
 +        if (isPowerOffAlarm(context)) {
-+            context.sendBroadcast(new Intent(ALARM_POWER_OFF_ACTION));
-+            AlarmService.startAlarm(context, instance);
++            try {
++                context.sendBroadcast(new Intent(ALARM_POWER_OFF_ACTION));
++            } catch (ActivityNotFoundException ex) {
++                // do nothing, the powerOnAlert app couldn't be found.
++            }
++            setFiredState(context, instance);
 +            return;
 +        }
 +
          LogUtils.v("Setting missed state to instance " + instance.mId);
          // Stop alarm if this instance is firing it
          AlarmService.stopAlarm(context, instance);
-@@ -715,9 +721,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
+@@ -715,9 +725,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
                  break;
              case AlarmInstance.MISSED_STATE:
                  setMissedState(context, instance);
