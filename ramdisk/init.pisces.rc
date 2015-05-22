@@ -352,13 +352,13 @@ on boot
     chmod 0664 /sys/class/gpio/gpio49/value
 
 # EDP attributes
-    write /sys/power/edp/battery/backlight/notify 1
-    write /sys/power/edp/battery/imx091/notify 1
+    write /sys/power/edp/battery/backlight0/notify 1
+    write /sys/power/edp/battery/backlight1/notify 1
+    write /sys/power/edp/battery/core/notify 1
+    write /sys/power/edp/battery/depletion/notify 1
+    write /sys/power/edp/battery/imx132/notify 1
+    write /sys/power/edp/battery/imx135/notify 1
     write /sys/power/edp/battery/max77665f/notify 1
-    write /sys/power/edp/battery/modem_boot/notify 1
-    write /sys/power/edp/battery/speaker/notify 1
-    write /sys/power/edp/battery/vibrator/notify 1
-    write /sys/power/edp/battery/wifi_edp_client/notify 1
 
 # MAX77665 MUIC
 
