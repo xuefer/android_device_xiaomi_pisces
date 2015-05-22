@@ -154,6 +154,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory \
 
+# Vibrator
+PRODUCT_PACKAGES += \
+    immvibed \
+    libImmVibeJ.so
+
 # Vendor Apps
 PRODUCT_PACKAGES += \
     AMAPNetworkLocation \

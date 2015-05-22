@@ -8,7 +8,6 @@ bin/i2cdetect
 bin/i2cdump
 bin/i2cget
 bin/i2cset
-bin/immvibed
 bin/input_cfboost_init.sh
 bin/inv_self_test
 bin/load_audience_fw.sh
@@ -74,7 +73,6 @@ lib/libaudioavp.so
 lib/libcgdrv.so
 lib/libDiracAPI_SHARED.so
 lib/libfcamdng.so
-lib/libImmVibeJ.so
 lib/libjni_nvremoteprotopkg.so
 lib/libjni_nvremote.so
 lib/libmplmpu.so
