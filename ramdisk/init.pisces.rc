@@ -12,7 +12,7 @@ import init.modem_${ro.boot.modem}.rc
 
 on early-init
     write /sys/block/mmcblk0/queue/scheduler noop
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    setprop sys.scaling_governor performance
     mount debugfs debugfs /sys/kernel/debug
 
 on init
@@ -256,22 +256,15 @@ on boot
 
 # Power management settings
     write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/no_lp 0
-    write /sys/module/tegra3_emc/parameters/emc_enable 0
+    write /sys/module/tegra11_emc/parameters/emc_enable 0
     #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 1000000
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor conservative
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
-
     write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 95
     write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 50
     write /sys/devices/system/cpu/cpufreq/conservative/freq_step 3
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 612000
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
@@ -282,6 +275,30 @@ on boot
     write /sys/module/cpuidle_t11x/parameters/cpu_power_gating_in_idle 31
     write /sys/module/cpuidle_t11x/parameters/slow_cluster_power_gating_noncpu 1
     write /sys/module/cpuidle/parameters/power_down_in_idle 1
+
+    # reset to performance until boot completed
+    setprop sys.scaling_governor performance
+
+on property:sys.scaling_governor=*
+    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/enable 0
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ${sys.scaling_governor}
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ${sys.scaling_governor}
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor ${sys.scaling_governor}
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor ${sys.scaling_governor}
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor ${sys.scaling_governor}
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 0
+    write /sys/devices/system/cpu/cpu2/online 0
+    write /sys/devices/system/cpu/cpu3/online 0
+    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/enable 1
+
+on property:sys.scaling_governor=performance
+
+on property:sys.scaling_governor=interactive
     chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
     chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
     chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
@@ -290,18 +307,16 @@ on boot
     chown system system /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/emc_max
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     chown system system /sys/devices/system/cpu/cpuquiet/runnable_threads/nr_cpu_limit
-    chown system system /sys/devices/tegradc.0/enable
-    chown system system /sys/devices/tegradc.1/enable
 
+    # TODO: Remove once powerhal takes over app profiles
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
+on boot
     chown system system /sys/kernel/tegra_cap/cbus_cap_level
     chown system system /sys/kernel/tegra_cap/cbus_cap_state
     chown system system /sys/devices/platform/host1x/gr3d/enable_3d_scaling
     chown system system /sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq
     chown system system /sys/devices/platform/pwm-fan/pwm_cap
-
-    # TODO: Remove once powerhal takes over app profiles
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
 
 # thermal point path used by power HAL
     chown system system /sys/devices/virtual/thermal/thermal_zone5/pid_thermal_gov/max_err_temp
@@ -644,10 +659,7 @@ service immvibed /system/bin/immvibed
     oneshot
 
 on property:sys.boot_completed=1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
+    setprop sys.scaling_governor interactive
     write /sys/block/mmcblk0/queue/scheduler cfq
     setprop sys.perf.profile middle
 
