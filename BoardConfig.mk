@@ -130,6 +130,9 @@ WIFI_DRIVER_FW_PATH_STA          := "/vendor/firmware/bcm43341/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_P2P          := "/vendor/firmware/bcm43341/fw_bcmdhd_p2p.bin"
 WIFI_DRIVER_MODULE_DEVICE        := bcmdhd
 
+# Sensors
+COMMON_GLOBAL_CFLAGS += -DHAVE_MIUI_SENSORS_BLOB
+
 # SELinux
 BOARD_SEPOLICY_DIRS += \
    $(LOCAL_PATH)/sepolicy
