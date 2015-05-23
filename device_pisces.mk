@@ -157,7 +157,7 @@ PRODUCT_PACKAGES += \
 # Vibrator
 PRODUCT_PACKAGES += \
     immvibed \
-    libImmVibeJ.so
+    libImmVibeJ
 
 # Vendor Apps
 PRODUCT_PACKAGES += \
