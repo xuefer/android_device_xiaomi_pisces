@@ -664,16 +664,21 @@ on property:sys.boot_completed=1
     setprop sys.perf.profile middle
 
 on property:sys.perf.profile=high
+    setprop sys.scaling_governor interactive
+    setprop sys.perf.profile_ ${sys.perf.profile}
+
+on property:sys.perf.profile_=high
+    setprop sys.scaling_governor interactive
     start nv_power_high
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "55 228000:65 1530000:75"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
 
-on property:sys.perf.profile=middle
+on property:sys.perf.profile_=middle
     start nv_power_middle
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
 
-on property:sys.perf.profile=low
+on property:sys.perf.profile_=low
     start nv_power_low
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
