@@ -1,0 +1,32 @@
+commit 56aeaba5fc512806547b9a15c02b8a192b35bb75
+Author: Xuefer <xuefer@gmail.com>
+Date:   Thu May 28 15:59:10 2015 +0800
+
+    fix connectivitycheck by using g.cn for now
+
+diff --git a/packages/CaptivePortalLogin/src/com/android/captiveportallogin/CaptivePortalLoginActivity.java b/packages/CaptivePortalLogin/src/com/android/captiveportallogin/CaptivePortalLoginActivity.java
+index 2f1e3a3..5349288 100644
+--- a/packages/CaptivePortalLogin/src/com/android/captiveportallogin/CaptivePortalLoginActivity.java
++++ b/packages/CaptivePortalLogin/src/com/android/captiveportallogin/CaptivePortalLoginActivity.java
+@@ -58,7 +58,7 @@ import java.lang.reflect.Method;
+ 
+ public class CaptivePortalLoginActivity extends Activity {
+     private static final String TAG = "CaptivePortalLogin";
+-    private static final String DEFAULT_SERVER = "connectivitycheck.android.com";
++    private static final String DEFAULT_SERVER = "g.cn";
+ 
+     private static final String EXTRA_STATUS_BAR_COLOR = "status_bar_color";
+     private static final String EXTRA_ACTION_BAR_COLOR = "action_bar_color";
+diff --git a/services/core/java/com/android/server/connectivity/NetworkMonitor.java b/services/core/java/com/android/server/connectivity/NetworkMonitor.java
+index 87f78c1..c989be6 100644
+--- a/services/core/java/com/android/server/connectivity/NetworkMonitor.java
++++ b/services/core/java/com/android/server/connectivity/NetworkMonitor.java
+@@ -69,7 +69,7 @@ import java.util.Random;
+ public class NetworkMonitor extends StateMachine {
+     private static final boolean DBG = true;
+     private static final String TAG = "NetworkMonitor";
+-    private static final String DEFAULT_SERVER = "connectivitycheck.android.com";
++    private static final String DEFAULT_SERVER = "g.cn";
+     private static final int SOCKET_TIMEOUT_MS = 10000;
+     public static final String ACTION_NETWORK_CONDITIONS_MEASURED =
+             "android.net.conn.NETWORK_CONDITIONS_MEASURED";
