@@ -88,7 +88,7 @@
 
     <path>
       <ctl name="Input PGA Analog Volume" val="36"/>
-      <ctl name="Input Path Digital Volume" val="104"/>
+      <ctl name="Input Path Digital Volume" val="223"/>
       <ctl name="ASP-IP Left Volume" val="63"/>
       <ctl name="ASP-IP Right Volume" val="63"/>
       <ctl name="VSP-IP Left Volume" val="63"/>
@@ -129,8 +129,8 @@
           <ctl name="Preset" val="0x024F"/>
         </path>
         <path name="on">
-          <ctl name="Headphone Analog Playback Volume" val="60" mode="normal"/>
-          <ctl name="Headphone Analog Playback Volume" val="57" mode="call voip"/>
+          <ctl name="Headphone Analog Playback Volume" val="40" mode="normal"/>
+          <ctl name="Headphone Analog Playback Volume" val="38" mode="call voip"/>
           <ctl name="HL Digital Playback Volume" val="210" mode="normal"/>
           <ctl name="HL Digital Playback Volume" val="204" mode="call voip"/>
           <ctl name="Headphone Switch" val="1"/>
@@ -163,8 +163,8 @@
         </path>
 -->
         <path name="on">
-          <ctl name="Ear Speaker Digital Playback Volume" val="188" mode="normal"/>
-          <ctl name="Ear Speaker Digital Playback Volume" val="222" mode="call voip"/>
+          <ctl name="Ear Speaker Digital Playback Volume" val="223" mode="normal"/>
+          <ctl name="Ear Speaker Digital Playback Volume" val="223" mode="call voip"/>
           <ctl name="Int Spk Switch" val="1"/>
         </path>
         <path name="off">
@@ -193,8 +193,8 @@
           <ctl name="Preset" val="0x022B"/>
         </path>
         <path name="on">
-          <ctl name="Ear Speaker Digital Playback Volume" val="204" mode="normal"/>
-          <ctl name="Ear Speaker Digital Playback Volume" val="206" mode="call voip"/>
+          <ctl name="Ear Speaker Digital Playback Volume" val="223" mode="normal"/>
+          <ctl name="Ear Speaker Digital Playback Volume" val="223" mode="call voip"/>
           <ctl name="Earpiece Switch" val="1"/>
         </path>
         <path name="off">
