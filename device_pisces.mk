@@ -159,6 +159,10 @@ PRODUCT_PACKAGES += \
     immvibed \
     libImmVibeJ
 
+# Miracast/WiDi
+#PRODUCT_PACKAGES += \
+#    NvwfdService \
+
 # Vendor Apps
 PRODUCT_PACKAGES += \
     AMAPNetworkLocation \

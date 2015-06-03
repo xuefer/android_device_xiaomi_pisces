@@ -147,6 +147,9 @@ lib/libsensors.isl29028.so
 lib/libsensors.mpl.so
 lib/libtsechdcp.so
 lib/libtsec_wrapper.so
+lib/libwfd_common.so
+lib/libwfd_sink.so
+lib/libwfd_source.so
 lib/modules/baseband_usb_chr.ko
 lib/modules/gps_drv.ko
 lib/modules/mbt8797.ko

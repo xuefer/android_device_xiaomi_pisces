@@ -1,0 +1,48 @@
+commit 99e6e7abb7c4da4ec03100b18c7e02c04b6041a5
+Author: Xuefer <xuefer@gmail.com>
+Date:   Tue Jun 2 17:11:10 2015 +0800
+
+    pre lollipop audio resampler blob
+
+diff --git a/services/audioflinger/AudioFlinger.cpp b/services/audioflinger/AudioFlinger.cpp
+index 25225b0..99fc1b8 100644
+--- a/services/audioflinger/AudioFlinger.cpp
++++ b/services/audioflinger/AudioFlinger.cpp
+@@ -89,6 +89,9 @@
+ #ifdef SRS_PROCESSING
+ #include "postpro_patch.h"
+ #endif
++#ifdef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
++#include "AudioResampler.h"
++#endif
+ 
+ // ----------------------------------------------------------------------------
+ 
+@@ -3323,3 +3326,27 @@ status_t AudioFlinger::onTransact(
+ }
+ 
+ }; // namespace android
++
++#ifdef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
++// android::AudioResampler::create(int, int, int, android::AudioResampler::src_quality)
++extern "C" ANDROID_API android::AudioResampler *_ZN7android14AudioResampler6createEiiiNS0_11src_qualityE(int bits, int inChannelCount,
++        int32_t sampleRate, android::AudioResampler::src_quality quality)
++{
++	audio_format_t format = AUDIO_FORMAT_PCM_FLOAT;
++
++	switch (bits) {
++	case 16:
++		format = AUDIO_FORMAT_PCM_16_BIT;
++		break;
++	case 32:
++		// 32 bits to the AudioResampler::create() indicates float.
++		format = AUDIO_FORMAT_PCM_FLOAT;
++		break;
++	default:
++		LOG_ALWAYS_FATAL("Invalid bits: %d", bits);
++		break;
++	}
++
++	return android::AudioResampler::create(format, inChannelCount, sampleRate, quality);
++}
++#endif
