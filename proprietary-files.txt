@@ -11,6 +11,7 @@ bin/i2cset
 bin/input_cfboost_init.sh
 bin/inv_self_test
 bin/load_audience_fw.sh
+bin/mdm_coredump
 bin/mount_debugfs.sh
 bin/nvcap_test
 bin/nvcgcserver
