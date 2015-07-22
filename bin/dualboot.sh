@@ -451,7 +451,9 @@ recovery_load() {
 
 recovery_installpatch() {
 	mount_ex /system || die "Can't mount /system"
+	mount -o remount,rw /system
 	installoverridefile /twres/mount_ext4.sh /system/bin/mount_ext4.sh || die "Can't install override file"
+	sync
 }
 
 recovery_enabledualdata() {
