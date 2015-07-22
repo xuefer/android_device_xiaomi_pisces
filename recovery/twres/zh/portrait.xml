@@ -1140,6 +1140,25 @@
 			</object>
 
 			<object type="button">
+				<condition var1="tw_partition_can_resize" op="=" var2="1" />
+				<placement x="%col1_x%" y="%row3_y%" />
+				<text>调整大小</text>
+				<actions>
+					<action function="set">tw_back=partitionoptions</action>
+					<action function="set">tw_action=resize</action>
+					<action function="set">tw_action_param=%tw_partition_mount_point%</action>
+					<action function="set">tw_has_action2=1</action>
+					<action function="set">tw_action2=getpartitiondetails</action>
+					<action function="set">tw_text1=调整 %tw_partition_name% 分区的大小?</action>
+					<action function="set">tw_text2=</action>
+					<action function="set">tw_action_text1=调整大小中...</action>
+					<action function="set">tw_complete_text1=调整完毕</action>
+					<action function="set">tw_slider_text=滑动按钮开始调整</action>
+					<action function="page">confirm_action</action>
+				</actions>
+			</object>
+
+			<object type="button">
 				<condition var1="tw_partition_can_repair" op="=" var2="1" />
 				<placement x="%col1_x%" y="%row4_y%" />
 				<text>修复</text>
@@ -2127,6 +2146,27 @@
 				<action function="page">decrypt</action>
 			</object>
 
+			<object type="button">
+				<placement x="%col1_x%" y="%system_ro_y%" />
+				<font resource="font" color="%text_color%" />
+				<condition var1="tw_mount_system_ro" op="=" var2="0" />
+				<text>以只读模式挂载 System 分区</text>
+				<image resource="checkbox_false" />
+				<action function="mountsystemtoggle">1</action>
+			</object>
+
+			<object type="button">
+				<placement x="%col1_x%" y="%system_ro_y%" />
+				<font resource="font" color="%text_color%" />
+				<condition var1="tw_mount_system_ro" op="!=" var2="0" />
+				<text>以只读模式挂载 System 分区</text>
+				<image resource="checkbox_true" />
+				<actions>
+					<action function="set">tw_lifetime_writes=2</action>
+					<action function="page">system_readonly_check</action>
+				</actions>
+			</object>
+
 			<object type="action">
 				<touch key="home" />
 				<action function="page">main</action>
@@ -2180,6 +2220,28 @@
 			<object type="action">
 				<action function="page">mount</action>
 				<action function="set">tw_busy=0</action>
+			</object>
+		</page>
+
+		<page name="system_readonly_check">
+			<object type="action">
+				<action function="checkpartitionlifetimewrites">/system</action>
+			</object>
+
+			<object type="action">
+				<condition var1="tw_lifetime_writes" var2="1" />
+				<actions>
+					<action function="mountsystemtoggle">0</action>
+					<action function="page">mount</action>
+				</actions>
+			</object>
+
+			<object type="action">
+				<condition var1="tw_lifetime_writes" var2="0" />
+				<actions>
+					<action function="set">tw_back=mount</action>
+					<action function="page">system_readonly</action>
+				</actions>
 			</object>
 		</page>
 
@@ -2384,25 +2446,25 @@
 				<data name="tw_time_zone_guisel" />
 				<listitem name="(UTC -11) Samoa, Midway Island">BST11;BDT</listitem>
 				<listitem name="(UTC -10) Hawaii">HST10;HDT</listitem>
-				<listitem name="(UTC  -9) Alaska">AST9;ADT</listitem>
-				<listitem name="(UTC  -8) Pacific Time">PST8;PDT,M3.2.0,M11.1.0</listitem>
-				<listitem name="(UTC  -7) Mountain Time">MST7;MDT,M3.2.0,M11.1.0</listitem>
-				<listitem name="(UTC  -6) Central Time">CST6;CDT,M3.2.0,M11.1.0</listitem>
-				<listitem name="(UTC  -5) Eastern Time">EST5;EDT,M3.2.0,M11.1.0</listitem>
-				<listitem name="(UTC  -4) Atlantic Time">AST4;ADT</listitem>
-				<listitem name="(UTC  -3) Brazil, Buenos Aires">GRNLNDST3;GRNLNDDT</listitem>
-				<listitem name="(UTC  -2) Mid-Atlantic">FALKST2;FALKDT</listitem>
-				<listitem name="(UTC  -1) Azores, Cape Verde">AZOREST1;AZOREDT</listitem>
-				<listitem name="(UTC   0) London, Dublin, Lisbon">GMT0;BST,M3.5.0,M10.5.0</listitem>
-				<listitem name="(UTC  +1) Berlin, Brussels, Paris">CET-1;CEST,M3.5.0,M10.5.0</listitem>
-				<listitem name="(UTC  +2) Athens, Istanbul, South Africa">WET-2;WET,M3.5.0,M10.5.0</listitem>
-				<listitem name="(UTC  +3) Moscow, Baghdad">SAUST-3;SAUDT</listitem>
-				<listitem name="(UTC  +4) Abu Dhabi, Tbilisi, Muscat">WST-4;WDT</listitem>
-				<listitem name="(UTC  +5) Yekaterinburg, Islamabad">PAKST-5;PAKDT</listitem>
-				<listitem name="(UTC  +6) Almaty, Dhaka, Colombo">TASHST-6;TASHDT</listitem>
-				<listitem name="(UTC  +7) Bangkok, Hanoi, Jakarta">THAIST-7;THAIDT</listitem>
-				<listitem name="(UTC  +8) 北京, Singapore, 香港">TAIST-8;TAIDT</listitem>
-				<listitem name="(UTC  +9) Tokyo, Seoul, Yakutsk">JST-9;JSTDT</listitem>
+				<listitem name="(UTC -9) Alaska">AST9;ADT</listitem>
+				<listitem name="(UTC -8) Pacific Time">PST8;PDT,M3.2.0,M11.1.0</listitem>
+				<listitem name="(UTC -7) Mountain Time">MST7;MDT,M3.2.0,M11.1.0</listitem>
+				<listitem name="(UTC -6) Central Time">CST6;CDT,M3.2.0,M11.1.0</listitem>
+				<listitem name="(UTC -5) Eastern Time">EST5;EDT,M3.2.0,M11.1.0</listitem>
+				<listitem name="(UTC -4) Atlantic Time">AST4;ADT</listitem>
+				<listitem name="(UTC -3) Brazil, Buenos Aires">GRNLNDST3;GRNLNDDT</listitem>
+				<listitem name="(UTC -2) Mid-Atlantic">FALKST2;FALKDT</listitem>
+				<listitem name="(UTC -1) Azores, Cape Verde">AZOREST1;AZOREDT</listitem>
+				<listitem name="(UTC  0) London, Dublin, Lisbon">GMT0;BST,M3.5.0,M10.5.0</listitem>
+				<listitem name="(UTC +1) Berlin, Brussels, Paris">CET-1;CEST,M3.5.0,M10.5.0</listitem>
+				<listitem name="(UTC +2) Athens, Istanbul, South Africa">WET-2;WET,M3.5.0,M10.5.0</listitem>
+				<listitem name="(UTC +3) Moscow, Baghdad">SAUST-3;SAUDT</listitem>
+				<listitem name="(UTC +4) Abu Dhabi, Tbilisi, Muscat">WST-4;WDT</listitem>
+				<listitem name="(UTC +5) Yekaterinburg, Islamabad">PAKST-5;PAKDT</listitem>
+				<listitem name="(UTC +6) Almaty, Dhaka, Colombo">TASHST-6;TASHDT</listitem>
+				<listitem name="(UTC +7) Bangkok, Hanoi, Jakarta">THAIST-7;THAIDT</listitem>
+				<listitem name="(UTC +8) 北京, Singapore, 香港">TAIST-8;TAIDT</listitem>
+				<listitem name="(UTC +9) Tokyo, Seoul, Yakutsk">JST-9;JSTDT</listitem>
 				<listitem name="(UTC +10) Eastern Australia, Guam">EET-10;EETDT</listitem>
 				<listitem name="(UTC +11) Vladivostok, Solomon Islands">MET-11;METDT</listitem>
 				<listitem name="(UTC +12) Auckland, Wellington, Fiji">NZST-12;NZDT</listitem>
@@ -3852,6 +3914,73 @@
 					<action function="page">singleaction_page</action>
 				</actions>
 			</object>
+		</page>
+
+		<page name="system_readonly">
+			<object type="template" name="header" />
+
+			<object type="text">
+				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
+				<text>保持 System 分区只读模式?</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row2_text_y%" placement="5" />
+				<text>TWRP 可以不改变你的 system 分区</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row3_text_y%" placement="5" />
+				<text>以此来让你使用官方升级时更简单.</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row4_text_y%" placement="5" />
+				<text>保持只读模式会让 TWRP 无法阻止原厂 ROM 覆写 TWRP</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row5_text_y%" placement="5" />
+				<text>并且无法提供 root 功能.</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row6_text_y%" placement="5" />
+				<text>安装 Zip 卡刷包或执行 adb 操作依然</text>
+			</object>
+
+			<object type="text">
+				<placement x="%center_x%" y="%row7_text_y%" placement="5" />
+				<text>依然可以修改系统分区.</text>
+			</object>
+
+			<object type="checkbox">
+				<condition var1="tw_is_encrypted" var2="0" />
+				<placement x="%col1_x%" y="%row8_text_y%" />
+				<text>重启时不再显示本信息</text>
+				<data variable="tw_never_show_system_ro_page" />
+			</object>
+
+			<object type="button">
+				<placement x="%col_center_x%" y="%row10_text_y%" />
+				<text>保持只读模式</text>
+				<actions>
+					<action function="mountsystemtoggle">1</action>
+					<action function="set">tw_page_done=1</action>
+					<action function="page">%tw_back%</action>
+				</actions>
+			</object>
+
+			<object type="slider">
+				<text>滑动按钮允许修改</text>
+				<actions>
+					<action function="mountsystemtoggle">0</action>
+					<action function="set">tw_page_done=1</action>
+					<action function="page">%tw_back%</action>
+				</actions>
+			</object>
+
+			<object type="template" name="footer" />
 		</page>
 	</pages>
 </recovery>

@@ -1,6 +1,7 @@
 /recovery        emmc   /dev/block/platform/sdhci-tegra.3/by-name/recovery
 /boot            emmc   /dev/block/platform/sdhci-tegra.3/by-name/boot
 /system          ext4   /dev/block/platform/sdhci-tegra.3/by-name/system
+/system_image    emmc   /dev/block/platform/sdhci-tegra.3/by-name/system
 /data            ext4   /dev/block/platform/sdhci-tegra.3/by-name/userdata      flags=encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
 /internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage"
 /cache           ext4   /dev/block/platform/sdhci-tegra.3/by-name/cache
