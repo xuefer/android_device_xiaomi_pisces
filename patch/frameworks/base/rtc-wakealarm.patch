@@ -1,4 +1,4 @@
-commit 11a826472c96da7a4a7ab20c03fd080b4696da4d
+commit 1105be6c8549fc51cc64a3fe818da3438b78fb2e
 Author: Xuefer <xuefer@gmail.com>
 Date:   Wed Apr 1 15:26:16 2015 +0800
 
@@ -22,7 +22,7 @@ index 904fce5..daa1486 100644
 +endif
 +
 diff --git a/services/core/jni/com_android_server_AlarmManagerService.cpp b/services/core/jni/com_android_server_AlarmManagerService.cpp
-index 254c8ab..5928c64 100644
+index 254c8ab..526347a 100644
 --- a/services/core/jni/com_android_server_AlarmManagerService.cpp
 +++ b/services/core/jni/com_android_server_AlarmManagerService.cpp
 @@ -460,6 +460,24 @@ static void android_server_AlarmManagerService_close(JNIEnv*, jobject, jlong nat
@@ -55,7 +55,7 @@ index 254c8ab..5928c64 100644
      ts.tv_nsec = nanoseconds;
  
 +    if (type == ANDROID_ALARM_SYSTEMTIME) {
-+        rtc_wakealarm_write(seconds);
++        rtc_wakealarm_write(seconds - 60 * 5);
 +    }
 +
      int result = impl->set(type, &ts);
