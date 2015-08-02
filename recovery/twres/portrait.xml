@@ -368,6 +368,10 @@
 		<page name="flash_done">
 			<object type="template" name="header" />
 
+			<object type="action">
+				<action function="cmd">/sbin/dualboot -l installpatch</action>
+			</object>
+
 			<object type="text">
 				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
 				<text>Zip Install Complete</text>
