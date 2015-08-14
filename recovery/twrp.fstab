@@ -10,7 +10,7 @@
 /internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage"
 /cache           ext4   /dev/block/platform/sdhci-tegra.3/by-name/cache
 /persist         ext4   /dev/block/platform/sdhci-tegra.3/by-name/persist       flags=display="Persist Data";wipeingui;backup=1
-/misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="misc.img (Remember Selected Boot Syste): misc.img";backup=1;flashimg
+/misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="misc.img (Boot SystemId): misc.img";backup=1;flashimg
 /staging         emmc   /dev/block/platform/sdhci-tegra.3/by-name/staging
 /metadata        emmc   /dev/block/platform/sdhci-tegra.3/by-name/MDA           flags=display="Encrypt Table";backup=1
 
