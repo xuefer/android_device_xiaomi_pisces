@@ -38,9 +38,11 @@
 			<text>重启到 系统 %property.dualboot.system%</text>
 			<actions>
 				<action function="set">tw_back=main2</action>
-				<action function="set">tw_action=reboot</action>
-				<action function="set">tw_action_param=system</action>
-				<action function="set">tw_has_action2=0</action>
+				<action function="set">tw_action=cmd</action>
+				<action function="set">tw_action_param=/sbin/dualboot -l installpatch</action>
+				<action function="set">tw_has_action2=1</action>
+				<action function="set">tw_action2=reboot</action>
+				<action function="set">tw_action_param2=system</action>
 				<action function="set">tw_text1=操作系统未安装!</action>
 				<action function="set">tw_text2=您确认要重启吗?</action>
 				<action function="set">tw_text3=</action>
@@ -367,10 +369,6 @@
 
 		<page name="flash_done">
 			<object type="template" name="header" />
-
-			<object type="action">
-				<action function="cmd">/sbin/dualboot -l installpatch</action>
-			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
