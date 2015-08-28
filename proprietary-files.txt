@@ -54,6 +54,10 @@ etc/power.pisces.rc
 etc/ril_atc_sprd.config
 etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin
 etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca
+framework/com.broadcom.bt.jar
+framework/com.broadcom.nfc.jar
+framework/com.vzw.nfc.jar
+framework/org.simalliance.openmobileapi.jar
 lib/egl/libEGL_tegra_impl.so
 lib/egl/libEGL_tegra.so
 lib/egl/libGLESv1_CM_tegra_impl.so

@@ -153,6 +153,7 @@ PRODUCT_PACKAGES += \
     NfcNci \
     Tag \
     com.android.nfc_extras \
+    SmartcardService \
 
 # USB
 PRODUCT_PACKAGES += \
