@@ -1,0 +1,44 @@
+From 3d51edb9dba3d4f797a9c86961d6c00767a54aa6 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Fri, 28 Aug 2015 14:55:25 +0800
+Subject: [PATCH] add support for kernel without FRA_UID_START
+
+---
+ server/Android.mk          | 5 +++++
+ server/RouteController.cpp | 4 ++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/server/Android.mk b/server/Android.mk
+index fbcba67..ddca34a 100755
+--- a/server/Android.mk
++++ b/server/Android.mk
+@@ -83,6 +83,11 @@ ifdef WPA_SUPPLICANT_VERSION
+   LOCAL_C_INCLUDES += external/wpa_supplicant_8/src/common
+ endif
+ 
++# set this if your kernel don't support FRA_UID_START/FRA_UID_END
++ifeq ($(NETD_DISABLE_MULTIUSER_VPN), true)
++LOCAL_CFLAGS += -DNETD_DISABLE_MULTIUSER_VPN
++endif
++
+ include $(BUILD_EXECUTABLE)
+ 
+ include $(CLEAR_VARS)
+diff --git a/server/RouteController.cpp b/server/RouteController.cpp
+index 17aa1e0..5dd0a63 100644
+--- a/server/RouteController.cpp
++++ b/server/RouteController.cpp
+@@ -256,6 +256,10 @@ int padInterfaceName(const char* input, char* name, size_t* length, uint16_t* pa
+ WARN_UNUSED_RESULT int modifyIpRule(uint16_t action, uint32_t priority, uint32_t table,
+                                     uint32_t fwmark, uint32_t mask, const char* iif,
+                                     const char* oif, uid_t uidStart, uid_t uidEnd) {
++#ifdef NETD_DISABLE_MULTIUSER_VPN
++    uidStart = uidEnd = INVALID_UID;
++#endif
++
+     // Ensure that if you set a bit in the fwmark, it's not being ignored by the mask.
+     if (fwmark & ~mask) {
+         ALOGE("mask 0x%x does not select all the bits set in fwmark 0x%x", mask, fwmark);
+-- 
+2.3.6
+
