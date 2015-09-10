@@ -1,0 +1,94 @@
+From b2ff09f1d8d29effbf41586aa7d3570abb7dc8fb Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 24 Mar 2015 01:28:30 +0800
+Subject: [PATCH 2/2] init: pick system1 (the 2nd) for mount/mount_all
+
+ro.syspart decide which system parittion to mount
+
+when ro.syspart=system1, and when mounting
+/dev/block/platform/sdhci-tegra.3/by-name/system as
+mount source (blk_device), system1 partition is mounted instead
+
+Change-Id: I2d5da99d02f3557f5e91c722ed173a5cfd9d4328
+---
+ fs_mgr/Android.mk     |  4 ++++
+ fs_mgr/fs_mgr_fstab.c | 16 ++++++++++++++++
+ init/builtins.c       | 13 +++++++++++++
+ 3 files changed, 33 insertions(+)
+
+diff --git a/fs_mgr/Android.mk b/fs_mgr/Android.mk
+index cc7d58f..169aae9 100644
+--- a/fs_mgr/Android.mk
++++ b/fs_mgr/Android.mk
+@@ -21,6 +21,10 @@ ifneq (,$(filter userdebug,$(TARGET_BUILD_VARIANT)))
+ LOCAL_CFLAGS += -DALLOW_ADBD_DISABLE_VERITY=1
+ endif
+ 
++ifneq ($(strip $(INIT_MI3TD_HACK)),)
++LOCAL_CFLAGS += -DINIT_MI3TD_HACK
++endif
++
+ include $(BUILD_STATIC_LIBRARY)
+ 
+ 
+diff --git a/fs_mgr/fs_mgr_fstab.c b/fs_mgr/fs_mgr_fstab.c
+index 7758062..704645a 100644
+--- a/fs_mgr/fs_mgr_fstab.c
++++ b/fs_mgr/fs_mgr_fstab.c
+@@ -19,6 +19,9 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/mount.h>
++#ifdef INIT_MI3TD_HACK
++#include <sys/system_properties.h>
++#endif
+ 
+ #include "fs_mgr_priv.h"
+ 
+@@ -261,6 +264,19 @@ struct fstab *fs_mgr_read_fstab(const char *fstab_path)
+             ERROR("Error parsing mount source\n");
+             goto err;
+         }
++#ifdef INIT_MI3TD_HACK
++        if (!strcmp("/dev/block/platform/sdhci-tegra.3/by-name/system", p)) {
++            char syspart[PROP_VALUE_MAX];
++
++            if (__system_property_get("ro.syspart", syspart) <= 0) {
++                strcpy(syspart, "system");
++            }
++            if (strcmp("system1", syspart) == 0) {
++                p = "/dev/block/platform/sdhci-tegra.3/by-name/system1";
++            }
++            INFO("MI3TD: Using system blk_device=%s\n", p);
++        }
++#endif
+         fstab->recs[cnt].blk_device = strdup(p);
+ 
+         if (!(p = strtok_r(NULL, delim, &save_ptr))) {
+diff --git a/init/builtins.c b/init/builtins.c
+index 9ceebb3..73c1ac9 100644
+--- a/init/builtins.c
++++ b/init/builtins.c
+@@ -528,6 +528,19 @@ int do_mount(int nargs, char **args)
+         ERROR("out of loopback devices");
+         return -1;
+     } else {
++#ifdef INIT_MI3TD_HACK
++        if (!strcmp("/dev/block/platform/sdhci-tegra.3/by-name/system", source)) {
++            char syspart[PROP_VALUE_MAX];
++
++            if (property_get("ro.syspart", syspart) <= 0) {
++                strcpy(syspart, "system");
++            }
++            if (strcmp("system1", syspart) == 0) {
++                source = "/dev/block/platform/sdhci-tegra.3/by-name/system1";
++            }
++            INFO("MI3TD: Using system source=%s\n", source);
++        }
++#endif
+         if (wait)
+             wait_for_file(source, COMMAND_RETRY_TIMEOUT);
+         if (mount(source, target, system, flags, options) < 0) {
+-- 
+2.3.6
+

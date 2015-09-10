@@ -1,15 +1,21 @@
-commit 10a5b5e4a0c688eb9ed34072155748aba9b33eee
-Author: Xuefer <xuefer@gmail.com>
-Date:   Mon Mar 23 16:40:30 2015 +0800
+From 7bffbd43fec072e2605f77e0fa2b528e19e45867 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Mon, 23 Mar 2015 16:40:30 +0800
+Subject: [PATCH 1/2] MI3TD device node name hack for init
 
-    MI3TD device node name hack for init
-    
-    MI3 TD requires some hack for partition names which seems like a migration
-    
-    Change-Id: Idf251c45ee6029dc2c9bb4e8e2e8033c2c722025
+MI3 TD requires some hack for partition names which seems like a migration
+
+Change-Id: Idf251c45ee6029dc2c9bb4e8e2e8033c2c722025
+---
+ init/Android.mk          |  4 ++++
+ init/devices.c           | 54 ++++++++++++++++++++++++++++++++++++++++++++++--
+ init/init.c              |  2 ++
+ liblog/logd_write.c      |  6 +++++-
+ liblog/logd_write_kern.c |  6 +++++-
+ 5 files changed, 68 insertions(+), 4 deletions(-)
 
 diff --git a/init/Android.mk b/init/Android.mk
-index db000c2..da0af78 100755
+index c6863bf..73ab7e8 100755
 --- a/init/Android.mk
 +++ b/init/Android.mk
 @@ -25,6 +25,10 @@ LOCAL_SRC_FILES += bootchart.c
@@ -24,10 +30,10 @@ index db000c2..da0af78 100755
  LOCAL_CFLAGS += -DALLOW_LOCAL_PROP_OVERRIDE=1 -DALLOW_DISABLE_SELINUX=1
  endif
 diff --git a/init/devices.c b/init/devices.c
-index 9852eb4..5da6b31 100644
+index 05f0aef..39a2bb1 100644
 --- a/init/devices.c
 +++ b/init/devices.c
-@@ -56,6 +56,38 @@
+@@ -57,6 +57,38 @@
  #define FIRMWARE_DIR3   "/firmware/image"
  #define DEVICES_BASE    "/devices/soc.0"
  
@@ -66,7 +72,7 @@ index 9852eb4..5da6b31 100644
  extern struct selabel_handle *sehandle;
  extern char bootdevice[32];
  
-@@ -606,10 +638,10 @@ static char **get_block_device_symlinks(struct uevent *uevent)
+@@ -607,10 +639,10 @@ static char **get_block_device_symlinks(struct uevent *uevent)
          return NULL;
      }
  
@@ -79,7 +85,7 @@ index 9852eb4..5da6b31 100644
  
      INFO("found %s device %s\n", type, device);
  
-@@ -655,6 +687,24 @@ static char **get_block_device_symlinks(struct uevent *uevent)
+@@ -656,6 +688,24 @@ static char **get_block_device_symlinks(struct uevent *uevent)
          else
              links[link_num] = NULL;
  
@@ -105,10 +111,10 @@ index 9852eb4..5da6b31 100644
              if (asprintf(&links[link_num], "/dev/block/bootdevice/by-name/%s", p) > 0)
                  link_num++;
 diff --git a/init/init.c b/init/init.c
-index 7a68e62..c22a132 100644
+index 8a7427d..5a508dd 100644
 --- a/init/init.c
 +++ b/init/init.c
-@@ -746,6 +746,8 @@ static void import_kernel_nv(char *name, int for_emulator)
+@@ -749,6 +749,8 @@ static void import_kernel_nv(char *name, int for_emulator)
          cnt = snprintf(prop, sizeof(prop), "ro.boot.%s", boot_prop_name);
          if (cnt < PROP_NAME_MAX)
              property_set(prop, value);
@@ -118,10 +124,10 @@ index 7a68e62..c22a132 100644
  }
  
 diff --git a/liblog/logd_write.c b/liblog/logd_write.c
-index df077f7..e6341ae 100644
+index 1ebf282..1342fed 100644
 --- a/liblog/logd_write.c
 +++ b/liblog/logd_write.c
-@@ -439,7 +439,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
+@@ -488,7 +488,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
          !strcmp(tag, "STK") ||
          !strcmp(tag, "CDMA") ||
          !strcmp(tag, "PHONE") ||
@@ -151,66 +157,6 @@ index 34fcb1c..91d93f3 100644
              log_id = LOG_ID_RADIO;
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
-commit ff2641c9f39d69ba4d3b18be9f19b8148e1cfcd7
-Author: Xuefer <xuefer@gmail.com>
-Date:   Tue Mar 24 01:28:30 2015 +0800
+-- 
+2.3.6
 
-    init: mount_all can now mount system1 (the 2nd) if syspart=system1
-    
-    Change-Id: I2d5da99d02f3557f5e91c722ed173a5cfd9d4328
-
-diff --git a/fs_mgr/Android.mk b/fs_mgr/Android.mk
-index e1d2029..bf735d0 100644
---- a/fs_mgr/Android.mk
-+++ b/fs_mgr/Android.mk
-@@ -17,6 +17,10 @@ ifneq (,$(filter userdebug,$(TARGET_BUILD_VARIANT)))
- LOCAL_CFLAGS += -DALLOW_ADBD_DISABLE_VERITY=1
- endif
- 
-+ifneq ($(strip $(INIT_MI3TD_HACK)),)
-+LOCAL_CFLAGS += -DINIT_MI3TD_HACK
-+endif
-+
- include $(BUILD_STATIC_LIBRARY)
- 
- 
-diff --git a/fs_mgr/fs_mgr_fstab.c b/fs_mgr/fs_mgr_fstab.c
-index ab8f128..fcc9763 100644
---- a/fs_mgr/fs_mgr_fstab.c
-+++ b/fs_mgr/fs_mgr_fstab.c
-@@ -19,6 +19,9 @@
- #include <stdlib.h>
- #include <string.h>
- #include <sys/mount.h>
-+#ifdef INIT_MI3TD_HACK
-+#include <sys/system_properties.h>
-+#endif
- 
- #include "fs_mgr_priv.h"
- 
-@@ -255,6 +258,25 @@ struct fstab *fs_mgr_read_fstab(const char *fstab_path)
-             ERROR("Error parsing mount source\n");
-             goto err;
-         }
-+#ifdef INIT_MI3TD_HACK
-+        if (!strcmp("/dev/block/platform/sdhci-tegra.3/by-name/system", p)) {
-+            char syspart[PROP_VALUE_MAX];
-+            char *blk_device;
-+
-+            if (__system_property_get("ro.syspart", syspart) <= 0) {
-+                strcpy(syspart, "system");
-+            }
-+            if (!strcmp("system1", syspart)) {
-+                blk_device = "/dev/block/platform/sdhci-tegra.3/by-name/system1";
-+            }
-+            else {
-+                blk_device = "/dev/block/platform/sdhci-tegra.3/by-name/system";
-+            }
-+            fstab->recs[cnt].blk_device = strdup(blk_device);
-+            INFO("MI3TD: Using system blk_device=%s\n", blk_device);
-+        }
-+        else
-+#endif
-         fstab->recs[cnt].blk_device = strdup(p);
- 
-         if (!(p = strtok_r(NULL, delim, &save_ptr))) {
