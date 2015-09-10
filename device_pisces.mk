@@ -18,7 +18,7 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_CHARACTERISTICS := nosdcard
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp,adb \
+    persist.sys.usb.config=adb \
     persist.sys.isUsbOtgEnabled=1 \
 
 PRODUCT_PROPERTY_OVERRIDES += \
