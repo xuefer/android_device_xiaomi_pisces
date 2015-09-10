@@ -38,7 +38,6 @@
 /dev/ttyHS0	0660	radio	system
 /dev/ttyHS1	0660	root	system
 /dev/ttyHS2	0660	bluetooth	bluetooth
-/dev/ttySC0	0660	root	system
 #for FM V4L2 Radio
 /dev/radio      0666    system  radio
 /dev/mpu        0640    system  system
@@ -55,7 +54,8 @@
 /dev/max_online_cpus	0660	system	system
 /dev/tspdrv     0660    system  system
 
-#add from ueventd.rc
+#add from official MI3 TD ueventd.rc
+/dev/ts0710mux*           0660   radio      system
 /dev/akm8963_dev          0660   system     system
 /dev/iio:device*          0660   system     system
 /dev/ttySC0               0666   radio      radio
