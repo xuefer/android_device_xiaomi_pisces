@@ -594,8 +594,6 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
 on charger
     write /sys/class/backlight/lm3533-backlight0/brightness 100
     write /sys/class/backlight/lm3533-backlight1/brightness 100
-    # need adbkeys in /data partition
-    mount_all /fstab.pisces
     setprop sys.usb.config adb
     write /sys/kernel/cluster/immediate 1
     write /sys/kernel/cluster/force 1
