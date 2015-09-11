@@ -594,18 +594,22 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
 on charger
     write /sys/class/backlight/lm3533-backlight0/brightness 100
     write /sys/class/backlight/lm3533-backlight1/brightness 100
-    write /sys/kernel/cluster/immediate 1
-    write /sys/kernel/cluster/force 1
-    write /sys/kernel/cluster/active lp
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor userspace
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 51000
-    write /sys/class/input/input1/enabled 0
+    setprop sys.scaling_governor userspace
+    # used by adb
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system
 
 service charger /sbin/healthd -c
     class charger
     critical
     seclabel u:r:healthd:s0
+
+on property:init.svc.charger=running
+    write /sys/class/input/input1/enabled 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor userspace
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 51000
+    write /sys/kernel/cluster/active lp
+    write /sys/kernel/cluster/immediate 1
+    write /sys/kernel/cluster/force 1
 
 # add from init.rc
 service akmd /system/bin/akmd8963
