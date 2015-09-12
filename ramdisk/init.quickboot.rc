@@ -1,0 +1,12 @@
+# required services and triggers for Qualcomm's QuickBoot
+
+service qbcharger /charger -m 1
+    disabled
+    oneshot
+    seclabel u:r:healthd:s0
+
+on property:sys.qbcharger.enable=true
+    start qbcharger
+
+on property:sys.qbcharger.enable=false
+    stop qbcharger
