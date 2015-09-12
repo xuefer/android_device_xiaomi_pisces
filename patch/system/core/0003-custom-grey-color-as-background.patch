@@ -1,0 +1,25 @@
+From 726659e4abe48ec4406f00dbb7dc230ecc4ac23d Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Sat, 12 Sep 2015 14:44:23 +0800
+Subject: [PATCH] custom grey color as background
+
+---
+ healthd/healthd_mode_charger.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/healthd/healthd_mode_charger.cpp b/healthd/healthd_mode_charger.cpp
+index 304f332..02d56c6 100644
+--- a/healthd/healthd_mode_charger.cpp
++++ b/healthd/healthd_mode_charger.cpp
+@@ -332,7 +332,7 @@ static int64_t curr_time_ms(void)
+ 
+ static void clear_screen(void)
+ {
+-    gr_color(0, 0, 0, 255);
++    gr_color(60, 60, 60, 255);
+     gr_clear();
+ }
+ 
+-- 
+2.3.6
+

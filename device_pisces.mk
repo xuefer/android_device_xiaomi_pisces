@@ -143,6 +143,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     charger_res_images \
 
+PRODUCT_COPY_FILES += \
+    bootable/recovery/fonts/18x32.png:root/res/images/font.png \
+
 # Misc
 PRODUCT_PACKAGES += \
     librs_jni \
