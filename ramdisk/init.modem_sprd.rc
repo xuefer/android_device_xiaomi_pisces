@@ -17,10 +17,19 @@ on init
     chown root radio /sys/class/spi_master/spi0/spi0.0/reset
     chown root radio /sys/class/spi_master/spi0/spi0.0/assert
 
+service_redefine ril-daemon /system/bin/rild
+    class main
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 radio system
+    user root
+    group radio cache inet misc audio sdcard_rw qcom_diag log
+    disabled
+
 service fil-daemon /system/bin/fild
   class main
   user root
   group root radio
+  onrestart stop ril-daemon
 
 on property:persist.mdm.offline_log.enable=true
     write /sys/class/spi_master/spi0/spi0.0/offline_log 1

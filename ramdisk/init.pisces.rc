@@ -710,12 +710,3 @@ on property:persist.sys.display_ce=10
 
 on property:persist.sys.display_ce=11
     write /sys/devices/platform/host1x/tegradc.0/graphics/fb0/set_dispparam 16
-
-service-redefine ril-daemon /system/bin/rild
-    class main
-    socket rild stream 660 root radio
-    socket rild-debug stream 660 radio system
-    user root
-    group radio cache inet misc audio sdcard_rw qcom_diag log
-    disabled
-
