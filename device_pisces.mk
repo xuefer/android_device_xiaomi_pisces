@@ -181,7 +181,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     AMAPNetworkLocation \
     Cit \
-    FM \
     NvCPLSvc \
 
 PRODUCT_PACKAGES += \
