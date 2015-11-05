@@ -95,6 +95,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/bin/fild:system/bin/fild \
 
+# powerhal
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/lib/power.pisces.so:system/vendor/lib/hw/power.pisces.so \
+
 # gps
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/gps.conf:system/etc/gps.conf \

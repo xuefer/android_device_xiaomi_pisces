@@ -191,4 +191,3 @@ vendor/firmware/bcm43341/fw_bcmdhd_p2p.bin
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0067_Generic_I2C_NCD_Signed_configdata.ncd
 vendor/firmware/BCM43341NFCB0_002.001.009.0031.0067_Generic_PreI2C_NCD_Signed_configdata.ncd
 vendor/firmware/tlv320aic3262_fw_v1.bin
-vendor/lib/hw/power.pisces.so
