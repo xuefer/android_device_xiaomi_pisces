@@ -11,7 +11,7 @@ on init
     setprop rild.libargs "-r ts0710mux10 -r ts0710mux11 -r ts0710mux4"
     setprop mdm.diag_path /sdcard/offline_log/
     setprop mdm.diag_port /dev/ttyHS0
-    setprop ril.ecclist "112,000,08,110,118,119,911,999,120,122"
+    setprop ril.ecclist "112,000,110,118,119,911,999,120,122"
     setprop persist.radio.modem "TD"
 
     chown root radio /sys/class/spi_master/spi0/spi0.0/reset
