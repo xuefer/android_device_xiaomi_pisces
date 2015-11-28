@@ -79,6 +79,7 @@ TW_CUSTOM_BATTERY_PATH           := /sys/class/power_supply/max170xx_battery
 TW_BRIGHTNESS_PATH               := /sys/class/backlight/lm3533-backlight0/brightness
 TW_SECONDARY_BRIGHTNESS_PATH     := /sys/class/backlight/lm3533-backlight1/brightness
 TW_INCLUDE_CRYPTO                := true
+TW_USE_BUSYBOX                   := true
 TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
 
 TW_RECOVERY_ADDITIONAL_RELINK_FILES := \
@@ -90,6 +91,7 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     init.recovery.pisces.rc \
     repartition \
     twrp.fstab \
+    busybox_symlinks \
 
 # ril
 #BOARD_PROVIDES_LIBRIL:= true

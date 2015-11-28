@@ -76,7 +76,7 @@ directory_exists() {
 }
 
 sync() {
-	toolbox sync &>/dev/null || busybox sync
+	toolbox sync &>/dev/null || toybox sync &>/dev/null || busybox sync
 }
 
 for cmd in \
