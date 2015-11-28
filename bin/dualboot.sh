@@ -27,6 +27,10 @@ ldie() {
 	exit 1
 }
 
+die() {
+	ldie "$1" "$1"
+}
+
 is_mounted_mountpoint() {
 	mount | grep -q " $1 "
 }
@@ -369,7 +373,7 @@ installoverridefile() {
 #
 
 do_set() {
-	dualboot_write "$1" || die "Usage: dualboot set <1|2>"
+	dualboot_write "$1" || ldie "Usage: dualboot set <1|2>" "用法: dualboot set <1|2>"
 	dualboot_hacknodes "$1"
 
 	mount_ex /data
