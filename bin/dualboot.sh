@@ -3,6 +3,7 @@
 
     bootmark_file=/dev/block/platform/sdhci-tegra.3/by-name/misc
      datadev_file=/dev/block/platform/sdhci-tegra.3/by-name/userdata
+   systemdev_file=/dev/block/platform/sdhci-tegra.3/by-name/system
   bootmark_offset=4096
      partnum_boot=19
     partnum_boot1=20
@@ -15,8 +16,8 @@
 
 lecho() {
 	case "$language" in
-	zh*) echo "$2";;
-	*) echo "$1";;
+	zh*) echo $3 "$2";;
+	*) echo $3 "$1";;
 	esac
 }
 
@@ -76,7 +77,9 @@ directory_exists() {
 }
 
 sync() {
+	lecho "Syncing ... " "同步中 ... " -n
 	toolbox sync &>/dev/null || toybox sync &>/dev/null || busybox sync
+	lecho done "完成"
 }
 
 for cmd in \
@@ -205,7 +208,7 @@ dualdata_open() {
 	SYSTEMS=$DATA/media
 
 	mkdir -p $DATA
-	mount_ex -o bind /data $DATA
+	mount_ex -o bind /data $DATA || die "Can't mount /data"
 	if [[ ! -d $DATA/media ]]; then
 		mkdir $DATA/media
 		chmod 770 $DATA/media
@@ -376,7 +379,7 @@ do_set() {
 	dualboot_write "$1" || ldie "Usage: dualboot set <1|2>" "用法: dualboot set <1|2>"
 	dualboot_hacknodes "$1"
 
-	mount_ex /data
+	mount_ex "$datadev_file" /data || die "Can't mount /data"
 	dualdata_open
 	dualdata_switchtodata "$1"
 	dualdata_close
@@ -433,7 +436,7 @@ recovery_save() {
 	dualboot_write "$which" || die "Failed saving dualboot setting"
 	dualboot_hacknodes "$which"
 
-	mount_ex "$datadev_file" /data
+	mount_ex "$datadev_file" /data || die "Can't mount /data"
 	dualdata_open
 	dualdata_switchtodata "$which"
 	dualdata_close
@@ -446,7 +449,7 @@ recovery_load() {
 	setprop dualboot.system "$which" || die "Failed loading dualboot setting"
 	dualboot_hacknodes "$which"
 
-	mount_ex "$datadev_file" /data
+	mount_ex "$datadev_file" /data || die "Can't mount /data"
 	dualdata_open
 	setprop dualboot.dualdata "$DUALDATA_ENABLED"
 	dualdata_switchtodata "$which"
@@ -454,7 +457,7 @@ recovery_load() {
 }
 
 recovery_installpatch() {
-	mount_ex /system || die "Can't mount /system"
+	mount_ex "$systemdev_file" /system || die "Can't mount /system"
 	mount -o remount,rw /system
 	installoverridefile /twres/mount_ext4.sh /system/bin/mount_ext4.sh || die "Can't install override file"
 	sync
@@ -463,7 +466,7 @@ recovery_installpatch() {
 recovery_enabledualdata() {
 	local which=$(getprop dualboot.system)
 
-	mount_ex "$datadev_file" /data
+	mount_ex "$datadev_file" /data || die "Can't mount /data"
 	dualdata_open
 	dualdata_enable "$which"
 	# recheck
@@ -474,7 +477,7 @@ recovery_enabledualdata() {
 }
 
 recovery_disabledualdata() {
-	mount_ex "$datadev_file" /data
+	mount_ex "$datadev_file" /data || die "Can't mount /data"
 	dualdata_open
 	dualdata_disable
 	# recheck
