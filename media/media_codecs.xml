@@ -81,16 +81,20 @@ Only the three quirks included above are recognized at this point:
         <MediaCodec name="OMX.Nvidia.h263.decode" type="video/3gpp" />
         <MediaCodec name="OMX.Nvidia.h264.decode" type="video/avc" />
         <MediaCodec name="OMX.Nvidia.mpeg2v.decode" type="video/mpeg2" />
-        <MediaCodec name="OMX.Nvidia.mp3.decoder" type="audio/mpeg" />
-        <MediaCodec name="OMX.Nvidia.mp3.decoder" type="audio/mpeg-L2" />
+        <MediaCodec name="OMX.Nvidia.mp3.decoder">
+            <Type name="audio/mpeg" />
+            <Type name="audio/mpeg-L2" />
+        </MediaCodec>
         <!--MediaCodec name="OMX.Nvidia.eaacp.decoder" type="audio/mp4a-latm" /-->
         <MediaCodec name="OMX.Nvidia.wma.decoder" type="audio/x-ms-wma" />
         <MediaCodec name="OMX.Nvidia.vc1.decode" type="video/x-ms-wmv" />
         <MediaCodec name="OMX.Nvidia.mjpeg.decoder" type="video/mjpeg" />
         <MediaCodec name="OMX.Nvidia.vc1.decode.secure" type="video/x-ms-wmv" />
         <MediaCodec name="OMX.Nvidia.vp8.decode" type="video/x-vnd.on2.vp8" />
-        <MediaCodec name="OMX.Nvidia.bypass.decoder" type="audio/ac3" />
-        <MediaCodec name="OMX.Nvidia.bypass.decoder" type="audio/dts" />
+        <MediaCodec name="OMX.Nvidia.bypass.decoder">
+            <Type name="audio/ac3" />
+            <Type name="audio/dts" />
+        </MediaCodec>
     </Decoders>
 
     <Encoders>
