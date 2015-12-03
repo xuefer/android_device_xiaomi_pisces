@@ -254,6 +254,7 @@
 				<placement x="180" y="70" w="400" h="52" />
 				<text>Language: English</text>
 				<action function="overlay">languageselect</action>
+				<condition var1="tw_busy" var2="0" />
 			</object>
 
 			<object type="text" color="%text_color%">
@@ -278,7 +279,10 @@
 
 			<object type="button" style="activesystembutton">
 				<placement x="660" y="70" w="400" h="52" />
-				<condition var1="property.ro.tw_has_dualboot" var2="1" />
+				<conditions>
+					<condition var1="property.ro.tw_has_dualboot" var2="1" />
+					<condition var1="tw_busy" var2="0" />
+				</conditions>
 				<text>Active System: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
 				<action function="page">switchsystem</action>
 			</object>

@@ -38,11 +38,9 @@
 			<text>重启到 系统 %property.dualboot.system%</text>
 			<actions>
 				<action function="set">tw_back=main2</action>
-				<action function="set">tw_action=cmd</action>
-				<action function="set">tw_action_param=/sbin/dualboot -l installpatch</action>
-				<action function="set">tw_has_action2=1</action>
-				<action function="set">tw_action2=reboot</action>
-				<action function="set">tw_action_param2=system</action>
+				<action function="set">tw_action=reboot</action>
+				<action function="set">tw_action_param=system</action>
+				<action function="set">tw_has_action2=0</action>
 				<action function="set">tw_text1=操作系统未安装!</action>
 				<action function="set">tw_text2=您确认要重启吗?</action>
 				<action function="set">tw_text3=</action>
@@ -804,6 +802,40 @@
 		</page>
 
 		<page name="rebootcheck">
+			<object type="action">
+				<condition var1="property.ro.tw_has_dualboot" var2="1" />
+				<action function="page">installpatch</action>
+			</object>
+
+			<object type="action">
+				<condition var1="property.ro.tw_has_dualboot" op="!=" var2="1" />
+				<action function="page">rebootcheck2</action>
+			</object>
+		</page>
+
+		<page name="installpatch">
+			<object type="template" name="header" />
+
+			<object type="text">
+				<placement x="%center_x%" y="%row1_text_y%" placement="5" />
+				<text>正在安装双系统/双数据补丁 ...</text>
+			</object>
+
+			<object type="template" name="action_page_console" />
+
+			<object type="template" name="progress_bar" />
+
+			<object type="action">
+				<condition var1="tw_operation_state" var2="1" />
+				<action function="page">rebootcheck2</action>
+			</object>
+
+			<object type="action">
+				<action function="cmd">/sbin/dualboot -l installpatch</action>
+			</object>
+		</page>
+
+		<page name="rebootcheck2">
 			<object type="action">
 				<condition var1="tw_backup_system_size" op="&gt;=" var2="%tw_min_system%" />
 				<action function="reboot">%tw_action_param%</action>
@@ -2249,10 +2281,6 @@
 
 		<page name="reboot">
 			<object type="template" name="header" />
-
-			<object type="action">
-				<action function="cmd">/sbin/dualboot -l installpatch</action>
-			</object>
 
 			<object type="text">
 				<placement x="%center_x%" y="%row1_header_y%" placement="5" />
