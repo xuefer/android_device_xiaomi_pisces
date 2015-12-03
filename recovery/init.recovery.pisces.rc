@@ -7,7 +7,6 @@ on early-init
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
 
 on early-boot
-    setprop sys.usb.config mtp,adb
     setprop ro.tw_has_dualboot 1
     wait /dev/block/mmcblk0p19
     wait /dev/block/mmcblk0p20
