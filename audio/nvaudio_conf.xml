@@ -88,7 +88,7 @@
 
     <path>
       <ctl name="Input PGA Analog Volume" val="36"/>
-      <ctl name="Input Path Digital Volume" val="223"/>
+      <ctl name="Input Path Digital Volume" val="108"/>
       <ctl name="ASP-IP Left Volume" val="63"/>
       <ctl name="ASP-IP Right Volume" val="63"/>
       <ctl name="VSP-IP Left Volume" val="63"/>
