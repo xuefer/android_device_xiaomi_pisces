@@ -13,7 +13,8 @@ import init.quickboot.rc
 
 on early-init
     write /sys/block/mmcblk0/queue/scheduler noop
-    setprop sys.scaling_governor performance
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpufreq/interactive/boost 1
     mount debugfs debugfs /sys/kernel/debug
 
 on init
@@ -115,9 +116,7 @@ on early-boot
     exec /system/bin/sh /system/bin/atmel_fw_update.sh
 
 on boot
-
-
-#Add from init.rc 
+#Add from init.rc
     # atomic allocations can get upto 5/8th of this size
     write /proc/sys/vm/min_free_kbytes 16384
 
@@ -256,11 +255,18 @@ on boot
     #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 1000000
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor conservative
+
     write /sys/devices/system/cpu/cpufreq/conservative/up_threshold 95
     write /sys/devices/system/cpu/cpufreq/conservative/down_threshold 50
     write /sys/devices/system/cpu/cpufreq/conservative/freq_step 3
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 612000
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
@@ -271,30 +277,6 @@ on boot
     write /sys/module/cpuidle_t11x/parameters/cpu_power_gating_in_idle 31
     write /sys/module/cpuidle_t11x/parameters/slow_cluster_power_gating_noncpu 1
     write /sys/module/cpuidle/parameters/power_down_in_idle 1
-
-    # reset to performance until boot completed
-    setprop sys.scaling_governor performance
-
-on property:sys.scaling_governor=*
-    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/enable 0
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ${sys.scaling_governor}
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ${sys.scaling_governor}
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor ${sys.scaling_governor}
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor ${sys.scaling_governor}
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor ${sys.scaling_governor}
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu1/online 0
-    write /sys/devices/system/cpu/cpu2/online 0
-    write /sys/devices/system/cpu/cpu3/online 0
-    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/enable 1
-
-on property:sys.scaling_governor=performance
-
-on property:sys.scaling_governor=interactive
     chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
     chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
     chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
@@ -303,16 +285,17 @@ on property:sys.scaling_governor=interactive
     chown system system /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/emc_max
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     chown system system /sys/devices/system/cpu/cpuquiet/runnable_threads/nr_cpu_limit
+    chown system system /sys/devices/tegradc.0/enable
+    chown system system /sys/devices/tegradc.1/enable
 
-    # TODO: Remove once powerhal takes over app profiles
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-
-on boot
     chown system system /sys/kernel/tegra_cap/cbus_cap_level
     chown system system /sys/kernel/tegra_cap/cbus_cap_state
     chown system system /sys/devices/platform/host1x/gr3d/enable_3d_scaling
     chown system system /sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq
     chown system system /sys/devices/platform/pwm-fan/pwm_cap
+
+    # TODO: Remove once powerhal takes over app profiles
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 
 # thermal point path used by power HAL
     chown system system /sys/devices/virtual/thermal/thermal_zone5/pid_thermal_gov/max_err_temp
@@ -651,23 +634,19 @@ service immvibed /system/bin/immvibed
 
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
-    setprop sys.perf.profile middle
+    write /sys/devices/system/cpu/cpufreq/interactive/boost 0
 
-on property:sys.perf.profile=*
-    setprop sys.scaling_governor interactive
-    setprop sys.perf.profile_ ${sys.perf.profile}
-
-on property:sys.perf.profile_=high
+on property:sys.perf.profile=high
     start nv_power_high
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "55 228000:65 1530000:75"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
 
-on property:sys.perf.profile_=middle
+on property:sys.perf.profile=middle
     start nv_power_middle
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
 
-on property:sys.perf.profile_=low
+on property:sys.perf.profile=low
     start nv_power_low
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
