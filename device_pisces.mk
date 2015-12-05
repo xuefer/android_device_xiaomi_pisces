@@ -163,6 +163,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     librs_jni \
     libnetcmdiface  \
+    e2fsck \
 
 # NFC
 PRODUCT_PACKAGES += \

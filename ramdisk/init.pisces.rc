@@ -53,11 +53,6 @@ on fs
     setprop ro.crypto.fuse_sdcard true
     mount_all /fstab.pisces
 
-    wait /dev/block/platform/sdhci-tegra.3/by-name/cache
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/cache /cache
-
-    wait /dev/block/platform/sdhci-tegra.3/by-name/persist
-    exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/sdhci-tegra.3/by-name/persist /persist
     chown system system /persist
     chmod 0771 /persist
 

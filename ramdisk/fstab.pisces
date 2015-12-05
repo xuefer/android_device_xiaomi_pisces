@@ -4,7 +4,9 @@
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
 /dev/block/platform/sdhci-tegra.3/by-name/system        /system             ext4      ro,barrier=1                                                           wait,check
-/dev/block/platform/sdhci-tegra.3/by-name/userdata      /data               ext4      noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,discard    wait,check,encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
+/dev/block/platform/sdhci-tegra.3/by-name/cache         /cache              ext4      noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,discard    wait,check,formattable
+/dev/block/platform/sdhci-tegra.3/by-name/persist       /persist            ext4      noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,discard    wait,check,formattable
+/dev/block/platform/sdhci-tegra.3/by-name/userdata      /data               ext4      noatime,nosuid,nodev,barrier=1,data=ordered,noauto_da_alloc,discard    wait,check,formattable,encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
 
 /devices/platform/tegra-ehci.0/usb1                     auto                auto      defaults                                                               voldmanaged=usbdisk:auto,noemulatedsd
 
