@@ -135,6 +135,7 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     audio.r_submix.default \
     libaudioutils \
+    audio.usb.default \
     tinycap \
     tinymix \
     tinypcminfo \

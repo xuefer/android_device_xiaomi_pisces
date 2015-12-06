@@ -1,0 +1,462 @@
+From 26b63874e01c543e4409170d4d7a3180750a8a96 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 8 Apr 2015 13:54:02 +0800
+Subject: [PATCH 2/2] miui-audio: adds tlv
+
+Change-Id: I290f239b459de4eb1a8d91744e53e7cc3d673d15
+---
+ mixer.c | 401 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 401 insertions(+)
+
+diff --git a/mixer.c b/mixer.c
+index 4568cca..aa12941 100644
+--- a/mixer.c
++++ b/mixer.c
+@@ -42,22 +42,396 @@
+ #define __user
+ #include <sound/asound.h>
+ 
++//#define LOG_NDEBUG 0
++#define LOG_TAG "tinyalsa"
++#include <utils/Log.h>
+ #include <tinyalsa/asoundlib.h>
+ 
++#ifdef MIUI_AUDIO_BLOB
++struct mixer_tlv {
++    int type;
++    int size;
++    int tlvdata[1]; /* sizeof(tlvdata) == size */
++}
++#endif
+ struct mixer_ctl {
+     struct mixer *mixer;
+     struct snd_ctl_elem_info *info;
+     char **ename;
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    struct snd_ctl_tlv *tlv;
++#endif
+ };
+ 
+ struct mixer {
+     int fd;
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    int refcount;
++#endif
+     struct snd_ctl_card_info card_info;
++#ifdef MIUI_AUDIO_BLOB
++    int miui_unknown;
++#endif
+     struct snd_ctl_elem_info *elem_info;
+     struct mixer_ctl *ctl;
+     unsigned int count;
+ };
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++
++#include <math.h>
++
++#define SNDERR ALOGE
++
++/** TLV type - Container */
++#define SND_CTL_TLVT_CONTAINER       0x0000
++/** TLV type - basic dB scale */
++#define SND_CTL_TLVT_DB_SCALE        0x0001
++/** TLV type - linear volume */
++#define SND_CTL_TLVT_DB_LINEAR       0x0002
++/** TLV type - dB range container */
++#define SND_CTL_TLVT_DB_RANGE        0x0003
++/** TLV type - dB scale specified by min/max values */
++#define SND_CTL_TLVT_DB_MINMAX       0x0004
++/** TLV type - dB scale specified by min/max values (with mute) */
++#define SND_CTL_TLVT_DB_MINMAX_MUTE  0x0005
++
++#define SND_CTL_TLV_DB_GAIN_MUTE    -9999999
++
++/* convert to index of integer array */
++#define int_index(size) (((size) + sizeof(int) - 1) / sizeof(int))
++/* max size of a TLV entry for dB information (including compound one) */
++#define MAX_TLV_RANGE_SIZE  256
++
++int snd_card_get_card_id_from_sub_string(const char *name)
++{
++    if (!name) {
++        return -EINVAL;
++    }
++
++    struct snd_ctl_card_info cardinfo;
++    char path[256];
++    int controlIndex;
++    for (controlIndex = 0; controlIndex < 8; ++controlIndex) {
++        snprintf(path, sizeof(path), "/dev/snd/controlC%u", controlIndex);
++        int fd = open(path, 0);
++        if (fd < 0) {
++            continue;
++        }
++
++        int result = ioctl(fd, SNDRV_CTL_IOCTL_CARD_INFO, &cardinfo);
++        close(fd);
++        if (result < 0) {
++            continue;
++        }
++
++        if (strcasestr((const char *) cardinfo.id, name)
++         || strcasestr((const char *) cardinfo.name, name)
++         || strcasestr((const char *) cardinfo.driver, name)
++         || strcasestr((const char *) cardinfo.longname, name)) {
++            ALOGV("found card %s = %d", name, cardinfo.card);
++            return cardinfo.card;
++        }
++    }
++
++    ALOGE("snd card %s not found", name);
++    return -EINVAL;
++}
++
++struct mixer *mixer_dup(struct mixer *mixer)
++{
++    if (mixer)
++        ++mixer->refcount;
++    return mixer;
++}
++
++#define snd_tlv_get_dB_range mixer_tlv_get_db_range
++#define snd_tlv_parse_dB_info mixer_tlv_parse_db_info
++
++/**
++ * \brief Parse TLV stream and retrieve dB information
++ * \param tlv the TLV source
++ * \param tlv_size the byte size of TLV source
++ * \param db_tlvp the pointer stored the dB TLV information
++ * \return the byte size of dB TLV information if found in the given
++ *   TLV source, or a negative error code.
++ *
++ * This function parses the given TLV source and stores the TLV start
++ * point if the TLV information regarding dB conversion is found.
++ * The stored TLV pointer can be passed to the convesion functions
++ * #snd_tlv_convert_to_dB(), #snd_tlv_convert_from_dB() and
++ * #snd_tlv_get_dB_range().
++ */
++int snd_tlv_parse_dB_info(unsigned int *tlv,
++			  unsigned int tlv_size,
++			  unsigned int **db_tlvp)
++{
++	unsigned int type;
++	unsigned int size;
++	int err;
++
++	*db_tlvp = NULL;
++	type = tlv[0];
++	size = tlv[1];
++	tlv_size -= 2 * sizeof(int);
++	if (size > tlv_size) {
++		SNDERR("TLV size error");
++		return -EINVAL;
++	}
++	switch (type) {
++	case SND_CTL_TLVT_CONTAINER:
++		size = int_index(size) * sizeof(int);
++		tlv += 2;
++		while (size > 0) {
++			unsigned int len;
++			err = snd_tlv_parse_dB_info(tlv, size, db_tlvp);
++			if (err < 0)
++				return err; /* error */
++			if (err > 0)
++				return err; /* found */
++			len = int_index(tlv[1]) + 2;
++			size -= len * sizeof(int);
++			tlv += len;
++		}
++		break;
++	case SND_CTL_TLVT_DB_SCALE:
++	case SND_CTL_TLVT_DB_MINMAX:
++	case SND_CTL_TLVT_DB_MINMAX_MUTE:
++#ifndef HAVE_SOFT_FLOAT
++	case SND_CTL_TLVT_DB_LINEAR:
++#endif
++	case SND_CTL_TLVT_DB_RANGE: {
++		unsigned int minsize;
++		if (type == SND_CTL_TLVT_DB_RANGE)
++			minsize = 4 * sizeof(int);
++		else
++			minsize = 2 * sizeof(int);
++		if (size < minsize) {
++			SNDERR("Invalid dB_scale TLV size");
++			return -EINVAL;
++		}
++		if (size > MAX_TLV_RANGE_SIZE) {
++			SNDERR("Too big dB_scale TLV size: %d", size);
++			return -EINVAL;
++		}
++		*db_tlvp = tlv;
++		return size + sizeof(int) * 2;
++	}
++	default:
++		break;
++	}
++	return -EINVAL; /* not found */
++}
++
++/**
++ * \brief Get the dB min/max values
++ * \param tlv the TLV source returned by #snd_tlv_parse_dB_info()
++ * \param rangemin the minimum value of the raw volume
++ * \param rangemax the maximum value of the raw volume
++ * \param min the pointer to store the minimum dB value (in 0.01dB unit)
++ * \param max the pointer to store the maximum dB value (in 0.01dB unit)
++ * \return 0 if successful, or a negative error code
++ */
++int snd_tlv_get_dB_range(unsigned int *tlv, long rangemin, long rangemax,
++			 long *min, long *max)
++{
++	int err;
++
++	switch (tlv[0]) {
++	case SND_CTL_TLVT_DB_RANGE: {
++		unsigned int pos, len;
++		len = int_index(tlv[1]);
++		if (len > MAX_TLV_RANGE_SIZE)
++			return -EINVAL;
++		pos = 2;
++		while (pos + 4 <= len) {
++			long rmin, rmax;
++			long submin, submax;
++			submin = (int)tlv[pos];
++			submax = (int)tlv[pos + 1];
++			if (rangemax < submax)
++				submax = rangemax;
++			err = snd_tlv_get_dB_range(tlv + pos + 2,
++						   submin, submax,
++						   &rmin, &rmax);
++			if (err < 0)
++				return err;
++			if (pos > 2) {
++				if (rmin < *min)
++					*min = rmin;
++				if (rmax > *max)
++					*max = rmax;
++			} else {
++				*min = rmin;
++				*max = rmax;
++			}
++			if (rangemax == submax)
++				return 0;
++			pos += int_index(tlv[pos + 3]) + 4;
++		}
++		return 0;
++	}
++	case SND_CTL_TLVT_DB_SCALE: {
++		int step;
++		if (tlv[3] & 0x10000)
++			*min = SND_CTL_TLV_DB_GAIN_MUTE;
++		else
++			*min = (int)tlv[2];
++		step = (tlv[3] & 0xffff);
++		*max = (int)tlv[2] + step * (rangemax - rangemin);
++		return 0;
++	}
++	case SND_CTL_TLVT_DB_MINMAX:
++	case SND_CTL_TLVT_DB_LINEAR:
++		*min = (int)tlv[2];
++		*max = (int)tlv[3];
++		return 0;
++	case SND_CTL_TLVT_DB_MINMAX_MUTE:
++		*min = SND_CTL_TLV_DB_GAIN_MUTE;
++		*max = (int)tlv[3];
++		return 0;
++	}
++	return -EINVAL;
++}
++
++/**
++ * \brief Convert from dB gain to the corresponding raw value
++ * \param tlv the TLV source returned by #snd_tlv_parse_dB_info()
++ * \param rangemin the minimum value of the raw volume
++ * \param rangemax the maximum value of the raw volume
++ * \param db_gain the dB gain to convert (in 0.01dB unit)
++ * \param value the pointer to store the converted raw volume value
++ * \param xdir the direction for round-up. The value is round up
++ *        when this is positive.
++ * \return 0 if successful, or a negative error code
++ */
++static int snd_tlv_convert_from_dB(unsigned int *tlv, long rangemin, long rangemax,
++			    long db_gain, long *value, int xdir)
++{
++	switch (tlv[0]) {
++	case SND_CTL_TLVT_DB_RANGE: {
++		long dbmin, dbmax, prev_submax;
++		unsigned int pos, len;
++		len = int_index(tlv[1]);
++		if (len < 6 || len > MAX_TLV_RANGE_SIZE)
++			return -EINVAL;
++		pos = 2;
++		prev_submax = 0;
++		while (pos + 4 <= len) {
++			long submin, submax;
++			submin = (int)tlv[pos];
++			submax = (int)tlv[pos + 1];
++			if (rangemax < submax)
++				submax = rangemax;
++			if (!snd_tlv_get_dB_range(tlv + pos + 2,
++						  submin, submax,
++						  &dbmin, &dbmax) &&
++			    db_gain >= dbmin && db_gain <= dbmax)
++				return snd_tlv_convert_from_dB(tlv + pos + 2,
++							       submin, submax,
++							       db_gain, value, xdir);
++			else if (db_gain < dbmin) {
++				*value = xdir > 0 || pos == 2 ? submin : prev_submax;
++				return 0;
++			}
++			prev_submax = submax;
++			if (rangemax == submax)
++				break;
++			pos += int_index(tlv[pos + 3]) + 4;
++		}
++		*value = prev_submax;
++		return 0;
++	}
++	case SND_CTL_TLVT_DB_SCALE: {
++		int min, step, max;
++		min = tlv[2];
++		step = (tlv[3] & 0xffff);
++		max = min + (int)(step * (rangemax - rangemin));
++		if (db_gain <= min)
++			if (db_gain > SND_CTL_TLV_DB_GAIN_MUTE && xdir > 0 &&
++			    (tlv[3] & 0x10000))
++				*value = rangemin + 1;
++			else
++				*value = rangemin;
++		else if (db_gain >= max)
++			*value = rangemax;
++		else {
++			long v = (db_gain - min) * (rangemax - rangemin);
++			if (xdir > 0)
++				v += (max - min) - 1;
++			v = v / (max - min) + rangemin;
++			*value = v;
++		}
++		return 0;
++	}
++	case SND_CTL_TLVT_DB_MINMAX:
++	case SND_CTL_TLVT_DB_MINMAX_MUTE: {
++		int min, max;
++		min = tlv[2];
++		max = tlv[3];
++		if (db_gain <= min)
++			if (db_gain > SND_CTL_TLV_DB_GAIN_MUTE && xdir > 0 &&
++			    tlv[0] == SND_CTL_TLVT_DB_MINMAX_MUTE)
++				*value = rangemin + 1;
++			else
++				*value = rangemin;
++		else if (db_gain >= max)
++			*value = rangemax;
++		else {
++			long v = (db_gain - min) * (rangemax - rangemin);
++			if (xdir > 0)
++				v += (max - min) - 1;
++			v = v / (max - min) + rangemin;
++			*value = v;
++		}
++		return 0;
++	}
++#ifndef HAVE_SOFT_FLOAT
++	case SND_CTL_TLVT_DB_LINEAR: {
++		int min, max;
++		min = tlv[2];
++		max = tlv[3];
++		if (db_gain <= min)
++			*value = rangemin;
++		else if (db_gain >= max)
++			*value = rangemax;
++		else {
++			/* FIXME: precalculate and cache vmin and vmax */
++			double vmin, vmax, v;
++			vmin = (min <= SND_CTL_TLV_DB_GAIN_MUTE) ? 0.0 :
++				pow(10.0,  (double)min / 2000.0);
++			vmax = !max ? 1.0 : pow(10.0,  (double)max / 2000.0);
++			v = pow(10.0, (double)db_gain / 2000.0);
++			v = (v - vmin) * (rangemax - rangemin) / (vmax - vmin);
++			if (xdir > 0)
++				v = ceil(v);
++			*value = (long)v + rangemin;
++		}
++		return 0;
++	}
++#endif
++	default:
++		break;
++	}
++	return -EINVAL;
++}
++
++int mixer_tlv_convert_from_db(unsigned int *tlv, long rangemin, long rangemax, long db_gain, long *value) {
++    return snd_tlv_convert_from_dB(tlv, rangemin, rangemax, db_gain, value, 0);
++}
++
++int mixer_ctl_convert_from_db(struct mixer_ctl *ctl, long db_gain, long *value)
++{
++    if (ctl->tlv) {
++        int min = mixer_ctl_get_range_min(ctl);
++        int max = mixer_ctl_get_range_max(ctl);
++        return mixer_tlv_convert_from_db((unsigned int *)ctl->tlv, min, max, db_gain, value);
++    } else {
++        return -EINVAL;
++    }
++}
++#endif
++
+ void mixer_close(struct mixer *mixer)
+ {
+     unsigned int n,m;
+@@ -65,6 +439,11 @@ void mixer_close(struct mixer *mixer)
+     if (!mixer)
+         return;
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    if (--mixer->refcount > 0)
++        return;
++#endif
++
+     if (mixer->fd >= 0)
+         close(mixer->fd);
+ 
+@@ -111,6 +490,9 @@ struct mixer *mixer_open(unsigned int card)
+     if (!mixer)
+         goto fail;
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    mixer->refcount = 1;
++#endif
+     mixer->ctl = calloc(elist.count, sizeof(struct mixer_ctl));
+     mixer->elem_info = calloc(elist.count, sizeof(struct snd_ctl_elem_info));
+     if (!mixer->ctl || !mixer->elem_info)
+@@ -153,6 +535,25 @@ struct mixer *mixer_open(unsigned int card)
+                     goto fail;
+             }
+         }
++#ifdef HAVE_MIUI_AUDIO_BLOB
++        else if (ei->type == SNDRV_CTL_ELEM_TYPE_INTEGER) {
++            struct snd_ctl_tlv *tlvbuffer = alloca(sizeof(*tlvbuffer) + 254 * sizeof(int));
++
++            tlvbuffer->length = 254 * sizeof(int);
++            tlvbuffer->numid = eid[n].numid;
++
++            if (ioctl(fd, SNDRV_CTL_IOCTL_TLV_READ, tlvbuffer) == 0) {
++                unsigned int *parsed_tlv;
++                int parsed_size = mixer_tlv_parse_db_info((unsigned int *)tlvbuffer->tlv, tlvbuffer->length, &parsed_tlv);
++                if (parsed_size < 0)
++                    goto fail;
++                mixer->ctl[n].tlv = (struct snd_ctl_tlv *)malloc(parsed_size);
++                if (!mixer->ctl[n].tlv)
++                    goto fail;
++                memcpy(mixer->ctl[n].tlv, parsed_tlv, parsed_size);
++            }
++        }
++#endif
+     }
+ 
+     free(eid);
+-- 
+2.4.10
+
