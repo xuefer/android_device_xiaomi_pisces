@@ -1,0 +1,33 @@
+From f8fd168215d6de8878eeb6f52fe2fc034375af88 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 9 Dec 2015 21:26:57 +0800
+Subject: [PATCH 3/3] disable power_module_t::setFeature to avoid misuse
+
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ include/hardware/power.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/hardware/power.h b/include/hardware/power.h
+index 7e4853d..9206505 100644
+--- a/include/hardware/power.h
++++ b/include/hardware/power.h
+@@ -151,6 +151,7 @@ typedef struct power_module {
+     void (*powerHint)(struct power_module *module, power_hint_t hint,
+                       void *data);
+ 
++#ifndef HAVE_PRE_LOLLIPOP_POWER_BLOB
+     /*
+      * (*setFeature) is called to turn on or off a particular feature
+      * depending on the state parameter. The possible features are:
+@@ -164,6 +165,7 @@ typedef struct power_module {
+      *
+      */
+     void (*setFeature)(struct power_module *module, feature_t feature, int state);
++#endif
+ 
+ } power_module_t;
+ 
+-- 
+2.4.10
+

@@ -1,7 +1,7 @@
 From 06fa8da9a9729dfffda54b3f734527bd1c08dccb Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 4 Mar 2015 00:01:00 +0800
-Subject: [PATCH 2/2] MIUI audio blob compatibility
+Subject: [PATCH 2/3] MIUI audio blob compatibility
 
 Change-Id: I7370dac5a9b0305587af8a5dfa785f6151d3b8da
 ---
