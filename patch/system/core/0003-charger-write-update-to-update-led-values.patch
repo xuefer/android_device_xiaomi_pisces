@@ -1,25 +1,30 @@
-commit da8b2a09b010315e1d729e17bd71575403e2f491
-Author: Xuefer <xuefer@gmail.com>
-Date:   Tue Mar 10 19:14:31 2015 +0800
+From 021c6c71467c4737d983259fba864bf08582593c Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 10 Mar 2015 19:14:31 +0800
+Subject: [PATCH 3/6] charger: write "update" to update led values
 
-    charger: MI3 TD led need update to use the new color value
-    
-    Change-Id: I504071ca3b5e81047aab96e54a4be242e59b8e0e
+MI3 TD led need update to use the new color value
+
+Change-Id: I504071ca3b5e81047aab96e54a4be242e59b8e0e
+---
+ healthd/Android.mk               |  1 +
+ healthd/healthd_mode_charger.cpp | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
 diff --git a/healthd/Android.mk b/healthd/Android.mk
-index 17e51d8..63ed990 100644
+index 37e5490..b26a856 100644
 --- a/healthd/Android.mk
 +++ b/healthd/Android.mk
-@@ -30,6 +30,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
+@@ -35,6 +35,7 @@ LOCAL_CFLAGS := -D__STDC_LIMIT_MACROS -Werror
  HEALTHD_CHARGER_DEFINES := RED_LED_PATH \
      GREEN_LED_PATH \
      BLUE_LED_PATH \
 +    UPDATE_LED_PATH \
      BACKLIGHT_PATH \
+     SECONDARY_BACKLIGHT_PATH \
      CHARGING_ENABLED_PATH
- 
 diff --git a/healthd/healthd_mode_charger.cpp b/healthd/healthd_mode_charger.cpp
-index bc10d60..913a5c7 100644
+index c828cd6..9784d7d 100644
 --- a/healthd/healthd_mode_charger.cpp
 +++ b/healthd/healthd_mode_charger.cpp
 @@ -81,6 +81,9 @@ char *locale;
@@ -47,3 +52,6 @@ index bc10d60..913a5c7 100644
      return 0;
  }
  
+-- 
+2.4.10
+

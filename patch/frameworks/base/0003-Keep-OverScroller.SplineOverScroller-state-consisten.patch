@@ -1,0 +1,63 @@
+From 4fc487ba49e213e306514e8dfa657912c48e178e Mon Sep 17 00:00:00 2001
+From: Vladislav Kaznacheev <kaznacheev@google.com>
+Date: Tue, 4 Aug 2015 10:57:04 -0700
+Subject: [PATCH 3/3] Keep OverScroller.SplineOverScroller state consistent.
+
+Currently update() bails out early if it is called
+too soon after mStartTime has been set. In this case
+mCurrentPosition remains holding an obsolete value
+from a previous animation. This causes some strange
+behavior (see the referenced bug).
+
+This patch makes sure that mCurrentPosition is
+updated every time that mStart is updated.
+
+Bug: 22950559
+Change-Id: I07b92f30ebe29856f4e04dc19a4820123713fd7e
+---
+ core/java/android/widget/OverScroller.java | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/core/java/android/widget/OverScroller.java b/core/java/android/widget/OverScroller.java
+index 6b38540..bf277cc 100644
+--- a/core/java/android/widget/OverScroller.java
++++ b/core/java/android/widget/OverScroller.java
+@@ -685,7 +685,7 @@ public class OverScroller {
+         void startScroll(int start, int distance, int duration) {
+             mFinished = false;
+ 
+-            mStart = start;
++            mCurrentPosition = mStart = start;
+             mFinal = start + distance;
+ 
+             mStartTime = AnimationUtils.currentAnimationTimeMillis();
+@@ -719,7 +719,7 @@ public class OverScroller {
+         boolean springback(int start, int min, int max) {
+             mFinished = true;
+ 
+-            mStart = mFinal = start;
++            mCurrentPosition = mStart = mFinal = start;
+             mVelocity = 0;
+ 
+             mStartTime = AnimationUtils.currentAnimationTimeMillis();
+@@ -812,7 +812,7 @@ public class OverScroller {
+             final float totalDuration = (float) Math.sqrt(
+                     2.0 * (distanceToApex + distanceToEdge) / Math.abs(mDeceleration));
+             mStartTime -= (int) (1000.0f * (totalDuration - durationToApex));
+-            mStart = end;
++            mCurrentPosition = mStart = end;
+             mVelocity = (int) (- mDeceleration * totalDuration);
+         }
+ 
+@@ -881,7 +881,7 @@ public class OverScroller {
+                     // Duration from start to null velocity
+                     if (mDuration < mSplineDuration) {
+                         // If the animation was clamped, we reached the edge
+-                        mStart = mFinal;
++                        mCurrentPosition = mStart = mFinal;
+                         // TODO Better compute speed when edge was reached
+                         mVelocity = (int) mCurrVelocity;
+                         mDeceleration = getDeceleration(mVelocity);
+-- 
+2.4.10
+

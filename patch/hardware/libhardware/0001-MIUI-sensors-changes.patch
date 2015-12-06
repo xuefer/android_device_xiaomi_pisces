@@ -1,0 +1,27 @@
+From bd42dd54931e0c787c3beb50158be72f04ad5544 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 16 Jun 2015 15:18:08 +0800
+Subject: [PATCH 1/2] MIUI sensors changes
+
+---
+ include/hardware/sensors.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/hardware/sensors.h b/include/hardware/sensors.h
+index f0773d5..334d50c 100644
+--- a/include/hardware/sensors.h
++++ b/include/hardware/sensors.h
+@@ -917,6 +917,10 @@ struct sensors_poll_device_t {
+             int sensor_handle, int64_t sampling_period_ns);
+     int (*poll)(struct sensors_poll_device_t *dev,
+             sensors_event_t* data, int count);
++#ifdef HAVE_MIUI_SENSOR_BLOB
++    int (*calibrate)(struct sensors_poll_device* dev, int sensor_handle);
++    int (*getconfig)(struct sensors_poll_device* dev, int sensor_handle, double *value);
++#endif
+ };
+ 
+ /*
+-- 
+2.4.10
+

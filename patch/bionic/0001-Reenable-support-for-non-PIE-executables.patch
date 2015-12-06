@@ -1,10 +1,15 @@
-commit d989940aa1254608f6fa88be1d7abbc5a9af7389
-Author: Xuefer <xuefer@gmail.com>
-Date:   Tue Apr 21 10:21:52 2015 +0800
+From 58ebdf7e9ea9eea28ded2a4307c348d5c626c44e Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 21 Apr 2015 10:21:52 +0800
+Subject: [PATCH] Reenable support for non PIE executables
 
-    MIUI blob requires non-PIE
-    
-    Change-Id: I98949210cbdb9298c034a2674a0e5aeb711ed34b
+oen of MIUI executable still require non-PIE
+
+Change-Id: I98949210cbdb9298c034a2674a0e5aeb711ed34b
+---
+ linker/Android.mk |  4 ++++
+ linker/linker.cpp | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
 diff --git a/linker/Android.mk b/linker/Android.mk
 index 4298032..a127255 100644
@@ -98,3 +103,6 @@ index 54867dc..7621401 100644
  
    // Use LD_LIBRARY_PATH and LD_PRELOAD (but only if we aren't setuid/setgid).
    parse_LD_LIBRARY_PATH(ldpath_env);
+-- 
+2.4.10
+

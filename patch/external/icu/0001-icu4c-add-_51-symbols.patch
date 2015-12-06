@@ -1,12 +1,14 @@
-commit 88c10e7d34425586ae44e1e7711f696f2b774a89
-Author: Prashant Somashekar <prashsomash@gmail.com>
-Date:   Sat Nov 22 22:36:14 2014 -0500
+From f102900ce7233b55afc3892958309f6003cb47e5 Mon Sep 17 00:00:00 2001
+From: Prashant Somashekar <prashsomash@gmail.com>
+Date: Sat, 22 Nov 2014 22:36:14 -0500
+Subject: [PATCH] icu4c: add *_51 symbols
 
-    icu4c: add *_51 symbols
-    
-    required by Nvidia Tegra 4 audio nvoice blob (built for AOSP 4.4)
-    
-    Change-Id: Ic2cfbfc7322388a7dea975a3b9d0365a0509411e
+required by Nvidia Tegra 4 audio nvoice blob (built for AOSP 4.4)
+
+Change-Id: Ic2cfbfc7322388a7dea975a3b9d0365a0509411e
+---
+ icu4c/source/common/ucnv.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
 diff --git a/icu4c/source/common/ucnv.c b/icu4c/source/common/ucnv.c
 index 5cf4d15..f31fbc3 100644
@@ -88,3 +90,6 @@ index 5cf4d15..f31fbc3 100644
  #endif
  
  /*
+-- 
+2.4.10
+

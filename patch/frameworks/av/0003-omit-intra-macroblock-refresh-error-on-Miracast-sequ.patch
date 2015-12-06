@@ -1,0 +1,25 @@
+From 22c3076ac968acaa47491a2624bdfbbbde9edfd5 Mon Sep 17 00:00:00 2001
+From: Sato Kensuke <sato.kensuke@gmail.com>
+Date: Tue, 18 Mar 2014 09:29:01 +0900
+Subject: [PATCH 3/4] omit intra macroblock refresh error on Miracast sequence
+
+Change-Id: Ia089a2eab7bd63b3322ac388e89a823bb93ba9a5
+---
+ media/libstagefright/ACodec.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
+index 607b7b0..6480bf4 100644
+--- a/media/libstagefright/ACodec.cpp
++++ b/media/libstagefright/ACodec.cpp
+@@ -3176,7 +3176,6 @@ status_t ACodec::setupAVCEncoderParameters(const sp<AMessage> &msg) {
+         if (err != OK) {
+             ALOGE("Setting intra macroblock refresh mode (%d) failed: 0x%x",
+                     err, intraRefreshMode);
+-            return err;
+         }
+     }
+ 
+-- 
+2.4.10
+

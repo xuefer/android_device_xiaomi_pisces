@@ -40,5 +40,5 @@ index 17aa1e0..5dd0a63 100644
      if (fwmark & ~mask) {
          ALOGE("mask 0x%x does not select all the bits set in fwmark 0x%x", mask, fwmark);
 -- 
-2.3.6
+2.4.10
 

@@ -1,13 +1,16 @@
-commit 17abf8861e74a86a220e815c9c269e692edc9b4d
-Author: Xuefer <xuefer@gmail.com>
-Date:   Thu Mar 26 15:32:55 2015 +0800
+From f0549bd001cc910c73c27fc94cfab33bb50fbcd2 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Thu, 26 Mar 2015 15:32:55 +0800
+Subject: [PATCH 2/6] init: suppprt exported env for exec
 
-    init: suppprt exported env for exec
-    
-    Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
+Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
+---
+ init/builtins.c | 12 ++++++++----
+ init/init.c     |  2 +-
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/init/builtins.c b/init/builtins.c
-index 3ca0e9c..3aff669 100644
+index d4b3f99..41dbae7 100644
 --- a/init/builtins.c
 +++ b/init/builtins.c
 @@ -48,6 +48,7 @@
@@ -16,9 +19,9 @@ index 3ca0e9c..3aff669 100644
  #include <private/android_filesystem_config.h>
 +extern const char *ENV[];
  
- int add_environment(const char *name, const char *value);
- 
-@@ -301,10 +302,13 @@ int do_exec(int nargs, char **args)
+ #if BOOTCHART
+ #include "bootchart.h"
+@@ -317,10 +318,13 @@ int do_exec(int nargs, char **args)
      {
          char tmp[32];
          int fd, sz;
@@ -37,10 +40,10 @@ index 3ca0e9c..3aff669 100644
      }
      else
 diff --git a/init/init.c b/init/init.c
-index 7a68e62..978b879 100644
+index 1cce8d8..9a2a10d 100644
 --- a/init/init.c
 +++ b/init/init.c
-@@ -97,7 +97,7 @@ static int have_console;
+@@ -98,7 +98,7 @@ static int have_console;
  static char console_name[PROP_VALUE_MAX] = "/dev/console";
  static time_t process_needs_restart;
  
@@ -49,3 +52,6 @@ index 7a68e62..978b879 100644
  
  static unsigned charging_mode = 0;
  
+-- 
+2.4.10
+

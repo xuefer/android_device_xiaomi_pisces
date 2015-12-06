@@ -1,0 +1,68 @@
+From 3d896e38687b0ce248e757d0b3e5948383098a7d Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 8 Apr 2015 14:06:58 +0800
+Subject: [PATCH 1/2] hardware_legacy: allow alternative vibrator
+ implementations
+
+The native vibrator code in libhardware_legacy assumes the vibrator
+is always controlled by inputting timers into sysfs (at
+/sys/class/timed_output/vibrator/enable). This isn't necessarily true,
+there's an upcoming device which has the vibrator controlled by ioctl()
+calls.
+
+This patch lets the device configuration specify an alternative
+vibrator implementation throught the variable BOARD_HAS_VIBRATOR_IMPLEMENTATION
+
+That variable should point to a sourcefile that implements the vibrator
+"int sendit(timeout_ms)" function, like this:
+
+BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/vendor/model/vibrator.c
+
+Signed-off-by: Ricardo Cerqueira <cyanogenmod@cerqueira.org>
+Change-Id: I78d60480f87ef00a0bab096d7f42e47501def936
+---
+ vibrator/Android.mk | 5 +++++
+ vibrator/vibrator.c | 7 +++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/vibrator/Android.mk b/vibrator/Android.mk
+index 6681f84..6f7e262 100644
+--- a/vibrator/Android.mk
++++ b/vibrator/Android.mk
+@@ -2,3 +2,8 @@
+ 
+ LOCAL_SRC_FILES += vibrator/vibrator.c
+ 
++## Must point to a source file that implements the sendit() function
++ifneq ($(BOARD_HAS_VIBRATOR_IMPLEMENTATION),)
++    LOCAL_SRC_FILES += $(BOARD_HAS_VIBRATOR_IMPLEMENTATION)
++    LOCAL_CFLAGS += -DUSE_ALTERNATIVE_VIBRATOR
++endif
+diff --git a/vibrator/vibrator.c b/vibrator/vibrator.c
+index f946ce1..b1c98eb 100644
+--- a/vibrator/vibrator.c
++++ b/vibrator/vibrator.c
+@@ -21,6 +21,11 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ 
++
++#ifdef USE_ALTERNATIVE_VIBRATOR
++extern int sendit(int timeout_ms);
++#else
++
+ #define THE_DEVICE "/sys/class/timed_output/vibrator/enable"
+ 
+ int vibrator_exists()
+@@ -63,6 +68,8 @@ static int sendit(int timeout_ms)
+     return (ret == nwr) ? 0 : -1;
+ }
+ 
++#endif
++
+ int vibrator_on(int timeout_ms)
+ {
+     /* constant on, up to maximum allowed time */
+-- 
+2.4.10
+

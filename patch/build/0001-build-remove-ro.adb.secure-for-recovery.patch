@@ -1,0 +1,25 @@
+From c29e1569f29e7e0b21c8aec69666218654a84d62 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Sat, 28 Mar 2015 14:21:54 +0800
+Subject: [PATCH 1/6] build: remove ro.adb.secure= for recovery
+
+Change-Id: I054e5f148803d60f247403f0a4fbefeb6cacadb7
+---
+ core/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index 9ab196a..27487a5 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -965,6 +965,7 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
+ 	  cp -f $(item) $(TARGET_RECOVERY_ROOT_OUT)/etc/recovery.fstab;)
+ 	$(hide) cp $(RECOVERY_INSTALL_OTA_KEYS) $(TARGET_RECOVERY_ROOT_OUT)/res/keys
+ 	$(hide) cat $(INSTALLED_DEFAULT_PROP_TARGET) $(recovery_build_prop) \
++	        | grep -v -e '^ro.adb.secure=' \
+ 	        > $(TARGET_RECOVERY_ROOT_OUT)/default.prop
+ 	$(hide) $(MKBOOTFS) $(TARGET_RECOVERY_ROOT_OUT) | $(MINIGZIP) > $(recovery_ramdisk)
+ 
+-- 
+2.4.10
+

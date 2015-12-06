@@ -1,0 +1,44 @@
+From b3cb9946e1c8bfbfc5945bded41bd8589a80c2f8 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Thu, 9 Apr 2015 03:58:08 +0800
+Subject: [PATCH] sshd: kill warning: void endpwent()(3) is not implemented on
+ Android
+
+Change-Id: Iec1cab943170660e334ec2f014345cf35026296c
+---
+ session.c | 6 ------
+ sshd.c    | 1 -
+ 2 files changed, 7 deletions(-)
+
+diff --git a/session.c b/session.c
+index 284977f..a54fe0e 100644
+--- a/session.c
++++ b/session.c
+@@ -1614,12 +1614,6 @@ child_close_fds(void)
+ 	channel_close_all();
+ 
+ 	/*
+-	 * Close any extra file descriptors.  Note that there may still be
+-	 * descriptors left by system functions.  They will be closed later.
+-	 */
+-	endpwent();
+-
+-	/*
+ 	 * Close any extra open file descriptors so that we don't have them
+ 	 * hanging around in clients.  Note that we want to do this after
+ 	 * initgroups, because at least on Solaris 2.3 it leaves file
+diff --git a/sshd.c b/sshd.c
+index 786abc3..466c213 100644
+--- a/sshd.c
++++ b/sshd.c
+@@ -1647,7 +1647,6 @@ main(int ac, char **av)
+ 		privsep_pw->pw_passwd = xstrdup("*");
+ 	}
+ 	}
+-	endpwent();
+ 
+ 	/* load host keys */
+ 	sensitive_data.host_keys = xcalloc(options.num_host_key_files,
+-- 
+2.4.10
+

@@ -1,0 +1,51 @@
+From 06fa8da9a9729dfffda54b3f734527bd1c08dccb Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 4 Mar 2015 00:01:00 +0800
+Subject: [PATCH 2/2] MIUI audio blob compatibility
+
+Change-Id: I7370dac5a9b0305587af8a5dfa785f6151d3b8da
+---
+ include/hardware/audio.h        |  5 +++++
+ include/hardware/audio_policy.h | 10 ++++++++++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/include/hardware/audio.h b/include/hardware/audio.h
+index c3cb740..2684e3e 100644
+--- a/include/hardware/audio.h
++++ b/include/hardware/audio.h
+@@ -700,6 +700,11 @@ struct audio_hw_device {
+      */
+     int (*get_master_mute)(struct audio_hw_device *dev, bool *mute);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    /** MIUI blob, set fm volume */
++    int (*set_fm_volume)(struct audio_hw_device *dev, float volume, int delay_ms);
++#endif
++
+     /**
+      * Routing control
+      */
+diff --git a/include/hardware/audio_policy.h b/include/hardware/audio_policy.h
+index 99cb044..8cb84b2 100644
+--- a/include/hardware/audio_policy.h
++++ b/include/hardware/audio_policy.h
+@@ -406,6 +406,16 @@ struct audio_policy_service_ops {
+                                     audio_format_t *pFormat,
+                                     audio_channel_mask_t *pChannelMask);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    int (*set_mode)(void *service,
++                    audio_mode_t mode,
++                    int unknown);
++
++    int (*set_fm_volume)(void *service,
++                         float volume,
++                         int delay_ms);
++#endif
++
+ };
+ 
+ /**********************************************************************/
+-- 
+2.4.10
+

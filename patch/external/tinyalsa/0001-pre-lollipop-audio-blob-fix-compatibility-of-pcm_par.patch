@@ -1,0 +1,45 @@
+From 344a8da2f5132abd6cb436652f66630328ad6ecf Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Mon, 16 Mar 2015 02:02:15 +0800
+Subject: [PATCH 1/2] pre-lollipop-audio-blob: fix compatibility of pcm_param
+
+enum value changes pcm_param, define HAVE_PRE_LOLLIPOP_AUDIO_BLOB to work with old audio blobs
+
+Change-Id: Ia9d15e4613f7a7fcb1422ee001ca9187af6575be
+---
+ include/tinyalsa/asoundlib.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/include/tinyalsa/asoundlib.h b/include/tinyalsa/asoundlib.h
+index 809e02d..a160b45 100644
+--- a/include/tinyalsa/asoundlib.h
++++ b/include/tinyalsa/asoundlib.h
+@@ -115,10 +115,12 @@ struct pcm_config {
+ /* PCM parameters */
+ enum pcm_param
+ {
++#ifndef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
+     /* mask parameters */
+     PCM_PARAM_ACCESS,
+     PCM_PARAM_FORMAT,
+     PCM_PARAM_SUBFORMAT,
++#endif
+     /* interval parameters */
+     PCM_PARAM_SAMPLE_BITS,
+     PCM_PARAM_FRAME_BITS,
+@@ -132,6 +134,12 @@ enum pcm_param
+     PCM_PARAM_BUFFER_SIZE,
+     PCM_PARAM_BUFFER_BYTES,
+     PCM_PARAM_TICK_TIME,
++#ifdef HAVE_PRE_LOLLIPOP_AUDIO_BLOB
++    /* mask parameters */
++    PCM_PARAM_ACCESS,
++    PCM_PARAM_FORMAT,
++    PCM_PARAM_SUBFORMAT,
++#endif
+ };
+ 
+ /* Mixer control types */
+-- 
+2.4.10
+

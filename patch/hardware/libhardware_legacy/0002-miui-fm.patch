@@ -1,0 +1,67 @@
+From 73528dfe83fd0e4fd1e0c95fe26e394ae732e868 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 4 Mar 2015 00:01:12 +0800
+Subject: [PATCH 2/2] miui-fm
+
+Change-Id: Id68a14b35c3fa9f521fcace061befa580589c1fa
+---
+ audio/AudioPolicyCompatClient.cpp              | 12 ++++++++++++
+ audio/AudioPolicyCompatClient.h                |  5 +++++
+ include/hardware_legacy/AudioPolicyInterface.h |  4 ++++
+ 3 files changed, 21 insertions(+)
+
+diff --git a/audio/AudioPolicyCompatClient.cpp b/audio/AudioPolicyCompatClient.cpp
+index 9d02d98..5fe0b87 100644
+--- a/audio/AudioPolicyCompatClient.cpp
++++ b/audio/AudioPolicyCompatClient.cpp
+@@ -144,4 +144,16 @@ status_t AudioPolicyCompatClient::setVoiceVolume(float volume, int delayMs)
+     return mServiceOps->set_voice_volume(mService, volume, delayMs);
+ }
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++status_t AudioPolicyCompatClient::setMode(audio_mode_t mode, int unknown)
++{
++    return mServiceOps->set_mode(mService, mode, unknown);
++}
++
++status_t AudioPolicyCompatClient::setFmVolume(float volume, int delayMs)
++{
++    return mServiceOps->set_fm_volume(mService, volume, delayMs);
++}
++#endif
++
+ }; // namespace android_audio_legacy
+diff --git a/audio/AudioPolicyCompatClient.h b/audio/AudioPolicyCompatClient.h
+index 19f76e1..27ab4d0 100644
+--- a/audio/AudioPolicyCompatClient.h
++++ b/audio/AudioPolicyCompatClient.h
+@@ -73,6 +73,11 @@ public:
+     virtual status_t stopTone();
+     virtual status_t setVoiceVolume(float volume, int delayMs = 0);
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t mode, int);
++    virtual status_t setFmVolume(float volume, int delayMs = 0);
++#endif
++
+ private:
+     struct audio_policy_service_ops* mServiceOps;
+     void*                            mService;
+diff --git a/include/hardware_legacy/AudioPolicyInterface.h b/include/hardware_legacy/AudioPolicyInterface.h
+index da03ee3..bbd4aaa 100644
+--- a/include/hardware_legacy/AudioPolicyInterface.h
++++ b/include/hardware_legacy/AudioPolicyInterface.h
+@@ -250,6 +250,10 @@ public:
+                                      audio_io_handle_t srcOutput,
+                                      audio_io_handle_t dstOutput) = 0;
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t, int) = 0;
++    virtual status_t setFmVolume(float volume, int delayMs = 0) = 0;
++#endif
+ };
+ 
+ extern "C" AudioPolicyInterface* createAudioPolicyManager(AudioPolicyClientInterface *clientInterface);
+-- 
+2.4.10
+

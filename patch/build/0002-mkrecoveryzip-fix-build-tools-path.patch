@@ -1,0 +1,26 @@
+From d6a110ba8221cab1009f93e396e6c746da8bee33 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Sat, 28 Mar 2015 11:54:38 +0800
+Subject: [PATCH 2/6] mkrecoveryzip: fix build tools path
+
+Change-Id: Ieba826642a5531650fc0ddefda8aba85d633b67c
+---
+ tools/device/mkrecoveryzip.sh | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tools/device/mkrecoveryzip.sh b/tools/device/mkrecoveryzip.sh
+index e6fae37..e3fd8de 100755
+--- a/tools/device/mkrecoveryzip.sh
++++ b/tools/device/mkrecoveryzip.sh
+@@ -10,8 +10,6 @@ then
+ fi
+ 
+ ANDROID_ROOT=$(pwd)
+-OUT=$ANDROID_ROOT/$OUT
+-SIGNAPK=$ANDROID_ROOT/$SIGNAPK
+ 
+ pushd . > /dev/null 2> /dev/null
+ 
+-- 
+2.4.10
+

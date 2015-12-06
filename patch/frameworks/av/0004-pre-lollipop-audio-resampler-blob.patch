@@ -1,11 +1,14 @@
-commit 99e6e7abb7c4da4ec03100b18c7e02c04b6041a5
-Author: Xuefer <xuefer@gmail.com>
-Date:   Tue Jun 2 17:11:10 2015 +0800
+From 1356a950afaae9acc10fb78fdcb928a842d16f45 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 2 Jun 2015 17:11:10 +0800
+Subject: [PATCH 4/4] pre lollipop audio resampler blob
 
-    pre lollipop audio resampler blob
+---
+ services/audioflinger/AudioFlinger.cpp | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/services/audioflinger/AudioFlinger.cpp b/services/audioflinger/AudioFlinger.cpp
-index 25225b0..99fc1b8 100644
+index 0c9b646..4c6997d 100644
 --- a/services/audioflinger/AudioFlinger.cpp
 +++ b/services/audioflinger/AudioFlinger.cpp
 @@ -89,6 +89,9 @@
@@ -18,7 +21,7 @@ index 25225b0..99fc1b8 100644
  
  // ----------------------------------------------------------------------------
  
-@@ -3323,3 +3326,27 @@ status_t AudioFlinger::onTransact(
+@@ -3341,3 +3344,27 @@ status_t AudioFlinger::onTransact(
  }
  
  }; // namespace android
@@ -46,3 +49,6 @@ index 25225b0..99fc1b8 100644
 +	return android::AudioResampler::create(format, inChannelCount, sampleRate, quality);
 +}
 +#endif
+-- 
+2.4.10
+

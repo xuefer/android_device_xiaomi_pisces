@@ -1,0 +1,104 @@
+From fd0cba2102d5cfc7f0aad8a9b7baf6e0a67b3dba Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 4 Mar 2015 17:42:15 +0800
+Subject: [PATCH 1/4] miui audio blob support
+
+Change-Id: Ia63f813321250df800adf5a9ea5b59bdc53fde38
+---
+ .../audiopolicy/AudioPolicyClientImplLegacy.cpp    | 16 ++++++++++++++++
+ services/audiopolicy/AudioPolicyService.cpp        | 22 ++++++++++++++++++++++
+ services/audiopolicy/AudioPolicyService.h          |  4 ++++
+ 3 files changed, 42 insertions(+)
+
+diff --git a/services/audiopolicy/AudioPolicyClientImplLegacy.cpp b/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
+index 36c85f1..e457696 100644
+--- a/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
++++ b/services/audiopolicy/AudioPolicyClientImplLegacy.cpp
+@@ -316,6 +316,22 @@ int aps_set_voice_volume(void *service, float volume, int delay_ms)
+     return audioPolicyService->setVoiceVolume(volume, delay_ms);
+ }
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++int aps_set_mode(void *service, audio_mode_t mode, int unknown)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setMode(mode, unknown);
++}
++
++int aps_set_fm_volume(void *service, float volume, int delay_ms)
++{
++    AudioPolicyService *audioPolicyService = (AudioPolicyService *)service;
++
++    return audioPolicyService->setFmVolume(volume, delay_ms);
++}
++#endif
++
+ }; // extern "C"
+ 
+ }; // namespace android
+diff --git a/services/audiopolicy/AudioPolicyService.cpp b/services/audiopolicy/AudioPolicyService.cpp
+index 3079454..f5b4f8f 100644
+--- a/services/audiopolicy/AudioPolicyService.cpp
++++ b/services/audiopolicy/AudioPolicyService.cpp
+@@ -997,6 +997,20 @@ int AudioPolicyService::setVoiceVolume(float volume, int delayMs)
+     return (int)mAudioCommandThread->voiceVolumeCommand(volume, delayMs);
+ }
+ 
++#ifdef HAVE_MIUI_AUDIO_BLOB
++int AudioPolicyService::setMode(audio_mode_t mode, int unknown)
++{
++    ALOGD("unsupported AudioPolicyService::setMode(%d, %d)", (int) mode, unknown);
++    return PERMISSION_DENIED;
++}
++
++int AudioPolicyService::setFmVolume(float volume, int delayMs)
++{
++    ALOGD("unsupported AudioPolicyService::setFmVolume(%f, %d)", (double) volume, delayMs);
++    return PERMISSION_DENIED;
++}
++#endif
++
+ extern "C" {
+ audio_module_handle_t aps_load_hw_module(void *service __unused,
+                                              const char *name);
+@@ -1051,6 +1065,10 @@ int aps_start_tone(void *service, audio_policy_tone_t tone,
+                               audio_stream_type_t stream);
+ int aps_stop_tone(void *service);
+ int aps_set_voice_volume(void *service, float volume, int delay_ms);
++#ifdef HAVE_MIUI_AUDIO_BLOB
++int aps_set_mode(void *service, audio_mode_t mode, int unknown);
++int aps_set_fm_volume(void *service, float volume, int delay_ms);
++#endif
+ };
+ 
+ namespace {
+@@ -1073,6 +1091,10 @@ namespace {
+         .load_hw_module        = aps_load_hw_module,
+         .open_output_on_module = aps_open_output_on_module,
+         .open_input_on_module  = aps_open_input_on_module,
++#ifdef HAVE_MIUI_AUDIO_BLOB
++        .set_mode              = aps_set_mode,
++        .set_fm_volume         = aps_set_fm_volume,
++#endif
+     };
+ }; // namespace <unnamed>
+ 
+diff --git a/services/audiopolicy/AudioPolicyService.h b/services/audiopolicy/AudioPolicyService.h
+index fe2a3f6..7ec880d 100644
+--- a/services/audiopolicy/AudioPolicyService.h
++++ b/services/audiopolicy/AudioPolicyService.h
+@@ -162,6 +162,10 @@ public:
+     virtual status_t stopTone();
+     virtual status_t setVoiceVolume(float volume, int delayMs = 0);
+     virtual bool isOffloadSupported(const audio_offload_info_t &config);
++#ifdef HAVE_MIUI_AUDIO_BLOB
++    virtual status_t setMode(audio_mode_t mode, int unknown = 0);
++    virtual status_t setFmVolume(float volume, int delayMs = 0);
++#endif
+ 
+     virtual status_t listAudioPorts(audio_port_role_t role,
+                                     audio_port_type_t type,
+-- 
+2.4.10
+

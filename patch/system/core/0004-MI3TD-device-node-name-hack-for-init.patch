@@ -1,7 +1,7 @@
-From 7bffbd43fec072e2605f77e0fa2b528e19e45867 Mon Sep 17 00:00:00 2001
+From f90318cf8462e5f328881b7aeaf4ec76e5a03477 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Mon, 23 Mar 2015 16:40:30 +0800
-Subject: [PATCH 1/2] MI3TD device node name hack for init
+Subject: [PATCH 4/6] MI3TD device node name hack for init
 
 MI3 TD requires some hack for partition names which seems like a migration
 
@@ -111,10 +111,10 @@ index 05f0aef..39a2bb1 100644
              if (asprintf(&links[link_num], "/dev/block/bootdevice/by-name/%s", p) > 0)
                  link_num++;
 diff --git a/init/init.c b/init/init.c
-index 8a7427d..5a508dd 100644
+index 9a2a10d..6cb37eb 100644
 --- a/init/init.c
 +++ b/init/init.c
-@@ -749,6 +749,8 @@ static void import_kernel_nv(char *name, int for_emulator)
+@@ -753,6 +753,8 @@ static void import_kernel_nv(char *name, int for_emulator)
          cnt = snprintf(prop, sizeof(prop), "ro.boot.%s", boot_prop_name);
          if (cnt < PROP_NAME_MAX)
              property_set(prop, value);
@@ -124,10 +124,10 @@ index 8a7427d..5a508dd 100644
  }
  
 diff --git a/liblog/logd_write.c b/liblog/logd_write.c
-index 1ebf282..1342fed 100644
+index 4b9c7c7..b4d7ff7 100644
 --- a/liblog/logd_write.c
 +++ b/liblog/logd_write.c
-@@ -488,7 +488,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
+@@ -466,7 +466,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
          !strcmp(tag, "STK") ||
          !strcmp(tag, "CDMA") ||
          !strcmp(tag, "PHONE") ||
@@ -141,10 +141,10 @@ index 1ebf282..1342fed 100644
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
 diff --git a/liblog/logd_write_kern.c b/liblog/logd_write_kern.c
-index 34fcb1c..91d93f3 100644
+index a7bd61c..473d9ce 100644
 --- a/liblog/logd_write_kern.c
 +++ b/liblog/logd_write_kern.c
-@@ -284,7 +284,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
+@@ -267,7 +267,11 @@ int __android_log_write(int prio, const char *tag, const char *msg)
          !strcmp(tag, "STK") ||
          !strcmp(tag, "CDMA") ||
          !strcmp(tag, "PHONE") ||
@@ -158,5 +158,5 @@ index 34fcb1c..91d93f3 100644
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
 -- 
-2.3.6
+2.4.10
 

@@ -1,21 +1,23 @@
-commit 8f480bd2664e836beb0d82583d9ee0cfe2fadb9c
-Author: Xuefer <xuefer@gmail.com>
-Date:   Wed Mar 18 17:07:23 2015 +0800
+From 83189497fb7801bfd0bd2f4ee272444d11574d00 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 18 Mar 2015 17:07:23 +0800
+Subject: [PATCH 2/4] fix standby/stopInput race condition
 
-    fix standby/stopInput race condition
-    
-    standby() is currently likely be called after stopInput()
-    crashing the driver (happens on Tegra 4, Xiaomi MI 3 TD, pisces)
-    
-    fixed by calling standby() before condition broadcast
-    
-    Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
+standby() is currently likely be called after stopInput()
+crashing the driver (happens on Tegra 4, Xiaomi MI 3 TD, pisces)
+
+fixed by calling standby() before condition broadcast
+
+Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
+---
+ services/audioflinger/Threads.cpp | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
-index 3192cd8..82a6ba3 100644
+index eba9cc4..aff0302 100644
 --- a/services/audioflinger/Threads.cpp
 +++ b/services/audioflinger/Threads.cpp
-@@ -5584,10 +5584,9 @@ reacquire_wakelock:
+@@ -5587,10 +5587,9 @@ reacquire_wakelock:
                  break;
              }
  
@@ -27,7 +29,7 @@ index 3192cd8..82a6ba3 100644
                  // exitPending() can't become true here
                  releaseWakeLock_l();
                  ALOGV("RecordThread: loop stopping");
-@@ -5663,6 +5662,10 @@ reacquire_wakelock:
+@@ -5666,6 +5665,10 @@ reacquire_wakelock:
                      fastTrack = activeTrack;
                  }
              }
@@ -38,3 +40,6 @@ index 3192cd8..82a6ba3 100644
              if (doBroadcast) {
                  mStartStopCond.broadcast();
              }
+-- 
+2.4.10
+
