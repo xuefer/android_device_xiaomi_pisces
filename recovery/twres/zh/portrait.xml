@@ -2149,7 +2149,7 @@
 			</object>
 
 			<object type="button">
-				<placement x="%col1_x%" y="%system_ro_y%" />
+				<placement x="%col1_x%" y="%system_ro_y%" textplacement="6" />
 				<font resource="font" color="%text_color%" />
 				<condition var1="tw_mount_system_ro" op="=" var2="0" />
 				<text>以只读模式挂载 System 分区</text>
@@ -2158,7 +2158,7 @@
 			</object>
 
 			<object type="button">
-				<placement x="%col1_x%" y="%system_ro_y%" />
+				<placement x="%col1_x%" y="%system_ro_y%" textplacement="6" />
 				<font resource="font" color="%text_color%" />
 				<condition var1="tw_mount_system_ro" op="!=" var2="0" />
 				<text>以只读模式挂载 System 分区</text>
@@ -2540,7 +2540,7 @@
 			</object>
 
 			<object type="button">
-				<placement x="%col1_x%" y="%row2_text_y%" />
+				<placement x="%col1_x%" y="%row2_text_y%" textplacement="6" />
 				<font resource="font" color="%text_color%" />
 				<condition var1="tw_screen_timeout_secs" op="=" var2="0" />
 				<condition var1="tw_no_screen_timeout" op="!=" var2="1" />
@@ -2550,7 +2550,7 @@
 			</object>
 
 			<object type="button">
-				<placement x="%col1_x%" y="%row2_text_y%" />
+				<placement x="%col1_x%" y="%row2_text_y%" textplacement="6" />
 				<font resource="font" color="%text_color%" />
 				<condition var1="tw_screen_timeout_secs" op="!=" var2="0" />
 				<condition var1="tw_no_screen_timeout" op="!=" var2="1" />

@@ -14,11 +14,11 @@
 	</include>
 
 	<resources>
-		<resource name="bigfont" type="font" filename="DroidSansFallback.ttf" size="60" fallback="Roboto-Condensed-40" />
-		<resource name="font" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="mediumfont" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="filelist" type="font" filename="DroidSansFallback.ttf" size="40" fallback="Roboto-Condensed-40" />
-		<resource name="fixed" type="font" filename="DroidSansMono.ttf" size="30" fallback="Roboto-Condensed-40" />
+		<resource name="bigfont" type="font" filename="DroidSansFallback.ttf" size="60" />
+		<resource name="font" type="font" filename="DroidSansFallback.ttf" size="40" />
+		<resource name="mediumfont" type="font" filename="DroidSansFallback.ttf" size="40" />
+		<resource name="filelist" type="font" filename="DroidSansFallback.ttf" size="40" />
+		<resource name="fixed" type="font" filename="DroidSansMono.ttf" size="30" />
 		<resource name="twrplogo" type="image" filename="twrplogo" retainaspect="1" />
 		<resource name="main_button" type="image" filename="menu-button" />
 		<resource name="file_icon" type="image" filename="file" retainaspect="1" />
@@ -300,7 +300,7 @@
 				<conditions>
 					<condition var1="tw_no_cpu_temp" var2="0" />
 				</conditions>
-				<text>CPU: %tw_cpu_temp% C</text>
+				<text>CPU: %tw_cpu_temp% &#xB0;C</text>
 			</object>
 
 			<object type="button">
