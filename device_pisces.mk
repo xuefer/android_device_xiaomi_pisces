@@ -1,3 +1,4 @@
+# vim:et:ts=4:sts=4
 LOCAL_PATH := device/xiaomi/pisces
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
@@ -131,6 +132,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/nvaudio_conf.xml:system/etc/nvaudio_conf.xml \
 
 PRODUCT_PACKAGES += \
+    audio.primary.tegra \
     audio.a2dp.default \
     audio.usb.default \
     audio.r_submix.default \
