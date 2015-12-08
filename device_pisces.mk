@@ -92,13 +92,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     dumpe2fs \
 
-# phone
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bin/fild:system/bin/fild \
+# modem
+PRODUCT_PACKAGES += \
+    fild \
 
 # powerhal
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/lib/power.pisces.so:system/vendor/lib/hw/power.pisces.so \
+PRODUCT_PACKAGES += \
+    power.pisces \
 
 # gps
 PRODUCT_COPY_FILES += \
