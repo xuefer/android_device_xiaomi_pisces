@@ -28,10 +28,13 @@
 
 #include <errno.h>
 #include <limits.h>
+#if 0
 #include <sys/atomics.h>
+#endif
 #include <sys/mman.h>
 #include <unistd.h>
 
+#include <pthread.h>
 #include "private/bionic_atomic_inline.h"
 #include "../../../../bionic/libc/private/bionic_futex.h"
 #include "private/bionic_pthread.h"

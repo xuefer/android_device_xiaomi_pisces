@@ -19,8 +19,6 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
 
 on init
-    export LD_SHIM_LIBS /system/lib/hw/audio.primary.tegra.so|libp4hread.so
-
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
     # mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw

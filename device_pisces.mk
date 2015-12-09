@@ -137,6 +137,7 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     audio.r_submix.default \
     libaudioutils \
+    libp4hread \
     audio.usb.default \
     tinycap \
     tinymix \
