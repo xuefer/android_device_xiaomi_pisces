@@ -282,6 +282,7 @@
 				<conditions>
 					<condition var1="property.ro.tw_has_dualboot" var2="1" />
 					<condition var1="tw_busy" var2="0" />
+					<condition var1="tw_stop_on_page_done" op="!=" var2="1" />
 				</conditions>
 				<text>Active System: %property.dualboot.system%%text_dualboot.dualdatamark%</text>
 				<action function="page">switchsystem</action>
