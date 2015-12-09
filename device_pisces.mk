@@ -92,10 +92,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     dumpe2fs \
 
-# modem
-PRODUCT_PACKAGES += \
-    fild \
-
 # powerhal
 PRODUCT_PACKAGES += \
     power.pisces \

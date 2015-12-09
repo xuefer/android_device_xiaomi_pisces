@@ -1,0 +1,30 @@
+From 96d863956930740512da50afddf80b84a3f5055d Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 9 Dec 2015 22:13:47 +0800
+Subject: [PATCH 7/7] chmod: avoid hanging on pipe using open
+
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ toolbox/chmod.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/toolbox/chmod.c b/toolbox/chmod.c
+index 96d1fda..6746bf3 100644
+--- a/toolbox/chmod.c
++++ b/toolbox/chmod.c
+@@ -130,6 +130,12 @@ int chmod_main(int argc, char **argv)
+     }
+ 
+     for (i = 2; i < argc; i++) {
++        if (!flag) {
++            if (chmod(argv[i], mode) < 0){
++                fprintf(stderr, "Unable to chmod %s: %s\n", argv[i], strerror(errno));
++                return 10;
++            }
++        } else
+         if(((fd = open(argv[i], flag|O_RDONLY )) != -1)||((fd = open(argv[i], flag|O_WRONLY )) != -1)) {
+             if (fchmod(fd, mode) < 0){
+                 fprintf(stderr, "Unable to chmod %s: %s\n", argv[i], strerror(errno));
+-- 
+2.4.10
+

@@ -2,6 +2,7 @@ bin/akmd8963
 bin/atmel_fw_update.sh
 bin/cluster_get.sh
 bin/cluster_set.sh
+bin/fild
 bin/glgps_nvidiaTegra2android
 bin/gpslogd
 bin/i2cdetect
