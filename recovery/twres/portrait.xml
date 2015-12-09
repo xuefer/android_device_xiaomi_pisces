@@ -2295,7 +2295,7 @@
 
 			<object type="button">
 				<condition var1="tw_reboot_poweroff" var2="1" />
-				<placement x="%col2_x%" y="%row1_y%" />
+				<placement x="%col2_x%" y="%row3_y%" />
 				<text>Power Off</text>
 				<actions>
 					<action function="set">tw_back=reboot</action>
@@ -2363,6 +2363,13 @@
 					<action function="set">tw_slider_text=Swipe to Reboot</action>
 					<action function="page">rebootcheck</action>
 				</actions>
+			</object>
+
+			<object type="button">
+				<condition var1="property.ro.tw_has_dualboot" var2="1" />
+				<placement x="%col2_x%" y="%row1_y%" />
+				<text>Switch System</text>
+				<action function="page">switchsystem</action>
 			</object>
 
 			<object type="action">
@@ -3073,7 +3080,7 @@
 
 			<object type="action">
 				<touch key="back" />
-				<action function="page">advanced</action>
+				<action function="page">reboot</action>
 			</object>
 
 			<object type="template" name="footer" />
