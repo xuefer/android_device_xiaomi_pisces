@@ -109,8 +109,7 @@ on post-fs-data
 # Set up HDCP
     import init.hdcp.rc
 
-    chown system system /dev/sysmatdrv
-    chmod 0660 /dev/sysmatdrv
+    rm /dev/sysmatdrv
 
 on early-boot
     exec /system/bin/sh /system/bin/load_audience_fw.sh --log
@@ -590,23 +589,6 @@ service akmd /system/bin/akmd8963
     user system
     group system misc input
 # end of add
-
-service sysmatsir /system/bin/smonsir
-    user root
-    group root
-    oneshot
-    disabled
-
-on property:persist.sys.matsir.enable=1
-    setprop sys.sysmat.service.control start
-    start sysmatsir
-    start sysmatpro
-
-service sysmatpro /system/bin/smprosrv
-    user root
-    group root
-    oneshot
-    disabled
 
 service nv_power_high /system/bin/power_mode.sh 0
     user system
