@@ -1,0 +1,64 @@
+From dfc762aa5e5999f84e6e31dc34f92643258976b6 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 16 Dec 2015 11:26:15 +0800
+Subject: [PATCH 4/4] MI3 TD RIL command collision
+
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ .../android/internal/telephony/RILConstants.java   | 32 ++++++++++++----------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
+
+diff --git a/telephony/java/com/android/internal/telephony/RILConstants.java b/telephony/java/com/android/internal/telephony/RILConstants.java
+index b87cfac..688e54b 100644
+--- a/telephony/java/com/android/internal/telephony/RILConstants.java
++++ b/telephony/java/com/android/internal/telephony/RILConstants.java
+@@ -304,15 +304,17 @@ cat include/telephony/ril.h | \
+     int RIL_REQUEST_SET_INITIAL_ATTACH_APN = 111;
+     int RIL_REQUEST_IMS_REGISTRATION_STATE = 112;
+     int RIL_REQUEST_IMS_SEND_SMS = 113;
+-    int RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC = 114;
+-    int RIL_REQUEST_SIM_OPEN_CHANNEL = 115;
+-    int RIL_REQUEST_SIM_CLOSE_CHANNEL = 116;
+-    int RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL = 117;
+-    int RIL_REQUEST_NV_READ_ITEM = 118;
+-    int RIL_REQUEST_NV_WRITE_ITEM = 119;
+-    int RIL_REQUEST_NV_WRITE_CDMA_PRL = 120;
++
++    int RIL_REQUEST_SET_UICC_SUBSCRIPTION = 115;
++
++    int RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC = 117;
++    int RIL_REQUEST_SIM_OPEN_CHANNEL = 118;
++    int RIL_REQUEST_SIM_CLOSE_CHANNEL = 119;
++    int RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL = 120;
++    int RIL_REQUEST_NV_READ_ITEM = 200;
++    int RIL_REQUEST_NV_WRITE_ITEM = 201;
++    int RIL_REQUEST_NV_WRITE_CDMA_PRL = 202;
+     int RIL_REQUEST_NV_RESET_CONFIG = 121;
+-    int RIL_REQUEST_SET_UICC_SUBSCRIPTION = 122;
+     int RIL_REQUEST_ALLOW_DATA = 123;
+     int RIL_REQUEST_GET_HARDWARE_CONFIG = 124;
+     int RIL_REQUEST_SIM_AUTHENTICATION = 125;
+@@ -364,13 +366,13 @@ cat include/telephony/ril.h | \
+     int RIL_UNSOL_VOICE_RADIO_TECH_CHANGED = 1035;
+     int RIL_UNSOL_CELL_INFO_LIST = 1036;
+     int RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED = 1037;
+-    int RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED = 1038;
+-    int RIL_UNSOL_SRVCC_STATE_NOTIFY = 1039;
+-    int RIL_UNSOL_HARDWARE_CONFIG_CHANGED = 1040;
+-    int RIL_UNSOL_DC_RT_INFO_CHANGED = 1041;
+-    int RIL_UNSOL_RADIO_CAPABILITY = 1042;
+-    int RIL_UNSOL_ON_SS = 1043;
+-    int RIL_UNSOL_STK_CC_ALPHA_NOTIFY = 1044;
++    int RIL_UNSOL_ON_SS = 1038;
++    int RIL_UNSOL_STK_CC_ALPHA_NOTIFY = 1039;
++    int RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED = 1040;
++    int RIL_UNSOL_SRVCC_STATE_NOTIFY = 1041;
++    int RIL_UNSOL_HARDWARE_CONFIG_CHANGED = 1042;
++    int RIL_UNSOL_DC_RT_INFO_CHANGED = 1043;
++    int RIL_UNSOL_RADIO_CAPABILITY = 1044;
+ 
+     int RIL_UNSOL_STK_SEND_SMS_RESULT = 11002; /* Samsung STK */
+ }
+-- 
+2.4.10
+
