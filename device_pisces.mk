@@ -91,6 +91,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     dumpe2fs \
 
+# ril
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.radio.apm_sim_not_pwdn=1 \
+
 # powerhal
 PRODUCT_PACKAGES += \
     power.pisces \
