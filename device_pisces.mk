@@ -24,7 +24,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true \
-    ro.com.android.dateformat=yyyy-MM-dd \
 
 # permissions file from AOSP
 PRODUCT_COPY_FILES += \
