@@ -143,6 +143,12 @@ PRODUCT_PACKAGES += \
     tinypcminfo \
     tinyplay \
 
+# Graphic
+PRODUCT_PACKAGES += \
+    hwcomposer.tegra \
+    libnvcap_video \
+    libnvomxadaptor \
+
 # Key layout
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/keylayout,system/usr/keylayout) \
