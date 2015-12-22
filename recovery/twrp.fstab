@@ -1,4 +1,4 @@
-/recovery        emmc   /dev/block/platform/sdhci-tegra.3/by-name/recovery
+/recovery        emmc   /dev/block/platform/sdhci-tegra.3/by-name/recovery      flags=display="recovery.img";backup=1;flashimg
 /boot            emmc   /dev/block/platform/sdhci-tegra.3/by-name/boot          flags=display="boot.img";backup=1;flashimg
 /microboot       emmc   /dev/block/platform/sdhci-tegra.3/by-name/NVC           flags=display="microboot.bin";backup=1;flashimg
 /microboot1      emmc   /dev/block/platform/sdhci-tegra.3/by-name/RMB           flags=display="microboot.bin (1)";backup=1;flashimg
@@ -10,8 +10,8 @@
 /internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage"
 /cache           ext4   /dev/block/platform/sdhci-tegra.3/by-name/cache
 /persist         ext4   /dev/block/platform/sdhci-tegra.3/by-name/persist       flags=display="Persist Data";wipeingui;backup=1
-/misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="misc.img (Boot SystemId): misc.img";backup=1;flashimg
-/staging         emmc   /dev/block/platform/sdhci-tegra.3/by-name/staging
+/misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="misc (Boot SystemId): misc.img";backup=1;flashimg
+/staging         emmc   /dev/block/platform/sdhci-tegra.3/by-name/staging       flags=display="staging (Baseband installer); miui*.zip/blob";flashimg
 /metadata        emmc   /dev/block/platform/sdhci-tegra.3/by-name/MDA           flags=display="Encrypt Table";backup=1
 
 /usbdrive        vfat   /dev/block/sda1         /dev/block/sda                  flags=display="USB Drive";storage;wipeingui;removable
