@@ -322,7 +322,7 @@ recovery_resize() {
 
 	/sbin/dualboot -l load \
 	|| lecho "Partition table reload failed. Errors above can be ignored except that you must reboot recovery for your more operations" \
-	         "分区表刷新失败, 上错误可以忽略, 但在您进行后续操作之前务必现在重启 Recovery"
+	         "分区表刷新失败, 以上错误可以忽略, 但在您进行后续操作之前务必现在重启 Recovery"
 }
 
 recovery_loadsize() {
