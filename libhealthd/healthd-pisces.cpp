@@ -94,6 +94,7 @@ static int alarm_get_time(enum alarm_time_type time_type,
 	}
 	end = buf + rc;
 
+	errno = 0;
 	*secs = strtol(buf, &end, 10);
 	if (errno != 0) {
 		LOGE("Invalid seconds = %ld: %s\n", *secs, strerror_r(errno, buf, sizeof(buf)));
@@ -210,7 +211,7 @@ err:
 	return NULL;
 }
 
-static void power_off_alarm_init(void)
+static void power_off_alarm_init()
 {
 	pthread_t tid;
 	int rc;
