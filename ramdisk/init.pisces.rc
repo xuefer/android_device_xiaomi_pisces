@@ -291,9 +291,6 @@ on boot
     chown system system /sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq
     chown system system /sys/devices/platform/pwm-fan/pwm_cap
 
-    # TODO: Remove once powerhal takes over app profiles
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-
 # thermal point path used by power HAL
     chown system system /sys/devices/virtual/thermal/thermal_zone5/pid_thermal_gov/max_err_temp
     write /sys/devices/virtual/thermal/thermal_zone5/pid_thermal_gov/max_err_temp 5000
@@ -311,6 +308,8 @@ on boot
     chown system system /sys/class/input/input5/enabled
     chown system system /sys/class/input/input6/enabled
     chown system system /sys/class/power_supply/max170xx_battery/current_avg
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
 # set highest performance for boot up
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "55 228000:65 1530000:75"
