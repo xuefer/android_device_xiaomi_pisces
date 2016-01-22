@@ -93,7 +93,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # powerhal
 PRODUCT_PACKAGES += \
-    power.$(TARGET_BOARD_PLATFORM) \
+    power.tegra \
 
 # gps
 PRODUCT_COPY_FILES += \
