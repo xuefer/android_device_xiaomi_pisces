@@ -13,7 +13,7 @@ if [ "${MOUNT_POINT}" == "/storage_int" ]; then
 fi
 
 if [ -e ${BLOCK_DEVICE} ]; then
-    if /system/bin/dumpe2fs >/dev/null 2>&1 && ! /system/bin/dumpe2fs -h ${BLOCK_DEVICE} 2>&1 >${LOG_FILE}; then
+    if /system/bin/dumpe2fs -V &>/dev/null && ! /system/bin/dumpe2fs -h ${BLOCK_DEVICE} 2>&1 >${LOG_FILE}; then
         mke2fs -T ext4 -j -L ${MOUNT_POINT} ${BLOCK_DEVICE}
         ret2=$?
         echo "${PART_ALIAS} partition format ret = $ret2"
