@@ -91,6 +91,7 @@ TW_RECOVERY_ADDITIONAL_RELINK_FILES := \
     $(CURDIR)/out/target/product/pisces/system/bin/dumpe2fs \
 
 TARGET_RECOVERY_DEVICE_MODULES += \
+    auto-mkfs \
     dualboot \
     init.recovery.pisces.rc \
     repartition \

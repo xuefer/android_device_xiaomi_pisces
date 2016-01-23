@@ -6,6 +6,10 @@ on early-init
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
 
+on fs
+    exec /sbin/auto-mkfs
+    wait /tmp/auto-mkfs
+
 on early-boot
     setprop ro.tw_has_dualboot 1
     wait /dev/block/mmcblk0p19

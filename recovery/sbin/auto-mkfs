@@ -1,0 +1,32 @@
+#!/sbin/sh
+exec >>/tmp/recovery.log 2>&1
+
+formattable() {
+	local mountPoint=$1
+	local devicePath=$2
+	echo -n "Auto create ext4 check for $devicePath ... "
+
+	if [ ! -e "$devicePath" ]; then
+		echo "not found, skipping"
+	else
+		if dumpe2fs -h "$devicePath" &>/dev/null; then
+			echo "looks good, no formatting needed"
+		else
+			echo "ERROR: Need to format, running mke2fs"
+			umount "$devicePath" &>/dev/null
+			mke2fs -T ext4 -j -L "$mountPoint" "$devicePath"
+			ret=$?
+			echo "Status: $ret"
+			return $ret
+		fi
+	fi
+}
+
+if dumpe2fs -V &>/dev/null; then
+	formattable /cache   /dev/block/platform/sdhci-tegra.3/by-name/cache
+	formattable /data    /dev/block/platform/sdhci-tegra.3/by-name/userdata
+	formattable /storage /dev/block/platform/sdhci-tegra.3/by-name/storage
+	formattable /persist /dev/block/platform/sdhci-tegra.3/by-name/persist
+fi
+
+touch /tmp/auto-mkfs
