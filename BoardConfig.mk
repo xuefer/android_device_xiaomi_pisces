@@ -84,7 +84,10 @@ TW_BRIGHTNESS_PATH               := /sys/class/backlight/lm3533-backlight0/brigh
 TW_SECONDARY_BRIGHTNESS_PATH     := /sys/class/backlight/lm3533-backlight1/brightness
 TW_INCLUDE_CRYPTO                := true
 TW_USE_BUSYBOX                   := true
-TW_CUSTOM_THEME                  := $(LOCAL_PATH)/recovery/twres
+TW_DEFAULT_LANGUAGE := zh_CN
+TW_EXTRA_LANGUAGES := true
+TW_ADDITIONAL_RES := \
+	$(LOCAL_PATH)/recovery/twres/mount_ext4.sh \
 
 TW_RECOVERY_ADDITIONAL_RELINK_FILES := \
     $(CURDIR)/out/target/product/pisces/system/bin/resize2fs \
