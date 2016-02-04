@@ -8,7 +8,7 @@
 /system          ext4   /dev/block/platform/sdhci-tegra.3/by-name/system        flags=display="System (Active)"
 /system_image    emmc   /dev/block/platform/sdhci-tegra.3/by-name/system        flags=backup=1;flashimg
 /data            ext4   /dev/block/platform/sdhci-tegra.3/by-name/userdata      flags=encryptable=/dev/block/platform/sdhci-tegra.3/by-name/MDA
-/internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage"
+/internal_sdcard ext4   /dev/block/platform/sdhci-tegra.3/by-name/storage       flags=display="Old Internal Storage";removable
 /persist         ext4   /dev/block/platform/sdhci-tegra.3/by-name/persist       flags=display="Persist Data";wipeingui;backup=1
 /misc            emmc   /dev/block/platform/sdhci-tegra.3/by-name/misc          flags=display="misc (Boot SystemId): misc.img";backup=1;flashimg
 /staging         emmc   /dev/block/platform/sdhci-tegra.3/by-name/staging       flags=display="staging (Baseband installer); miui*.zip/blob";flashimg
