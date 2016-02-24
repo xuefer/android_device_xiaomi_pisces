@@ -99,7 +99,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     init.recovery.pisces.rc \
     repartition \
     twrp.fstab \
-    busybox_symlinks \
 
 # ril
 #BOARD_PROVIDES_LIBRIL:= true
