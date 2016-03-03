@@ -1,6 +1,3 @@
-# override CM resource
-PRODUCT_PACKAGE_OVERLAYS += device/xiaomi/pisces/productoverlay
-
 # Release name
 PRODUCT_RELEASE_NAME := pisces
 
