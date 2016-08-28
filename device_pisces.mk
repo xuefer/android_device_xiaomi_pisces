@@ -110,6 +110,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
 
 # camera
+PRODUCT_PACKAGES += \
+    camera.tegra \
+    camera.vendor.tegra \
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/camera/model_frontal.xml:system/etc/model_frontal.xml \
     $(LOCAL_PATH)/camera/nvcamera.conf:system/etc/nvcamera.conf \
