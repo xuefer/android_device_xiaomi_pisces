@@ -67,6 +67,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/prebuilt/system,system) \
 
+# boot logo
+TARGET_BOOTANIMATION_HALF_RES := true
+
 # init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/adb_keys:root/adb_keys \
