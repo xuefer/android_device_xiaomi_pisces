@@ -34,6 +34,13 @@
 #include <camera/Camera.h>
 #include <camera/CameraParameters.h>
 
+#include <utils/Errors.h>
+#include <utils/RefBase.h>
+
+#include <binder/IBinder.h>
+#include <binder/IServiceManager.h>
+#include <gui/ISensorServer.h>
+
 static android::Mutex gCameraWrapperLock;
 
 struct wrapper_camera_device_t {
@@ -582,6 +589,26 @@ static int camera_device_open(const hw_module_t *module, const char *name,
     memset(camera_device, 0, sizeof(*camera_device));
     camera_device->id = cameraid;
 
+    // camera require sensorservice to be up
+    {
+        using namespace android;
+        const String16 sensorServiceName("sensorservice");
+        sp<ISensorServer> sensorServer;
+        for (int i = 0; i < 60; i++) {
+            status_t err = getService(sensorServiceName, &sensorServer);
+            if (err == NAME_NOT_FOUND) {
+                ALOGI("Waiting for sensorservice ...");
+                sleep(1);
+                continue;
+            }
+            if (err != NO_ERROR) {
+                return err;
+            }
+            break;
+        }
+    }
+
+    ALOGV("calling vendor camera_device_open ...");
     rv = getVendorModule()->common.methods->open(
             (const hw_module_t*)getVendorModule(), name,
             (hw_device_t**)&(camera_device->vendor));
