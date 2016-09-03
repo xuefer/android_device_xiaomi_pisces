@@ -1,0 +1,45 @@
+# FORMAT:
+#  panelresolution=[xres]X[yres], such as panelresolution=1280X720
+#  powernode1 normal balanced maxbatterylife
+#  powernode2 normal balanced maxbatterylife
+#  ......
+#  powernoden normal balanced maxbatterylife
+#  panelresolution=[xres]X[yres], such as panelresolution=1920X1080
+#  powernode1 normal balanced maxbatterylife
+#  powernode2 normal balanced maxbatterylife
+#  ......
+#  powernoden normal balanced maxbatterylife
+#  ......
+#  ......
+#  panelresolution=[xres]X[yres], such as panelresolution=1920X1200
+#  powernode1 normal balanced maxbatterylife
+#  powernode2 normal balanced maxbatterylife
+#  ......
+#  powernoden normal balanced maxbatterylife
+#
+# NOTES:
+#  The panelresolution is the lcd panel resolution.
+#  No space should exist in panelresolution=[xres]X[yres].
+#  panelresolution=720X1280 equals with panelresolution=1280X720.
+#  For panelresolution=-1X-1, it should be the last set of power settings in this file.
+#  When your panel resolution is found in this file,
+#  it will use the set of power settings followed by your panel resolution.
+#  When your panel resolution is not found in this file, it will use the default power settings.
+#  The power settings followed by panelresolution=-1X-1 is the default power settings.
+#  powernode is the sysfs or variable we need to write and it is followed by three ints.
+#  normal, balanced, maxbatterylife are the three ints for different power modes.
+#
+panelresolution=1080X1920
+NV_FPSLIMIT 0 0 0
+/sys/module/cpu_tegra/parameters/cpu_user_cap 0 1500000 1100000
+/sys/class/graphics/fb0/device/smartdimmer/aggressiveness 29 29 29
+/sys/class/graphics/fb0/device/smartdimmer/enable 1 1 1
+/sys/class/thermal/thermal_zone0/trip_point_0_temp 90000 75000 75000
+/sys/class/thermal/thermal_zone5/trip_point_0_temp 45000 40000 40000
+/sys/class/thermal/thermal_zone5/pid_thermal_gov/max_err_temp 10000 5000 5000
+/sys/class/thermal/thermal_zone5/pid_thermal_gov/power_mode 0 1 2
+/sys/devices/system/cpu/cpuquiet/runnable_threads/nr_cpu_limit 4 4 2
+/sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/emc_max 744000000 528000000 528000000
+/sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq 672000000 468000000 468000000
+/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1530000 612000 612000
+/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 65 99 99

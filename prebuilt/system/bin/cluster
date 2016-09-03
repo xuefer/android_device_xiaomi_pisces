@@ -1,0 +1,2 @@
+#!/system/bin/sh
+cluster_$1.sh $2 $3
