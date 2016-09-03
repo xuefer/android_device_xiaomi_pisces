@@ -35,6 +35,7 @@ NV_FPSLIMIT 0 0 0
 /sys/class/graphics/fb0/device/smartdimmer/aggressiveness 29 29 29
 /sys/class/graphics/fb0/device/smartdimmer/enable 1 1 1
 /sys/class/thermal/thermal_zone0/trip_point_0_temp 90000 75000 75000
+/sys/class/thermal/thermal_zone1/trip_point_0_temp 90000 75000 75000
 /sys/class/thermal/thermal_zone5/trip_point_0_temp 45000 40000 40000
 /sys/class/thermal/thermal_zone5/pid_thermal_gov/max_err_temp 10000 5000 5000
 /sys/class/thermal/thermal_zone5/pid_thermal_gov/power_mode 0 1 2

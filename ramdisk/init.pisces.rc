@@ -267,9 +267,6 @@ on boot
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 612000
-    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
-    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1530000:50000"
 
     write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/down_delay 500
     write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/enable 1
@@ -315,9 +312,26 @@ on boot
     chown system system /sys/class/input/input6/enabled
     chown system system /sys/class/power_supply/max170xx_battery/current_avg
 
+# set highest performance for boot up
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "55 228000:65 1530000:75"
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 40000
+
+    write /sys/module/cpu_tegra/parameters/cpu_user_cap 0
+    write /sys/class/graphics/fb0/device/smartdimmer/aggressiveness 29
+    write /sys/class/graphics/fb0/device/smartdimmer/enable 1
+    write /sys/class/thermal/thermal_zone0/trip_point_0_temp 90000
+    write /sys/class/thermal/thermal_zone1/trip_point_0_temp 90000
+    write /sys/class/thermal/thermal_zone5/trip_point_0_temp 45000
+    write /sys/class/thermal/thermal_zone5/pid_thermal_gov/max_err_temp 10000
+    write /sys/class/thermal/thermal_zone5/pid_thermal_gov/power_mode 0
+    write /sys/devices/system/cpu/cpuquiet/runnable_threads/nr_cpu_limit 4
+    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/emc_max 744000000
+    write /sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq 672000000
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1810500
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 65
+
 # Default Read Ahead value for sdcards
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
-    write /sys/block/mmcblk1/queue/read_ahead_kb 2048
 
 # Wiimote connect status
     write /data/misc/wminput/connected 0
@@ -541,7 +555,6 @@ service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
 on charger
     write /sys/class/backlight/lm3533-backlight0/brightness 100
     write /sys/class/backlight/lm3533-backlight1/brightness 100
-    setprop sys.scaling_governor userspace
     # used by adb
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/system /system
 
@@ -557,6 +570,24 @@ on property:init.svc.charger=running
     write /sys/kernel/cluster/active lp
     write /sys/kernel/cluster/immediate 1
     write /sys/kernel/cluster/force 1
+
+    write /sys/devices/system/cpu/cpuquiet/current_governor runnable
+
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "75 228000:85 816000:90 1530000:95"
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "40000 1530000:50000"
+    write /sys/module/cpu_tegra/parameters/cpu_user_cap 1100000
+    write /sys/class/graphics/fb0/device/smartdimmer/aggressiveness 29
+    write /sys/class/graphics/fb0/device/smartdimmer/enable 1
+    write /sys/class/thermal/thermal_zone0/trip_point_0_temp 75000
+    write /sys/class/thermal/thermal_zone0/trip_point_0_temp 75000
+    write /sys/class/thermal/thermal_zone5/trip_point_0_temp 40000
+    write /sys/class/thermal/thermal_zone5/pid_thermal_gov/max_err_temp 5000
+    write /sys/class/thermal/thermal_zone5/pid_thermal_gov/power_mode 2
+    write /sys/devices/system/cpu/cpuquiet/runnable_threads/nr_cpu_limit 1
+    write /sys/devices/system/cpu/cpuquiet/tegra_cpuquiet/emc_max 528000000
+    write /sys/devices/platform/host1x/gr3d/devfreq/gr3d/max_freq 468000000
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 612000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 99
 
 # add from init.rc
 service akmd /system/bin/akmd8963
