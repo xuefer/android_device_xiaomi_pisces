@@ -39,6 +39,8 @@
   <item name="wifi.scan">100</item>
   <item name="dsp.audio">10</item>
   <item name="dsp.video">50</item>
+  <item name="camera.flashlight">800</item>
+  <item name="camera.avg">400</item>
   <item name="radio.active">200</item>
   <item name="radio.scanning">10</item>
   <item name="gps.on">50</item>
@@ -47,9 +49,25 @@
       <value>2</value>
       <value>1</value>
   </array>
-  <!-- Different CPU speeds as reported in
-       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state -->
-  <array name="cpu.speeds">
+
+  <!-- A list of heterogeneous CPU clusters, where the value for each cluster represents the
+       number of CPU cores for that cluster.
+
+       Ex:
+       <array name="cpu.clusters.cores">
+         <value>4</value> // cluster 0 has cpu0, cpu1, cpu2, cpu3
+         <value>2</value> // cluster 1 has cpu4, cpu5
+       </array> -->
+  <array name="cpu.clusters.cores">
+      <value>4</value>
+  </array>
+
+    <!-- Different CPU speeds for cluster 0 as reported in
+       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state.
+
+       There must be one of these for each cluster, labeled:
+       cpu.speeds.cluster0, cpu.speeds.cluster1, etc... -->
+  <array name="cpu.speeds.cluster0">
         <value>51000</value>
         <value>102000</value>
         <value>204000</value>
@@ -72,10 +90,11 @@
         <value>1708500</value>
         <value>1810500</value>
   </array>
-  <!-- Current when CPU is idle -->
-  <item name="cpu.idle">3</item>
-  <!-- Current at each CPU speed, as per 'cpu.speeds' -->
-  <array name="cpu.active">
+
+  <!-- Current at each CPU speed for cluster 0, as per 'cpu.speeds.cluster0'.
+       Like cpu.speeds.cluster0, there must be one of these present for
+       each heterogeneous CPU cluster. -->
+  <array name="cpu.active.culster0">
         <value>66</value>
         <value>76</value>
         <value>81</value>
@@ -98,6 +117,10 @@
         <value>166</value>
         <value>171</value>
   </array>
+
+  <!-- Current when CPU is idle -->
+  <item name="cpu.idle">3</item>
+
   <!-- This is the battery capacity in mAh (measured at nominal voltage) -->
-  <item name="battery.capacity">3000</item>
+  <item name="battery.capacity">3050</item>
 </device>
