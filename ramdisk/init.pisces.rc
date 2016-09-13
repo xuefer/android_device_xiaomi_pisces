@@ -666,3 +666,10 @@ on property:persist.sys.display_ce=10
 
 on property:persist.sys.display_ce=11
     write /sys/devices/platform/host1x/tegradc.0/graphics/fb0/set_dispparam 16
+
+on property:persist.force_fast_charge=0
+    write /sys/kernel/fast_charge/force_fast_charge 0
+
+on property:persist.force_fast_charge=1
+    write /sys/kernel/fast_charge/force_fast_charge 1
+>>>>>>> bea3f5a... support for persist.force_fast_charge
