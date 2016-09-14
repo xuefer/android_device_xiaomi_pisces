@@ -624,6 +624,8 @@ service immvibed /system/bin/immvibed
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
     write /sys/devices/system/cpu/cpufreq/interactive/boost 0
+    exec /system/bin/pm grant net.tonyliu.mi3setting android.permission.ACCESS_FINE_LOCATION
+    exec /system/bin/pm grant net.tonyliu.mi3setting android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
 
 on property:sys.perf.profile=high
     start nv_power_high
@@ -672,4 +674,3 @@ on property:persist.force_fast_charge=0
 
 on property:persist.force_fast_charge=1
     write /sys/kernel/fast_charge/force_fast_charge 1
->>>>>>> bea3f5a... support for persist.force_fast_charge
