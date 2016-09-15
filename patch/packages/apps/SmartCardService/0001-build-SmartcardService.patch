@@ -1,0 +1,27 @@
+From 4540e3c4764b408b3bb24a18784bb4dfd4812f5f Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Fri, 16 Sep 2016 00:20:18 +0800
+Subject: [PATCH] build SmartcardService
+
+Change-Id: Ic3859b9f1a90ea9ed4345afbfd9732affc5d7936
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ Android.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Android.mk b/Android.mk
+index cf12382..d2273fc 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -9,7 +9,7 @@ LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/openmobileapi/src/org/simalliance/openmobil
+ LOCAL_PACKAGE_NAME := SmartcardService
+ LOCAL_CERTIFICATE := platform
+ 
+-LOCAL_JAVA_LIBRARIES := org.simalliance.openmobileapi com.android.qcom.nfc_extras com.vzw.nfc
++LOCAL_JAVA_LIBRARIES := org.simalliance.openmobileapi
+ 
+ LOCAL_PROGUARD_ENABLED := disabled
+ 
+-- 
+2.7.3
+
