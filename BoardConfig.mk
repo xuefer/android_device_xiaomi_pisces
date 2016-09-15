@@ -27,6 +27,9 @@ ARCH_ARM_HAVE_TLS_REGISTER := true
 # Skip droiddoc build to save build time
 BOARD_SKIP_ANDROID_DOC_BUILD := true
 
+# use prebuilt webview chrome to save build time
+PRODUCT_PREBUILT_WEBVIEWCHROMIUM := yes
+
 BOARD_KERNEL_CMDLINE     += androidboot.hardware=$(TARGET_BOOTLOADER_BOARD_NAME)
 BOARD_KERNEL_BASE        := 0x10000000
 BOARD_KERNEL_PAGESIZE    := 2048
