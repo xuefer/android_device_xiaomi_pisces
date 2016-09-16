@@ -55,9 +55,11 @@ TARGET_ENABLE_NON_PIE_SUPPORT := true
 TARGET_USES_LOGD := false
 
 # kernel
-TARGET_KERNEL_SOURCE := kernel/xiaomi/pisces
+ifneq ($(wildcard kernel/xiaomi/pisces),)
 TARGET_KERNEL_CONFIG := tegra11_pisces_user_defconfig
+else
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
+endif
 
 # Power
 COMMON_GLOBAL_CFLAGS += -DHAVE_PRE_LOLLIPOP_POWER_BLOB
