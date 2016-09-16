@@ -16,10 +16,10 @@
 
 package org.cyanogenmod.hardware;
 
-
+import java.io.File;
 import org.cyanogenmod.hardware.util.FileUtils;
 
-/*
+/**
  * Disable capacitive keys
  *
  * This is intended for use on devices in which the capacitive keys
@@ -30,21 +30,30 @@ import org.cyanogenmod.hardware.util.FileUtils;
  */
 
 public class KeyDisabler {
-    private static String KEYS_OFF_PATH = "/sys/bus/i2c/drivers/atmel_mxt_ts/1-004a/keys_off";
+    private static final String ATMEL_PATH = "/sys/bus/i2c/drivers/atmel_mxt_ts/1-004a";
+    private static final String KEYS_OFF_PATH = "/sys/bus/i2c/drivers/atmel_mxt_ts/1-004a/keys_off";
+
+    private static boolean hasTouchScreen()
+    {
+        return (new File(ATMEL_PATH)).exists();
+    }
 
     /*
      * All HAF classes should export this boolean.
      * Real implementations must, of course, return true
      */
 
-    public static boolean isSupported() { return true; }
+    public static boolean isSupported()
+    {
+        return !hasTouchScreen() || (new File(KEYS_OFF_PATH)).exists();
+    }
 
     /*
      * Are the keys currently blocked?
      */
 
     public static boolean isActive() {
-        return FileUtils.readOneLine(KEYS_OFF_PATH).equals("0");
+        return !hasTouchScreen() || FileUtils.readOneLine(KEYS_OFF_PATH).equals("1");
     }
 
     /*
@@ -52,6 +61,10 @@ public class KeyDisabler {
      */
 
     public static boolean setActive(boolean state) {
-        return FileUtils.writeLine(KEYS_OFF_PATH, (state ? "1" : "0"));
+        if (hasTouchScreen()) {
+            return FileUtils.writeLine(KEYS_OFF_PATH, (state ? "1" : "0"));
+        } else {
+            return state ? true : false;
+        }
     }
 }
