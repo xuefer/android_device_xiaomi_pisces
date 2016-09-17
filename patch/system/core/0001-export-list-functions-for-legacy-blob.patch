@@ -38,6 +38,3 @@ index 0000000..88c189c
 +/* export list functions */
 +#define static
 +#include <cutils/list.h>
--- 
-2.7.3
-

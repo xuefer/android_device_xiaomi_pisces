@@ -35,6 +35,3 @@ index 3a9e508..d13c959 100755
        # mindepth
        if mindepth > 0:
          depth = 1 + root.count("/") - rootdepth
--- 
-2.7.3
-

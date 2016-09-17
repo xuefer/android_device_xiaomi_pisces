@@ -21,6 +21,3 @@ index e6fae37..e3fd8de 100755
  
  pushd . > /dev/null 2> /dev/null
  
--- 
-2.7.3
-

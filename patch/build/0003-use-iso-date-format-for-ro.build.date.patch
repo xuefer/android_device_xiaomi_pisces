@@ -21,6 +21,3 @@ index a549607..4ae5d8c 100755
  echo "ro.build.date.utc=`date +%s`"
  echo "ro.build.type=$TARGET_BUILD_TYPE"
  echo "ro.build.user=$USER"
--- 
-2.7.3
-

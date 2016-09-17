@@ -52,6 +52,3 @@ index 1cce8d8..9a2a10d 100644
  
  static unsigned charging_mode = 0;
  
--- 
-2.7.3
-

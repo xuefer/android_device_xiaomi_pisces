@@ -19,6 +19,3 @@ index 27487a5..5cc7c9b 100644
  		$(recovery_binary) \
  		$(recovery_initrc) $(recovery_sepolicy) \
  		$(INSTALLED_2NDBOOTLOADER_TARGET) \
--- 
-2.7.3
-

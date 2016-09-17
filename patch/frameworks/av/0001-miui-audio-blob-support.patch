@@ -99,6 +99,3 @@ index fe2a3f6..7ec880d 100644
  
      virtual status_t listAudioPorts(audio_port_role_t role,
                                      audio_port_type_t type,
--- 
-2.7.3
-

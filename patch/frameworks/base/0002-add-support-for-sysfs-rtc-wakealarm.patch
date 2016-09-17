@@ -84,6 +84,3 @@ index 254c8ab..1985f0b 100644
      int result = impl->clear(type, &ts);
      if (result < 0)
      {
--- 
-2.7.3
-

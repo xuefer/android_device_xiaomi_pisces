@@ -39,6 +39,3 @@ index 17aa1e0..5dd0a63 100644
      // Ensure that if you set a bit in the fwmark, it's not being ignored by the mask.
      if (fwmark & ~mask) {
          ALOGE("mask 0x%x does not select all the bits set in fwmark 0x%x", mask, fwmark);
--- 
-2.7.3
-

@@ -157,6 +157,3 @@ index a7bd61c..473d9ce 100644
              log_id = LOG_ID_RADIO;
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
--- 
-2.7.3
-

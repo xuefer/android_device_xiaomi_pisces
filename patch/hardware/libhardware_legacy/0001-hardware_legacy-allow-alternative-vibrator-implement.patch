@@ -63,6 +63,3 @@ index f946ce1..b1c98eb 100644
  int vibrator_on(int timeout_ms)
  {
      /* constant on, up to maximum allowed time */
--- 
-2.7.3
-

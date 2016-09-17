@@ -60,6 +60,3 @@ index b87cfac..688e54b 100644
  
      int RIL_UNSOL_STK_SEND_SMS_RESULT = 11002; /* Samsung STK */
  }
--- 
-2.7.3
-

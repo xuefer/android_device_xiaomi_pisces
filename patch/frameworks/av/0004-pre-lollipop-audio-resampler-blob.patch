@@ -49,6 +49,3 @@ index 0c9b646..4c6997d 100644
 +	return android::AudioResampler::create(format, inChannelCount, sampleRate, quality);
 +}
 +#endif
--- 
-2.7.3
-

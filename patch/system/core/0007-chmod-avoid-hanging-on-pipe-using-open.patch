@@ -25,6 +25,3 @@ index 96d1fda..6746bf3 100644
          if(((fd = open(argv[i], flag|O_RDONLY )) != -1)||((fd = open(argv[i], flag|O_WRONLY )) != -1)) {
              if (fchmod(fd, mode) < 0){
                  fprintf(stderr, "Unable to chmod %s: %s\n", argv[i], strerror(errno));
--- 
-2.7.3
-

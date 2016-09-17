@@ -36,6 +36,3 @@ index 87f78c1..c989be6 100644
      private static final int SOCKET_TIMEOUT_MS = 10000;
      public static final String ACTION_NETWORK_CONDITIONS_MEASURED =
              "android.net.conn.NETWORK_CONDITIONS_MEASURED";
--- 
-2.7.3
-

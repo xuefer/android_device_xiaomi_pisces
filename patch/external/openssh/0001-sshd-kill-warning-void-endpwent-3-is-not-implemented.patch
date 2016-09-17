@@ -39,6 +39,3 @@ index 786abc3..466c213 100644
  
  	/* load host keys */
  	sensitive_data.host_keys = xcalloc(options.num_host_key_files,
--- 
-2.7.3
-

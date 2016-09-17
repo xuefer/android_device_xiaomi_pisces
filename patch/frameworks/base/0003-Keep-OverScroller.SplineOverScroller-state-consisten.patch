@@ -58,6 +58,3 @@ index 6b38540..bf277cc 100644
                          // TODO Better compute speed when edge was reached
                          mVelocity = (int) mCurrVelocity;
                          mDeceleration = getDeceleration(mVelocity);
--- 
-2.7.3
-
