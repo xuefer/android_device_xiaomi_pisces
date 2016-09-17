@@ -1,7 +1,7 @@
-From 6fb30122d45fdc8744878960bd74e2758984f6fc Mon Sep 17 00:00:00 2001
+From bd499f045d1f14e41b928d1b0b1805c2ca3e8ce1 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Sat, 12 Sep 2015 14:44:23 +0800
-Subject: [PATCH 6/7] custom grey color as background
+Subject: [PATCH 5/7] custom grey color as background
 
 ---
  healthd/healthd_mode_charger.cpp | 2 +-

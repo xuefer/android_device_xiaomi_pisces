@@ -1,7 +1,7 @@
-From 0f3051bbfde4c8b73ca1859a32caa1265b05e5a2 Mon Sep 17 00:00:00 2001
+From 0e1253852ad9e4e6067fc6b7a4dd439728125d68 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 24 Mar 2015 01:28:30 +0800
-Subject: [PATCH 5/7] init: switch to system1 by checking ro.syspart
+Subject: [PATCH 4/7] init: switch to system1 by checking ro.syspart
 
 pick system1 (the 2nd) for mount/mount_all
 
@@ -65,10 +65,10 @@ index 7758062..704645a 100644
  
          if (!(p = strtok_r(NULL, delim, &save_ptr))) {
 diff --git a/init/builtins.c b/init/builtins.c
-index 41dbae7..6510573 100644
+index d4b3f99..ec2cc33 100644
 --- a/init/builtins.c
 +++ b/init/builtins.c
-@@ -536,6 +536,19 @@ int do_mount(int nargs, char **args)
+@@ -532,6 +532,19 @@ int do_mount(int nargs, char **args)
          ERROR("out of loopback devices");
          return -1;
      } else {

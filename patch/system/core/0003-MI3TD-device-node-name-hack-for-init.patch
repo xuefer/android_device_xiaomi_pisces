@@ -1,7 +1,7 @@
-From 2a691cfefeecabb67ab3322bed36d655af9e2c6d Mon Sep 17 00:00:00 2001
+From 46ecee2d05bf62f1bd4a560d33120cf3a6feceaa Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Mon, 23 Mar 2015 16:40:30 +0800
-Subject: [PATCH 4/7] MI3TD device node name hack for init
+Subject: [PATCH 3/7] MI3TD device node name hack for init
 
 MI3 TD requires some hack for partition names which seems like a migration
 
@@ -111,7 +111,7 @@ index 05f0aef..39a2bb1 100644
              if (asprintf(&links[link_num], "/dev/block/bootdevice/by-name/%s", p) > 0)
                  link_num++;
 diff --git a/init/init.c b/init/init.c
-index 9a2a10d..6cb37eb 100644
+index 1cce8d8..1b22645 100644
 --- a/init/init.c
 +++ b/init/init.c
 @@ -753,6 +753,8 @@ static void import_kernel_nv(char *name, int for_emulator)

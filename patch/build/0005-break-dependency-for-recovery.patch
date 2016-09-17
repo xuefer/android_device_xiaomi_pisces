@@ -1,7 +1,7 @@
-From 07cdd06dd29ac0c6b3ab687a39fb87f742b0a7e8 Mon Sep 17 00:00:00 2001
+From 08d7663dd1557c9ef2bd92f3fc193349cef36fb8 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Fri, 10 Jul 2015 14:35:51 +0800
-Subject: [PATCH 6/6] break dependency for recovery
+Subject: [PATCH 5/6] break dependency for recovery
 
 ---
  core/Makefile | 1 -

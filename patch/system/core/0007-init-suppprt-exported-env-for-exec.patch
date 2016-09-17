@@ -1,7 +1,7 @@
-From 4e722399011d2fae32b7309ef10ef798f028eeb3 Mon Sep 17 00:00:00 2001
+From e4a996957063bf3ee1b19f4f9b4797b062eaa771 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Thu, 26 Mar 2015 15:32:55 +0800
-Subject: [PATCH 2/7] init: suppprt exported env for exec
+Subject: [PATCH 7/7] init: suppprt exported env for exec
 
 Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
 ---
@@ -10,7 +10,7 @@ Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
  2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/init/builtins.c b/init/builtins.c
-index d4b3f99..41dbae7 100644
+index ec2cc33..6510573 100644
 --- a/init/builtins.c
 +++ b/init/builtins.c
 @@ -48,6 +48,7 @@
@@ -40,7 +40,7 @@ index d4b3f99..41dbae7 100644
      }
      else
 diff --git a/init/init.c b/init/init.c
-index 1cce8d8..9a2a10d 100644
+index 1b22645..6cb37eb 100644
 --- a/init/init.c
 +++ b/init/init.c
 @@ -98,7 +98,7 @@ static int have_console;

@@ -1,7 +1,7 @@
-From 8d87f3bbf1306a2e53187c7fd0d1e928106e5dde Mon Sep 17 00:00:00 2001
+From aa82a25f60673578244ce44754acc0069fa2dcc5 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 4 Mar 2015 00:49:35 +0800
-Subject: [PATCH 4/6] fix findleaves exclude
+Subject: [PATCH 3/6] fix findleaves exclude
 
 Change-Id: I08cff636145830889776b21b501d7745871a93f4
 ---

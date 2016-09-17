@@ -1,7 +1,7 @@
-From dfe74dfe2896929a699d9f042f5ce8f67d167b1a Mon Sep 17 00:00:00 2001
+From 27674fc8dbd61b5a7239b57a9282216739f8a1bf Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Sun, 26 Apr 2015 22:51:59 +0800
-Subject: [PATCH 3/6] use iso date format for ro.build.date
+Subject: [PATCH 2/6] use iso date format for ro.build.date
 
 Change-Id: I175d9df2122ace9a2af97c8679522dbf74fcd66e
 ---

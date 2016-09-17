@@ -1,7 +1,7 @@
-From d38ff93935af2701ea0c9dabde24c75c9356cf5d Mon Sep 17 00:00:00 2001
+From ca77e98a9b8ea4e364849fc9efcc711e36103257 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 21 Apr 2015 09:55:10 +0800
-Subject: [PATCH 5/6] adds path for why not found
+Subject: [PATCH 4/6] adds path for why not found
 
 Change-Id: I31fd06a8d1203a5a113f16b048b1438353b149c9
 ---

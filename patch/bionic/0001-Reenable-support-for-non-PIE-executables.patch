@@ -1,9 +1,9 @@
-From 58ebdf7e9ea9eea28ded2a4307c348d5c626c44e Mon Sep 17 00:00:00 2001
+From 6b1b185b7fc177da824d5ec6c89528a026295fcd Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 21 Apr 2015 10:21:52 +0800
 Subject: [PATCH] Reenable support for non PIE executables
 
-oen of MIUI executable still require non-PIE
+one of MIUI executable still require non-PIE
 
 Change-Id: I98949210cbdb9298c034a2674a0e5aeb711ed34b
 ---

@@ -1,7 +1,7 @@
-From e688454c4cc5194dc9bd7089947e78be84a2115e Mon Sep 17 00:00:00 2001
+From 5ca7236bd1fd8c1f9deccecf3df5b6dcc8b2a19a Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 9 Dec 2015 22:13:47 +0800
-Subject: [PATCH 7/7] chmod: avoid hanging on pipe using open
+Subject: [PATCH 6/7] chmod: avoid hanging on pipe using open
 
 Signed-off-by: Xuefer <xuefer@gmail.com>
 ---
