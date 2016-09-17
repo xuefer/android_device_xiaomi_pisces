@@ -1,4 +1,4 @@
-From f8fd168215d6de8878eeb6f52fe2fc034375af88 Mon Sep 17 00:00:00 2001
+From 16b8c40d4e9b3baabc07e73dc0551e7a6c7bef67 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 9 Dec 2015 21:26:57 +0800
 Subject: [PATCH 3/3] disable power_module_t::setFeature to avoid misuse
@@ -29,5 +29,5 @@ index 7e4853d..9206505 100644
  } power_module_t;
  
 -- 
-2.4.10
+2.7.3
 

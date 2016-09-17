@@ -1,4 +1,4 @@
-From 1356a950afaae9acc10fb78fdcb928a842d16f45 Mon Sep 17 00:00:00 2001
+From e84086300248dfaa177273165dcd7bed55547727 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 2 Jun 2015 17:11:10 +0800
 Subject: [PATCH 4/4] pre lollipop audio resampler blob
@@ -50,5 +50,5 @@ index 0c9b646..4c6997d 100644
 +}
 +#endif
 -- 
-2.4.10
+2.7.3
 

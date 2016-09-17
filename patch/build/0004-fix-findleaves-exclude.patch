@@ -1,0 +1,40 @@
+From 8d87f3bbf1306a2e53187c7fd0d1e928106e5dde Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Wed, 4 Mar 2015 00:49:35 +0800
+Subject: [PATCH 4/6] fix findleaves exclude
+
+Change-Id: I08cff636145830889776b21b501d7745871a93f4
+---
+ tools/findleaves.py | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
+
+diff --git a/tools/findleaves.py b/tools/findleaves.py
+index 3a9e508..d13c959 100755
+--- a/tools/findleaves.py
++++ b/tools/findleaves.py
+@@ -30,18 +30,11 @@ def perform_find(mindepth, prune, dirlist, filename):
+     rootdepth = rootdir.count("/")
+     for root, dirs, files in os.walk(rootdir, followlinks=True):
+       # prune
+-      check_prune = False
+-      for d in dirs:
+-        if d in pruneleaves:
+-          check_prune = True
+-          break
+-      if check_prune:
+-        i = 0
+-        while i < len(dirs):
+-          if dirs[i] in prune:
++      i = len(dirs) - 1
++      while i >= 0:
++          if dirs[i] in pruneleaves:
+             del dirs[i]
+-          else:
+-            i += 1
++          i -= 1
+       # mindepth
+       if mindepth > 0:
+         depth = 1 + root.count("/") - rootdepth
+-- 
+2.7.3
+

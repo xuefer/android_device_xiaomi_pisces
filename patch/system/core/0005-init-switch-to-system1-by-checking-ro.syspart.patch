@@ -1,7 +1,7 @@
-From cb6505c419b37e0c5a38f511cd32dee6dc7f1b25 Mon Sep 17 00:00:00 2001
+From 0f3051bbfde4c8b73ca1859a32caa1265b05e5a2 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 24 Mar 2015 01:28:30 +0800
-Subject: [PATCH 5/6] init: switch to system1 by checking ro.syspart
+Subject: [PATCH 5/7] init: switch to system1 by checking ro.syspart
 
 pick system1 (the 2nd) for mount/mount_all
 
@@ -89,5 +89,5 @@ index 41dbae7..6510573 100644
              wait_for_file(source, COMMAND_RETRY_TIMEOUT);
          if (mount(source, target, system, flags, options) < 0) {
 -- 
-2.4.10
+2.7.3
 

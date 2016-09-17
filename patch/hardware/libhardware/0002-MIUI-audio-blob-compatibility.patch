@@ -1,4 +1,4 @@
-From 06fa8da9a9729dfffda54b3f734527bd1c08dccb Mon Sep 17 00:00:00 2001
+From f1859473154ce2ff8b1e06100842b445f7c30008 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 4 Mar 2015 00:01:00 +0800
 Subject: [PATCH 2/3] MIUI audio blob compatibility
@@ -47,5 +47,5 @@ index 99cb044..8cb84b2 100644
  
  /**********************************************************************/
 -- 
-2.4.10
+2.7.3
 

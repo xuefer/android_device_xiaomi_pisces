@@ -1,7 +1,7 @@
-From f90318cf8462e5f328881b7aeaf4ec76e5a03477 Mon Sep 17 00:00:00 2001
+From 2a691cfefeecabb67ab3322bed36d655af9e2c6d Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Mon, 23 Mar 2015 16:40:30 +0800
-Subject: [PATCH 4/6] MI3TD device node name hack for init
+Subject: [PATCH 4/7] MI3TD device node name hack for init
 
 MI3 TD requires some hack for partition names which seems like a migration
 
@@ -158,5 +158,5 @@ index a7bd61c..473d9ce 100644
              /* Inform third party apps/ril/radio.. to use Rlog or RLOG */
              snprintf(tmp_tag, sizeof(tmp_tag), "use-Rlog/RLOG-%s", tag);
 -- 
-2.4.10
+2.7.3
 

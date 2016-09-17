@@ -1,4 +1,4 @@
-From 83189497fb7801bfd0bd2f4ee272444d11574d00 Mon Sep 17 00:00:00 2001
+From 5c01c6df2447d57f718a6a54b4d047b5f1b9a5d9 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 18 Mar 2015 17:07:23 +0800
 Subject: [PATCH 2/4] fix standby/stopInput race condition
@@ -14,7 +14,7 @@ Change-Id: Ib63aad6cda01baf0ad1e2fab59c523be1f990d42
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
-index eba9cc4..aff0302 100644
+index b8e27e2..2180a0b 100644
 --- a/services/audioflinger/Threads.cpp
 +++ b/services/audioflinger/Threads.cpp
 @@ -5587,10 +5587,9 @@ reacquire_wakelock:
@@ -41,5 +41,5 @@ index eba9cc4..aff0302 100644
                  mStartStopCond.broadcast();
              }
 -- 
-2.4.10
+2.7.3
 

@@ -1,0 +1,24 @@
+From 07cdd06dd29ac0c6b3ab687a39fb87f742b0a7e8 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Fri, 10 Jul 2015 14:35:51 +0800
+Subject: [PATCH 6/6] break dependency for recovery
+
+---
+ core/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index 27487a5..5cc7c9b 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -934,7 +934,6 @@ $(RECOVERY_INSTALL_OTA_KEYS): $(OTA_PUBLIC_KEYS) $(DUMPKEY_JAR) $(extra_keys)
+ 
+ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) $(RECOVERYIMAGE_EXTRA_DEPS) \
+ 		$(INSTALLED_RAMDISK_TARGET) \
+-		$(INSTALLED_BOOTIMAGE_TARGET) \
+ 		$(recovery_binary) \
+ 		$(recovery_initrc) $(recovery_sepolicy) \
+ 		$(INSTALLED_2NDBOOTLOADER_TARGET) \
+-- 
+2.7.3
+

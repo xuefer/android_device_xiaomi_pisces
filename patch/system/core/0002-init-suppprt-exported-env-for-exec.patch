@@ -1,7 +1,7 @@
-From f0549bd001cc910c73c27fc94cfab33bb50fbcd2 Mon Sep 17 00:00:00 2001
+From 4e722399011d2fae32b7309ef10ef798f028eeb3 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Thu, 26 Mar 2015 15:32:55 +0800
-Subject: [PATCH 2/6] init: suppprt exported env for exec
+Subject: [PATCH 2/7] init: suppprt exported env for exec
 
 Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
 ---
@@ -53,5 +53,5 @@ index 1cce8d8..9a2a10d 100644
  static unsigned charging_mode = 0;
  
 -- 
-2.4.10
+2.7.3
 

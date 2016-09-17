@@ -1,13 +1,16 @@
-commit c6a4b7cf91e0cf3f72ef63f0a52e0590b605e7ff
-Author: Xuefer <xuefer@gmail.com>
-Date:   Fri Apr 3 01:41:38 2015 +0800
+From 62fa07d6fa0a33de4accb4178254209c2e46ee1d Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Fri, 16 Sep 2016 00:22:03 +0800
+Subject: [PATCH] Fix power off alarm, start alarm after rtc boot
 
-    Fix power off alarm, start alarm after rtc boot
-    
-    Change-Id: Id626cb856c61ec419db5f9694274a8389ab1287a
+Change-Id: Id626cb856c61ec419db5f9694274a8389ab1287a
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ src/com/android/deskclock/alarms/AlarmStateManager.java | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/src/com/android/deskclock/alarms/AlarmStateManager.java b/src/com/android/deskclock/alarms/AlarmStateManager.java
-index 9b2c534..d9ee2f6 100755
+index c614022..6289472 100755
 --- a/src/com/android/deskclock/alarms/AlarmStateManager.java
 +++ b/src/com/android/deskclock/alarms/AlarmStateManager.java
 @@ -473,6 +473,16 @@ public final class AlarmStateManager extends BroadcastReceiver {
@@ -27,7 +30,7 @@ index 9b2c534..d9ee2f6 100755
          LogUtils.v("Setting missed state to instance " + instance.mId);
          // Stop alarm if this instance is firing it
          AlarmService.stopAlarm(context, instance);
-@@ -715,9 +725,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
+@@ -724,9 +734,6 @@ public final class AlarmStateManager extends BroadcastReceiver {
                  break;
              case AlarmInstance.MISSED_STATE:
                  setMissedState(context, instance);
@@ -37,3 +40,6 @@ index 9b2c534..d9ee2f6 100755
                  break;
              case AlarmInstance.DISMISSED_STATE:
                  setDismissState(context, instance);
+-- 
+2.7.3
+

@@ -1,4 +1,4 @@
-From 96d863956930740512da50afddf80b84a3f5055d Mon Sep 17 00:00:00 2001
+From e688454c4cc5194dc9bd7089947e78be84a2115e Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 9 Dec 2015 22:13:47 +0800
 Subject: [PATCH 7/7] chmod: avoid hanging on pipe using open
@@ -26,5 +26,5 @@ index 96d1fda..6746bf3 100644
              if (fchmod(fd, mode) < 0){
                  fprintf(stderr, "Unable to chmod %s: %s\n", argv[i], strerror(errno));
 -- 
-2.4.10
+2.7.3
 
