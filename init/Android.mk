@@ -1,5 +1,3 @@
-ifeq ($(TARGET_INIT_VENDOR_LIB),libinit_pisces)
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -10,5 +8,3 @@ LOCAL_SRC_FILES := init_pisces.c
 
 LOCAL_MODULE := libinit_pisces
 include $(BUILD_STATIC_LIBRARY)
-
-endif
