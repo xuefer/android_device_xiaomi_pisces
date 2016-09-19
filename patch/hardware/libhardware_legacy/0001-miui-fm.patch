@@ -1,7 +1,7 @@
 From 73528dfe83fd0e4fd1e0c95fe26e394ae732e868 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Wed, 4 Mar 2015 00:01:12 +0800
-Subject: [PATCH 2/2] miui-fm
+Subject: [PATCH] miui-fm
 
 Change-Id: Id68a14b35c3fa9f521fcace061befa580589c1fa
 ---

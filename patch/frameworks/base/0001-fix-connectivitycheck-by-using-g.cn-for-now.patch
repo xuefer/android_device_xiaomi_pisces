@@ -1,7 +1,7 @@
 From 1b98b9152f313c67c996eb7710a866e30a337130 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 30 Aug 2016 01:56:32 +0800
-Subject: [PATCH 1/4] fix connectivitycheck by using g.cn for now
+Subject: [PATCH 1/5] fix connectivitycheck by using g.cn for now
 
 Change-Id: Ife0d476f2664cd28b06d9cdaf731c17b9c57f5d4
 Signed-off-by: Xuefer <xuefer@gmail.com>

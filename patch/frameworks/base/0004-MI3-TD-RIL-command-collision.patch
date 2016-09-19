@@ -1,7 +1,7 @@
 From 8c3622718d120b18dcc427dbe28f6633a808ab0b Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 30 Aug 2016 02:03:16 +0800
-Subject: [PATCH 4/4] MI3 TD RIL command collision
+Subject: [PATCH 4/5] MI3 TD RIL command collision
 
 Change-Id: I43c656e6687010d9fb92e9ac172418deb971ff8b
 Signed-off-by: Xuefer <xuefer@gmail.com>

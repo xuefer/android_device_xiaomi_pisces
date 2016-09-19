@@ -1,7 +1,7 @@
 From 674b8e2f408da0a3f5336c28ff3b5088b594f1dd Mon Sep 17 00:00:00 2001
 From: Vladislav Kaznacheev <kaznacheev@google.com>
 Date: Tue, 4 Aug 2015 10:57:04 -0700
-Subject: [PATCH 3/4] Keep OverScroller.SplineOverScroller state consistent.
+Subject: [PATCH 3/5] Keep OverScroller.SplineOverScroller state consistent.
 
 Currently update() bails out early if it is called
 too soon after mStartTime has been set. In this case
