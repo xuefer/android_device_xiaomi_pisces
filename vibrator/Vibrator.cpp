@@ -15,6 +15,8 @@
  * limitations under the License.
  */
  
+#include <hardware/vibrator.h>
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -29,7 +31,7 @@
 #define LOG_TAG "Vibrator"
 #include <utils/Log.h>
 #include <cutils/properties.h>
- 
+
 // copy from api
 #include <sys/types.h>
 #include <limits.h>
@@ -247,12 +249,7 @@ static VibeStatus vibrate_off()
 	return vs;
 }
 
-int vibrator_exists()
-{
-    return 1;
-}
-
-int sendit(int timeout_ms)
+static int sendit(int timeout_ms)
 {
 	if (VIBE_FAILED(vibrate_init())) {
 		return -1;
@@ -260,7 +257,72 @@ int sendit(int timeout_ms)
 
 	ALOGV("vibrate sendit(%d)", timeout_ms);
 
-    VibeStatus vs = timeout_ms ? vibrate_on(timeout_ms) : vibrate_off();
+	VibeStatus vs = timeout_ms ? vibrate_on(timeout_ms) : vibrate_off();
 	return VIBE_FAILED(vs) ? 0 : -1;
 }
 
+extern "C" {
+
+static int vibra_on(vibrator_device_t* vibradev __unused, unsigned int timeout_ms)
+{
+    /* constant on, up to maximum allowed time */
+    return sendit(timeout_ms);
+}
+
+static int vibra_off(vibrator_device_t* vibradev __unused)
+{
+    return sendit(0);
+}
+
+static int vibra_close(hw_device_t *device)
+{
+    free(device);
+    vibrate_terminate();
+    return 0;
+}
+
+} // extern C
+
+static int vibra_open(const hw_module_t* module, const char* id __unused,
+                      hw_device_t** device __unused) {
+    vibrator_device_t *vibradev = new vibrator_device_t;
+
+    if (!vibradev) {
+        ALOGE("Can not allocate memory for the vibrator device");
+        return -ENOMEM;
+    }
+
+    vibradev->common.tag = HARDWARE_DEVICE_TAG;
+    vibradev->common.module = (hw_module_t *) module;
+    vibradev->common.version = HARDWARE_DEVICE_API_VERSION(1,0);
+    vibradev->common.close = vibra_close;
+
+    vibradev->vibrator_on = vibra_on;
+    vibradev->vibrator_off = vibra_off;
+
+    *device = (hw_device_t *) vibradev;
+
+    vibrate_init();
+
+    return 0;
+}
+
+/*===========================================================================*/
+/* Default vibrator HW module interface definition                           */
+/*===========================================================================*/
+
+static struct hw_module_methods_t vibrator_module_methods = {
+    .open = vibra_open,
+};
+
+struct hw_module_t HAL_MODULE_INFO_SYM = {
+    .tag = HARDWARE_MODULE_TAG,
+    .module_api_version = VIBRATOR_API_VERSION,
+    .hal_api_version = HARDWARE_HAL_API_VERSION,
+    .id = VIBRATOR_HARDWARE_MODULE_ID,
+    .name = "Default vibrator HAL",
+    .author = "The Android Open Source Project",
+    .methods = &vibrator_module_methods,
+    .dso = NULL,
+    .reserved = {0},
+};

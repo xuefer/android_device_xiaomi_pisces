@@ -189,7 +189,8 @@ PRODUCT_PACKAGES += \
 # Vibrator
 PRODUCT_PACKAGES += \
     immvibed \
-    libImmVibeJ
+    libImmVibeJ \
+    vibrator.pisces \
 
 # Vendor Apps
 PRODUCT_PACKAGES += \
