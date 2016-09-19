@@ -107,7 +107,7 @@ PRODUCT_COPY_FILES += \
 
 # camera
 PRODUCT_PACKAGES += \
-    camera.tegra \
+    camera.pisces \
     camera.vendor.tegra \
 
 PRODUCT_COPY_FILES += \
