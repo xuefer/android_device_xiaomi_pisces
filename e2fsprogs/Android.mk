@@ -96,19 +96,3 @@ LOCAL_UNSTRIPPED_PATH := $(PRODUCT_OUT)/symbols/utilities
 LOCAL_MODULE_STEM := dumpe2fs
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 include $(BUILD_EXECUTABLE)
-
-include $(CLEAR_VARS)
-
-LOCAL_SRC_FILES := $(dumpe2fs_src_files)
-LOCAL_C_INCLUDES := $(dumpe2fs_c_includes)
-ifeq ($(HOST_OS),linux)
-LOCAL_CFLAGS := $(dumpe2fs_cflags) $(dumpe2fs_cflags_linux)
-else
-LOCAL_CFLAGS := $(dumpe2fs_cflags)
-endif
-LOCAL_SHARED_LIBRARIES := $(addsuffix _host, $(dumpe2fs_shared_libraries))
-LOCAL_MODULE := dumpe2fs_host
-LOCAL_MODULE_STEM := dumpe2fs
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_HOST_EXECUTABLE)
