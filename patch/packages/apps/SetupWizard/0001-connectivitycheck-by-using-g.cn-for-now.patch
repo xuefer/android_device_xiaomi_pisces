@@ -1,0 +1,24 @@
+From f29026f3f83e5147e41b6f1b0de2f468f54ac809 Mon Sep 17 00:00:00 2001
+From: Xuefer <xuefer@gmail.com>
+Date: Tue, 20 Sep 2016 12:16:22 +0800
+Subject: [PATCH] connectivitycheck by using g.cn for now
+
+Change-Id: Iec68f9af15881c80f9754deaf809fd736611979f
+Signed-off-by: Xuefer <xuefer@gmail.com>
+---
+ src/com/cyanogenmod/setupwizard/setup/WifiSetupPage.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/com/cyanogenmod/setupwizard/setup/WifiSetupPage.java b/src/com/cyanogenmod/setupwizard/setup/WifiSetupPage.java
+index 56beddf..f19c4b9 100644
+--- a/src/com/cyanogenmod/setupwizard/setup/WifiSetupPage.java
++++ b/src/com/cyanogenmod/setupwizard/setup/WifiSetupPage.java
+@@ -46,7 +46,7 @@ public class WifiSetupPage extends SetupPage {
+ 
+     public static final String TAG = "WifiSetupPage";
+ 
+-    private static final String DEFAULT_SERVER = "clients3.google.com";
++    private static final String DEFAULT_SERVER = "g.cn";
+     private static final int CAPTIVE_PORTAL_SOCKET_TIMEOUT_MS = 10000;
+ 
+     private LoadingFragment mLoadingFragment;
