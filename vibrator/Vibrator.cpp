@@ -251,14 +251,14 @@ static VibeStatus vibrate_off()
 
 static int sendit(int timeout_ms)
 {
-	if (VIBE_FAILED(vibrate_init())) {
-		return -1;
+	VibeStatus vs = vibrate_init();
+	if (VIBE_FAILED(vs)) {
+		return vs;
 	}
 
 	ALOGV("vibrate sendit(%d)", timeout_ms);
 
-	VibeStatus vs = timeout_ms ? vibrate_on(timeout_ms) : vibrate_off();
-	return VIBE_FAILED(vs) ? 0 : -1;
+	return timeout_ms ? vibrate_on(timeout_ms) : vibrate_off();
 }
 
 extern "C" {
