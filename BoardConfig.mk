@@ -119,9 +119,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
 # GPS
 BOARD_HAVE_GPS_BCM := true
 
-# Vibrator
-BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/xiaomi/pisces/vibrator.c
-
 # Charger, healthd, alarm
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
