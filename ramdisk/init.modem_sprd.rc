@@ -43,6 +43,14 @@ on class_start:main
 on property:init.svc.fil-daemon=stopping
     stop ril-daemon
 
+on property:fil-daemon=running
+    setprop ro.radio.noril=${ro.radio.noril}
+
+on property:ro.radio.noril=1
+    stop fil-daemon
+    # may be started by fil-daemon stop again
+    stop ril-daemon
+
 on property:persist.mdm.offline_log.enable=true
     write /sys/class/spi_master/spi0/spi0.0/offline_log 1
 
