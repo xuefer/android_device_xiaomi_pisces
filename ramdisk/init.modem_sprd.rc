@@ -14,7 +14,7 @@ on init
     setprop ril.ecclist "112,000,110,118,119,911,999,120,122"
     setprop persist.radio.modem "TD"
 
-    chown root radio /sys/class/spi_master/spi0/spi0.0/reset
+    chown system radio /sys/class/spi_master/spi0/spi0.0/reset
     chown root radio /sys/class/spi_master/spi0/spi0.0/assert
 
 service_redefine ril-daemon /system/bin/rild
