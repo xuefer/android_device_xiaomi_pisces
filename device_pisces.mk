@@ -208,4 +208,5 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     MI3TDSettings \
     libshim_icuuc \
+    libshim_list \
 

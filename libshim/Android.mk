@@ -23,3 +23,11 @@ LOCAL_C_INCLUDES := external/icu/icu4c/source/common
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
+# required by libdirac
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := shim_list.c
+LOCAL_MODULE := libshim_list
+LOCAL_SHARED_LIBRARIES := libcutils
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
+

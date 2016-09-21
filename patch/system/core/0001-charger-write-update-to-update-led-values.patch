@@ -1,7 +1,7 @@
-From 2e7c0f29ced0cc40c1473c00436029f8c3b29819 Mon Sep 17 00:00:00 2001
+From e0a8da1b4b4fba86a5cf0c7407500bebee097837 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 10 Mar 2015 19:14:31 +0800
-Subject: [PATCH 2/7] charger: write "update" to update led values
+Subject: [PATCH 1/6] charger: write "update" to update led values
 
 MI3 TD led need update to use the new color value
 

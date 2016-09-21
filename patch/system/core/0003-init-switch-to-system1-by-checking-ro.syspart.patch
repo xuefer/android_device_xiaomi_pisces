@@ -1,7 +1,7 @@
-From 0e1253852ad9e4e6067fc6b7a4dd439728125d68 Mon Sep 17 00:00:00 2001
+From 68fc1bce534b6d3f4dea2182f8ce659e53d16f4b Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Tue, 24 Mar 2015 01:28:30 +0800
-Subject: [PATCH 4/7] init: switch to system1 by checking ro.syspart
+Subject: [PATCH 3/6] init: switch to system1 by checking ro.syspart
 
 pick system1 (the 2nd) for mount/mount_all
 

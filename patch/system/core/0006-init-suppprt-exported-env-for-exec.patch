@@ -1,7 +1,7 @@
-From e4a996957063bf3ee1b19f4f9b4797b062eaa771 Mon Sep 17 00:00:00 2001
+From 1ffdbc28acf0f664e92333ebe69df8ca56c4a1a2 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Thu, 26 Mar 2015 15:32:55 +0800
-Subject: [PATCH 7/7] init: suppprt exported env for exec
+Subject: [PATCH 6/6] init: suppprt exported env for exec
 
 Change-Id: I0b57786a1fe4fba23ddd351048499753bb759bb1
 ---

@@ -1,7 +1,7 @@
-From 46ecee2d05bf62f1bd4a560d33120cf3a6feceaa Mon Sep 17 00:00:00 2001
+From d43cc0b36006700284d54adaa92b44b9b35b9055 Mon Sep 17 00:00:00 2001
 From: Xuefer <xuefer@gmail.com>
 Date: Mon, 23 Mar 2015 16:40:30 +0800
-Subject: [PATCH 3/7] MI3TD device node name hack for init
+Subject: [PATCH 2/6] MI3TD device node name hack for init
 
 MI3 TD requires some hack for partition names which seems like a migration
 
