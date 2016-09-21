@@ -18,7 +18,7 @@ on init
     chown root radio /sys/class/spi_master/spi0/spi0.0/assert
 
 service_redefine ril-daemon /system/bin/rild
-    class main
+    class noautostart
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
@@ -26,30 +26,21 @@ service_redefine ril-daemon /system/bin/rild
     disabled
 
 service fil-daemon /system/bin/fild
-    class main
+    class fil_daemon
     user root
     group root radio
-    disabled
     onrestart stop ril-daemon
 
 on class_start:main
     stop ril-daemon
-    stop fil-daemon
     write /sys/class/spi_master/spi0/spi0.0/reset 1
-    enable fil-daemon
-    enable ril-daemon
-    start fil-daemon
+    class_start fil_daemon
 
 on property:init.svc.fil-daemon=stopping
     stop ril-daemon
 
-on property:fil-daemon=running
-    setprop ro.radio.noril=${ro.radio.noril}
-
 on property:ro.radio.noril=1
     stop fil-daemon
-    # may be started by fil-daemon stop again
-    stop ril-daemon
 
 on property:persist.mdm.offline_log.enable=true
     write /sys/class/spi_master/spi0/spi0.0/offline_log 1
