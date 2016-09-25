@@ -26,6 +26,7 @@ ARCH_ARM_HAVE_TLS_REGISTER := true
 
 # Skip droiddoc build to save build time
 BOARD_SKIP_ANDROID_DOC_BUILD := true
+WITHOUT_CHECK_API := true
 
 # use prebuilt webview chrome to save build time
 PRODUCT_PREBUILT_WEBVIEWCHROMIUM := yes
